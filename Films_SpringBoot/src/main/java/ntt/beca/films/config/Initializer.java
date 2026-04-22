@@ -29,6 +29,7 @@ import ntt.beca.films.film.FilmRepository;
 import ntt.beca.films.genre.GenreRepository;
 import ntt.beca.films.hall.HallRepository;
 import ntt.beca.films.media.MediaRepository;
+import ntt.beca.films.media.MediaType;
 import ntt.beca.films.nationality.NationalityRepository;
 import ntt.beca.films.person.PersonRepository;
 import ntt.beca.films.person.PersonType;
@@ -163,17 +164,17 @@ public class Initializer {
             Media trailer = Media.builder()
                         .film(inception)
                         .media("https://example.com/trailer.mp4")
-                        .mediaType(Media.MediaType.VIDEO)
+                        .mediaType(MediaType.VIDEO)
                         .build();
             Media poster = Media.builder()
                         .film(inception)
                         .media("https://example.com/poster.jpg")
-                        .mediaType(Media.MediaType.IMAGE)
+                        .mediaType(MediaType.IMAGE)
                         .build();
             Media script = Media.builder()
                         .film(interstellar)
                         .media("https://example.com/script.pdf")
-                        .mediaType(Media.MediaType.DOCUMENT)
+                        .mediaType(MediaType.DOCUMENT)
                         .build();
             mediaRepository.saveAll(List.of(trailer, poster, script));
 

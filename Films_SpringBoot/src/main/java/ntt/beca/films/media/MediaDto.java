@@ -1,0 +1,16 @@
+package ntt.beca.films.media;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MediaDto {
+      private Long id;
+      private String media;
+      private MediaType mediaType;
+}

@@ -10,7 +10,7 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>ntt.beca</groupId>
-	<artifactId>films</artifactId>
+	<artifactId>films-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>films</name>

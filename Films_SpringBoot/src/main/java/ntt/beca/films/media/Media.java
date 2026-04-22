@@ -25,9 +25,6 @@ import ntt.beca.films.film.Film;
 @Entity
 @Table(name = "medias")
 public class Media extends AbstractEntity {
-      public enum MediaType {
-            IMAGE, VIDEO, DOCUMENT
-      }
 
       @Column(nullable = false, length = 100)
       private String media;
