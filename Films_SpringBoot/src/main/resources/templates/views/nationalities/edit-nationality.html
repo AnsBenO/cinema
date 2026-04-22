@@ -1,0 +1,43 @@
+<div id="modal"
+	class="modal fixed flex items-center justify-center inset-0 bg-gray-900 bg-opacity-60 transition-opacity z-50 overflow-scroll">
+	<button
+		class="absolute top-4 right-8 text-white text-3xl font-bold cursor-pointer hover:text-gray-400 close"
+		onclick="closeModal()">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<!-- Modal content -->
+	<div
+		class="p-5 bg-white shadow-lg rounded-lg relative w-4/5 max-w-3xl fade-in"
+		data-location="nationality-edit" id="contentDiv">
+
+		<h2
+			class="text-center text-gray-700 mb-6 text-2xl font-bold tracking-wide capitalize border-b-2 border-gray-300 py-2">
+			<i class="fa-solid fa-flag"></i> Edit Nationality
+		</h2>
+
+		<!-- form -->
+		<form th:action="@{/nationalities/save}" th:object="${nationality}" method="POST"
+			accept-charset="UTF-8" class="space-y-4">
+			<!-- Hidden field for the ID -->
+			<input type="hidden" th:field="*{id}" />
+
+			<!-- Nationality Label -->
+			<div class="mb-4">
+				<label for="nationalityLabel" class="block text-sm font-medium text-gray-700">
+					Nationality Label
+				</label>
+				<input type="text" id="nationalityLabel" th:field="*{label}"
+					placeholder="Enter nationality label" required
+					class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-600 focus:border-blue-600 text-sm" />
+			</div>
+
+			<!-- Submit Button -->
+			<div class="flex justify-end">
+				<button type="submit"
+					class="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+					Update </button>
+			</div>
+		</form>
+
+	</div>
+</div>

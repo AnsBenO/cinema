@@ -1,0 +1,22 @@
+{
+	"configurations": [
+		{
+			"type": "java",
+			"name": "CodeLens (Launch) - App",
+			"request": "launch",
+			"mainClass": "com.test.maven.App",
+			"console": "internalConsole",
+			"projectName": "my.app"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-FilmsApplication<films>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "ntt.beca.films.FilmsApplication",
+			"projectName": "films",
+			"args": "",
+			"envFile": "${workspaceFolder}/.env"
+		}
+	]
+}

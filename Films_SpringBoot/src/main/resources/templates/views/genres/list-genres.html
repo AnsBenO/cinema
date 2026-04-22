@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/app}">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Genres</title>
+</head>
+
+<body>
+	<main layout:fragment="content" id="content" class="p-6 w-full"
+		data-location="genre-list">
+
+		<!-- Genre Table -->
+		<div id="genreTable" th:fragment="genre-table" class="w-full">
+			<header class="flex flex-row justify-between">
+				<!-- Search Form -->
+				<form hx-get="/genres" hx-replace="outerHtml"
+					hx-target="#genreTable" class="flex items-center space-x-2 mb-4">
+					<div class="relative flex items-center">
+						<i
+							class="fa-solid fa-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"></i>
+						<input type="text" name="keyword" placeholder="Search genres..."
+							class="pl-8 pr-2 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-celeste-dark h-10 w-64"
+							th:value="${keyword}" />
+					</div>
+					<input type="hidden" name="page" th:value="1" />
+					<button type="submit"
+						class="px-4 py-2 bg-blue-900 hover:bg-blue-600 text-white rounded-r-lg h-10">
+						Search</button>
+				</form>
+
+				<!-- Add Genre Button -->
+				<div class="flex items-center space-x-2">
+					<a hx-get="/genres/add" hx-swap="outerHtml" hx-target=".modalDiv"
+						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none text-green-500">
+						<i class="fa-solid fa-plus"></i> <span class="text-xs font-bold">Add
+							Genre</span>
+					</a>
+				</div>
+
+
+			</header>
+
+			<table
+				class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+				<thead class="bg-zinc-100 text-blue-900 font-bold">
+					<tr>
+						<th class="py-3 px-4 text-left">Id</th>
+						<th class="py-3 px-4 text-left">Genre</th>
+						<th class="py-3 px-4 text-left">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="genre : ${genres.data}"
+						class="border-b hover:bg-gray-100">
+						<td class="py-3 px-4" th:text="${genre.id}"></td>
+						<td class="py-3 px-4" th:text="${genre.label}"></td>
+						<td class="py-3 px-4"><a
+							th:hx-get="@{/genres/edit/{id}(id=${genre.id})}"
+							th:hx-swap="${'innerHtml'}" th:hx-target="${'.modalDiv'}"
+							class="text-blue-500 cursor-pointer">Edit</a> | <a
+							th:href="@{/genres/delete/{id}(id=${genre.id})}"
+							onclick="return confirmDelete(this);"
+							class="text-red-500 cursor-pointer"> Delete </a></td>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Pagination Controls -->
+			<div class="flex justify-between items-center mt-4">
+				<div>
+					Page <span th:text="${genres.pageNumber}"></span> of <span
+						th:text="${genres.totalPages}"></span> (Total items: <span
+						th:text="${genres.totalElements}"></span>)
+				</div>
+				<div class="flex items-center space-x-2">
+					<a th:if="${genres.hasPrevious}"
+						th:hx-get="'/genres?page=' + ${genres.pageNumber - 1} + '&keyword=' + ${keyword}"
+						hx-target="#genreTable"
+						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+						<i class="fa-solid fa-arrow-left"></i>
+					</a> <a th:if="${genres.hasNext}"
+						th:hx-get="'/genres?page=' + ${genres.pageNumber + 1} + '&keyword=' + ${keyword}"
+						hx-target="#genreTable"
+						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+						<i class="fa-solid fa-arrow-right"></i>
+					</a>
+				</div>
+				<script th:src="@{/js/viewImage.js}"></script>
+				<script>
+					function confirmDelete(link) {
+						const isConfirmed = confirm("Are you sure you want to delete this Genre (when you delete this, the films related to it are being deleted as well)?");
+						if (isConfirmed) {
+							window.location.href = link.getAttribute("href");
+						}
+						return false; 
+					}
+				</script>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>

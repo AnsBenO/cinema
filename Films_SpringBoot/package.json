@@ -1,0 +1,20 @@
+{
+	"name": "films_springboot",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"dev": "npx tailwindcss -i ./src/main/resources/static/tailwind/input.css -o ./src/main/resources/static/tailwind/output.css --watch",
+		"build": "npx tailwindcss -i ./src/main/resources/static/tailwind/input.css -o ./src/main/resources/static/tailwind/output.css",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"films_springboot": "file:"
+	},
+	"devDependencies": {
+		"tailwindcss": "^3.4.16"
+	}
+}

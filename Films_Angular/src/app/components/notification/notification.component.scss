@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+.notifications-container {
+  position: fixed;
+  bottom: 25px;
+  right: 10px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .notification {
+    max-width: 350px;
+    padding: 15px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s, fadeOut 0.5s 4.75s;
+  }
+
+  span:nth-child(2) {
+    flex: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.1;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}

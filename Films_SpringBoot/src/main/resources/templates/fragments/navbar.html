@@ -1,0 +1,29 @@
+<!-- Header -->
+<header class="fixed w-full z-30 bg-gradient-to-r from-midnight via-twilight to-oceanBlue text-white p-3 shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-semibold flex items-center gap-1">
+                  FilmSpot
+            </h1>
+            <nav class="flex items-center text-white gap-2" aria-label="Main navigation menu">
+
+
+                  <div class="ml-auto flex space-x-4">
+                        <div sec:authorize="!isAuthenticated()">
+                              <a class="bg-blue-400 font-medium text-oceanBlue hover:bg-blue-200 rounded px-3 py-2 focus:ring focus:ring-blue-500"
+                                    th:href="@{/login}">
+                                    Login
+                              </a>
+                        </div>
+                        <div sec:authorize="isAuthenticated()">
+                              <form th:action="@{/logout}" method="post" class="m-0 p-0">
+                                    <button
+                                          class="bg-blue-400 font-medium text-oceanBlue hover:bg-blue-200 rounded px-3 py-2 focus:ring focus:ring-blue-500">
+                                          Logout
+                                    </button>
+
+                              </form>
+                        </div>
+                  </div>
+            </nav>
+      </div>
+</header>

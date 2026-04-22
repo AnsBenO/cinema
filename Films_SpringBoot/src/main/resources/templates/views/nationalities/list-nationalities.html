@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nationalities</title>
+</head>
+
+<body>
+    <main layout:fragment="content" id="content" class="p-6 w-full" data-location="nationalities">
+
+        <!-- Nationalities Table -->
+        <div id="nationalitiesTable" th:fragment="nationalities-table" class="w-full">
+            <header class="flex flex-row justify-between">
+                <!-- Search Form -->
+                <form hx-get="/nationalities" hx-replace="outerHtml" hx-target="#nationalitiesTable"
+                      class="flex items-center space-x-2 mb-4">
+                    <div class="relative flex items-center">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" name="keyword" placeholder="Search nationalities..."
+                               class="pl-8 pr-2 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-celeste-dark h-10 w-64"
+                               th:value="${keyword}" />
+                    </div>
+                    <input type="hidden" name="page" th:value="1" />
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-900 hover:bg-blue-600 text-white rounded-r-lg h-10">
+                        Search
+                    </button>
+                </form>
+
+                <!-- Add Nationality Button -->
+                <div class="flex items-center space-x-2">
+                    <a   hx-get="/nationalities/add" hx-swap="outerHtml" hx-target=".modalDiv"
+                    class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none text-green-500">
+                        <i class="fa-solid fa-plus"></i> <span class="text-xs font-bold">Add Nationality</span>
+                    </a>
+                </div>
+
+                <!-- Pagination Controls -->
+                <a th:if="${nationalities.hasPrevious}"
+                   th:hx-get="'/nationalities?page=' + ${nationalities.pageNumber - 1} + '&keyword=' + ${keyword}"
+                   hx-target="#nationalitiesTable"
+                   class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+
+                <a th:if="${nationalities.hasNext}"
+                   th:hx-get="'/nationalities?page=' + ${nationalities.pageNumber + 1} + '&keyword=' + ${keyword}"
+                   hx-target="#nationalitiesTable"
+                   class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+            
+            <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+                <thead class="bg-zinc-100 text-blue-900 font-bold">
+                    <tr>
+                        <th class="py-3 px-4 text-left">Id</th>
+                        <th class="py-3 px-4 text-left">Nationality</th>
+                        <th class="py-3 px-4 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="nationality : ${nationalities.data}" class="border-b hover:bg-gray-100">
+                        <td class="py-3 px-4" th:text="${nationality.id}"></td>
+                        <td class="py-3 px-4" th:text="${nationality.label}"></td>
+                        <td class="py-3 px-4">
+                            <a 
+	                            th:hx-get="@{/nationalities/edit/{id}(id=${nationality.id})}"  
+	                            th:hx-swap="${'innerHtml'}"
+					            th:hx-target=".modalDiv"
+	                            class="text-blue-500 ">Edit</a> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Pagination Controls -->
+            <div class="flex justify-between items-center mt-4">
+                <div>
+                    Page <span th:text="${nationalities.pageNumber}"></span> of <span th:text="${nationalities.totalPages}"></span>
+                    (Total items: <span th:text="${nationalities.totalElements}"></span>)
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a th:if="${nationalities.hasPrevious}"
+                       th:hx-get="'/nationalities?page=' + ${nationalities.pageNumber - 1} + '&keyword=' + ${keyword}"
+                       hx-target="#nationalitiesTable"
+                       class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+
+                    <a th:if="${nationalities.hasNext}"
+                       th:hx-get="'/nationalities?page=' + ${nationalities.pageNumber + 1} + '&keyword=' + ${keyword}"
+                       hx-target="#nationalitiesTable"
+                       class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

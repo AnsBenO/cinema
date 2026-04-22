@@ -1,0 +1,42 @@
+@charset "UTF-8";
+.grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 20px; /* Space between grid items */
+            margin-top: 30px;
+        }
+ .grid-item {
+     background: #fff;
+     padding: 20px;
+     border-radius: 8px;
+     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+     text-align: center;
+     transition: transform 0.2s, background-color 0.2s;
+ }
+ .grid-item:hover {
+     background: #f3f4f6; /* Lighter gray on hover */
+     transform: translateY(-5px); /* Slight lift on hover */
+ }
+ .grid-item i {
+     color: #1e90ff; /* Maya blue */
+     font-size: 40px;
+     margin-bottom: 10px;
+ }
+ .grid-item h2 {
+     font-size: 20px;
+     font-weight: bold;
+     margin: 10px 0;
+ }
+ .grid-item p {
+     color: #6b7280; /* Cool gray */
+ }
+ .grid-item a {
+     display: inline-block;
+     margin-top: 10px;
+     color: #1e90ff;
+     font-weight: bold;
+     text-decoration: none;
+ }
+ .grid-item a:hover {
+     text-decoration: underline;
+ }

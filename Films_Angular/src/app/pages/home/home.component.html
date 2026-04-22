@@ -1,0 +1,37 @@
+<div class="text-center">
+  <!-- Header -->
+  <header
+    class="relative bg-transparent mb-10 min-h-[calc(100vh-5rem)] flex flex-col justify-center items-center header-gradient">
+    <h1 class="text-6xl m-0 font-bold text-blue-700">FilmSpot</h1>
+    <p class="text-xl mt-2 text-indigo-700">Your ultimate movie guide</p>
+    <p class="text-2xl mb-5 text-blue-900 font-bold mt-4">Discover the latest films, reviews, and more!</p>
+    <div class="w-full">
+      <button routerLink="/films"
+        class="text-xl py-3 px-6 bg-blue-900 text-blue-200 rounded-lg uppercase font-bold transition-colors duration-300 ease-in-out shadow-lg hover:bg-blue-800">
+        Explore Films
+      </button>
+
+    </div>
+    <button class="scroll-btn font-semibold text-lg absolute bottom-4 right-4 flex justify-center gap-3 text-indigo-200"
+      (click)="scrollToUpcomingScreenings()">
+      <fa-icon [icon]="downArrowIcon" class="text-2xl text-indigo-200"></fa-icon>
+      <span class="text-indigo-200">see upcoming screenings</span>
+    </button>
+
+  </header>
+
+  <!-- Upcoming Screenings Section  -->
+  <section id="upcomingScreenings" #upcomingScreenings class="min-h-screen pt-8">
+
+    <h1 class="text-4xl font-bold my-6 text-indigo-700">Upcoming Screenings</h1>
+
+    @let screeningsList = (screeningService.screenings$|async);
+    <div class="max-w-4xl mx-auto my-6">
+      @if (screeningsList) {
+
+      <app-upcoming-carousel [screeningsList]="screeningsList" />
+
+      }
+    </div>
+  </section>
+</div>

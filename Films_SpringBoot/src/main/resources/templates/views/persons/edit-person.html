@@ -1,0 +1,94 @@
+<div id="modal"
+      class="modal fixed flex items-center justify-center inset-0 bg-gray-900 bg-opacity-60 transition-opacity z-50 overflow-scroll">
+      <button class="absolute top-4 right-8 text-white text-3xl font-bold cursor-pointer hover:text-gray-400 close"
+            onclick="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+      </button>
+      <!-- Modal content -->
+      <div class="p-5 bg-white shadow-lg rounded-lg relative w-4/5 max-w-3xl fade-in" id="contentDiv">
+            <h2
+                  class="text-center text-gray-700 mb-6 text-2xl font-bold tracking-wide capitalize border-b-2 border-gray-300 py-2">
+                  <i class="fa-solid fa-user"></i>
+                  Update Person with ID <span th:text="${person.id}"></span>
+            </h2>
+
+            <!-- Edit Person Form -->
+            <form th:action="@{'/persons/edit/'+${person.id} }" th:object="${person}" method="post" class="space-y-8">
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- First Column -->
+                        <div class="space-y-4">
+                              <!-- First Name -->
+                              <div class="flex flex-col">
+                                    <label for="firstName" class="text-gray-700 font-semibold flex items-center gap-2">
+                                          <i class="fa-regular fa-user"></i> First Name
+                                    </label>
+                                    <input type="text" id="firstName" th:field="*{firstName}"
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                          placeholder="Enter first name" required>
+                              </div>
+
+                              <!-- Last Name -->
+                              <div class="flex flex-col">
+                                    <label for="lastName" class="text-gray-700 font-semibold flex items-center gap-2">
+                                          <i class="fa-regular fa-user"></i> Last Name
+                                    </label>
+                                    <input type="text" id="lastName" th:field="*{lastName}"
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                          placeholder="Enter last name" required>
+                              </div>
+
+                              <!-- Birth Date -->
+                              <div class="flex flex-col">
+                                    <label for="birthDate" class="text-gray-700 font-semibold flex items-center gap-2">
+                                          <i class="fa-regular fa-calendar"></i> Birth Date
+                                    </label>
+                                    <input type="date" id="birthDate" th:field="*{birthDate}"
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                          required>
+                              </div>
+                        </div>
+
+                        <!-- Second Column -->
+                        <div class="space-y-4">
+                              <!-- Person Type -->
+                              <div class="flex flex-col">
+                                    <label for="personType" class="text-gray-700 font-semibold flex items-center gap-2">
+                                          <i class="fa-solid fa-users"></i> Person Type
+                                    </label>
+                                    <select id="personType" th:field="*{personType}"
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                          required>
+                                          <option value="" selected>Select a Type</option>
+                                          <option th:each="type : ${T(ntt.beca.films.person.PersonType).values()}"
+                                                th:value="${type}" th:text="${type}"></option>
+                                    </select>
+                              </div>
+
+                              <!-- Nationality -->
+                              <div class="flex flex-col">
+                                    <label for="nationality"
+                                          class="text-gray-700 font-semibold flex items-center gap-2">
+                                          <i class="fa-solid fa-flag"></i> Nationality
+                                    </label>
+                                    <select id="nationality" th:field="*{nationality.id}"
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                          required>
+                                          <option value="" selected>Select Nationality</option>
+                                          <option th:each="nat : ${nationalities}" th:value="${nat.id}"
+                                                th:text="${nat.label}"></option>
+                                    </select>
+                              </div>
+                        </div>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="flex justify-end">
+                        <button type="submit"
+                              class="bg-blue-800 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-900">
+                              <i class="fa-solid fa-save"></i> Save Changes
+                        </button>
+                  </div>
+            </form>
+      </div>
+</div>

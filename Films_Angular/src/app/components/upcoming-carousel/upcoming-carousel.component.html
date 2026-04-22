@@ -1,0 +1,70 @@
+<p-carousel class="p-11" [value]="screeningsList" [numVisible]="3" [numScroll]="1" [circular]="false"
+      [autoplayInterval]="5000" [styleClass]="'screening-carousel mx-auto px-4'"
+      [responsiveOptions]="responsiveOptions">
+
+      <!-- Custom Previous Button -->
+      <ng-template pTemplate="previousicon">
+            <button class="carousel-nav-btn carousel-prev-btn" aria-label="Previous screenings">
+                  <fa-icon [icon]="previousIcon"></fa-icon>
+            </button>
+      </ng-template>
+
+      <!-- Custom Next Button -->
+      <ng-template pTemplate="nexticon">
+            <button class="carousel-nav-btn carousel-next-btn" aria-label="Next screenings">
+                  <fa-icon [icon]="nextIcon"></fa-icon>
+            </button>
+      </ng-template>
+
+      <ng-template let-screening pTemplate="item">
+            <div class="screening-card">
+                  <div class="card-image-container">
+                        <!-- Film Image -->
+                        <img [src]="serverUrl + screening.film.imageUrl" [alt]="screening.film.title + ' poster'"
+                              class="screening-image" />
+
+                        <!-- Hall Number -->
+                        <div class="hall-badge">
+                              <span class="hall-icon">
+                                    <fa-icon [icon]="hallIcon"></fa-icon>
+                              </span>
+                              Hall {{ screening.hall.number }}
+                        </div>
+
+                        <!-- Screening Time Badge -->
+                        <div class="time-badge">
+                              {{ screening.startTime | date: 'HH:mm' }}
+                        </div>
+                  </div>
+
+                  <!-- Card Content -->
+                  <div class="card-content">
+                        <!-- Film Title -->
+                        <h3 class="film-title">
+                              {{ screening.film.title }}
+                        </h3>
+
+                        <!-- Screening Details -->
+                        <div class="screening-details">
+                              <div class="detail-item">
+                                    <fa-icon [icon]="calendarIcon" class="detail-icon"></fa-icon>
+                                    <span>{{ screening.startTime | date: 'MMM d, y' }}</span>
+                              </div>
+
+                              <div class="detail-item">
+                                    <fa-icon [icon]="clockIcon" class="detail-icon"></fa-icon>
+                                    <span>{{ screening.startTime | date: 'HH:mm' }} - {{ screening.endTime | date:
+                                          'HH:mm' }}</span>
+                              </div>
+
+                              <div class="detail-item">
+                                    <fa-icon [icon]="timeIcon" class="detail-icon"></fa-icon>
+                                    <span>{{ screening.film.duration }} mins</span>
+                              </div>
+                        </div>
+
+
+                  </div>
+            </div>
+      </ng-template>
+</p-carousel>

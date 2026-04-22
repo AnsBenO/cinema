@@ -1,0 +1,18 @@
+@let isAuthPage = router.url === '/login' || router.url === '/signup';
+<app-loader />
+<div class="flex flex-col min-h-screen justify-between">
+
+
+      @if(!isAuthPage){
+      <app-navbar />
+      }
+      <main class="flex-grow" [class.mt-16.mb-24]="!isAuthPage">
+            <router-outlet></router-outlet>
+      </main>
+      @if(!isAuthPage){
+
+      <app-footer />
+      }
+
+      <app-notification />
+</div>

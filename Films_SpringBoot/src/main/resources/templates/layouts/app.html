@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <!-- Tailwind CSS -->
+      <link rel="stylesheet" th:href="@{/tailwind/output.css}" />
+      <!-- Additional CSS -->
+      <link rel="stylesheet" th:href="@{/css/styles.css}" />
+      <!-- Font Awesome -->
+      <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.5.2/css/all.min.css}">
+      <!-- HTMX -->
+      <script th:src="@{/js/htmx.min.js}"></script>
+
+      <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">
+            FilmSpot
+      </title>
+</head>
+
+<body class="font-rubik bg-gray-50 text-gray-800">
+      <!-- Container for the layout -->
+      <div class="min-h-screen flex flex-col">
+
+            <div th:replace="~{fragments/navbar}"></div>
+
+            <!-- Main Layout with Sidebar and Content -->
+            <div class="flex flex-1 mt-16">
+                  <!-- Sidebar -->
+                  <aside id="sidebar"
+                        class="w-64 bg-gray-100 hidden md:block border-r transition-all duration-300 relative">
+                        <button id="toggleSidebar"
+                              class="absolute top-2 -right-3 px-2 bg-gray-200 rounded-full hover:bg-gray-300 shadow-md">
+                              <i id="toggleIcon" class="fa-solid fa-angle-left"></i>
+                        </button>
+                        <nav class="w-full h-full py-7" aria-label="Side navigation menu">
+                              <!-- Dashboard -->
+                              <a th:href="@{/dashboard}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                    <span class="sidebar-label">Dashboard</span>
+                              </a>
+
+                              <!-- Users -->
+                              <a th:href="@{/users}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span class="sidebar-label">Users</span>
+                              </a>
+                              <a th:href="@{/persons}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+
+                                    <i class="fa-solid fa-users"></i>
+                                    <span class="sidebar-label">Persons</span>
+                              </a>
+
+                              <!-- Films -->
+                              <a th:href="@{/films}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-film"></i>
+                                    <span class="sidebar-label">Films</span>
+                              </a>
+
+                              <!-- Screenings -->
+                              <a th:href="@{/screenings}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-calendar"></i>
+                                    <span class="sidebar-label">Screenings</span>
+                              </a>
+
+                              <!-- Genres -->
+                              <a th:href="@{/genres}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-tags"></i>
+                                    <span class="sidebar-label">Genres</span>
+                              </a>
+
+                              <!-- Nationalities -->
+                              <a th:href="@{/nationalities}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-flag"></i>
+                                    <span class="sidebar-label">Nationalities</span>
+                              </a>
+
+                              <!-- Halls -->
+                              <a th:href="@{/halls}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-building"></i>
+                                    <span class="sidebar-label">Halls</span>
+                              </a>
+
+                              <!-- Film Ratings -->
+                              <a th:href="@{/film-ratings}"
+                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span class="sidebar-label">Film Ratings</span>
+                              </a>
+
+                        </nav>
+                  </aside>
+
+
+                  <main id="mainContent" class="transition-all duration-300">
+                        <!-- Main content here -->
+                  </main>
+
+                  <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                              const sidebar = document.getElementById('sidebar');
+                              const toggleButton = document.getElementById('toggleSidebar');
+                              const toggleIcon = document.getElementById('toggleIcon');
+                              const sidebarLabels = document.querySelectorAll('.sidebar-label');
+
+                              toggleButton.addEventListener('click', () => {
+                                    // Toggle the sidebar width
+                                    if (sidebar.classList.contains('w-64')) {
+                                          setTimeout(() => {
+                                                sidebar.classList.remove('w-64');
+                                                sidebar.classList.add('w-16');
+                                                toggleIcon.classList.remove('fa-angle-left');
+                                                toggleIcon.classList.add('fa-angle-right');
+                                          }, 50);
+                                          sidebarLabels.forEach(label => label.classList.add('hidden'));
+                                    } else {
+                                          setTimeout(() => {
+                                                sidebarLabels.forEach(label => label.classList.remove('hidden'));
+
+                                          }, 50)
+                                          sidebar.classList.remove('w-16');
+                                          sidebar.classList.add('w-64');
+                                          toggleIcon.classList.remove('fa-angle-right');
+                                          toggleIcon.classList.add('fa-angle-left');
+                                    }
+                              });
+                        });
+
+                        function closeModal() {
+                              const modal = document.getElementById("modal");
+                              const modalContent = document.getElementById("contentDiv")
+                              if (modal) {
+                                    modalContent.classList.remove("fade-in");
+                                    modalContent.classList.add("fade-out");
+                                    modal.classList.remove("fade-in-parent");
+                                    modal.classList.add("fade-out-parent");
+                                    setTimeout(() => {
+                                          modal.classList.add("hidden");
+                                    }, 250);
+                              }
+                        }
+                  </script>
+
+                  <!--?  Main Content -->
+                  <main layout:fragment="content" class="flex-1 p-6">
+
+                        <!-- ? Placeholder for dynamic Thymeleaf content -->
+
+                  </main>
+
+                  <!--? ERROR MESSAGE BOX -->
+                  <div th:replace="~{/fragments/error-message :: errorMessageBox(error=${error})}"></div>
+
+                  <!-- ? SUCCESS MESSAGE BOX -->
+                  <div th:replace="~{/fragments/success-message :: successMessageBox(message=${success})}"></div>
+
+                  <!-- ? Empty div for modals -->
+                  <div class="modalDiv">
+                        <!--  ? modal content here -->
+                  </div>
+            </div>
+      </div>
+</body>
+
+</html>

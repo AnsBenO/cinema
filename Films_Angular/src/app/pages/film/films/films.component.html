@@ -1,0 +1,101 @@
+<div
+      class="flex gap-4 p-4 fixed top-16 w-full bg-gradient-to-l from-indigo-100/75 to-indigo-200/75 backdrop-blur-lg shadow-sm z-10">
+
+      <!-- container -->
+      <div class="relative flex w-full max-w-md">
+            <!-- icon -->
+            <fa-icon [icon]="searchIcon"
+                  class="absolute top-1/2 left-3 transform -translate-y-1/2 text-indigo-600 pointer-events-none" />
+
+            <!-- Search Bar -->
+            <input type="text" placeholder="Search films by title" [(ngModel)]="keywordModel"
+                  (input)="onKeywordChange()"
+                  class="pl-10 pr-4 py-2 border border-indigo-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex-1 min-w-0 bg-indigo-100" />
+
+            <!-- Genre Dropdown -->
+            <select [(ngModel)]="genreModel" (change)="onGenreChange()"
+                  class="px-2 sm:px-4 py-2 border border-indigo-300 border-l-0 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-indigo-100">
+                  <option value="">All Genres</option>
+                  @for (genre of genres$ | async; track $index) {
+                  <option [value]="genre.label">
+                        {{ genre.label }}
+                  </option>
+                  }
+            </select>
+      </div>
+</div>
+
+
+<!-- Display placeholder while films are loading, otherwise show films -->
+@let filmResponse = (films$ | async)?._embedded?.films;
+@if (isFilmsLoading|async) {
+<div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5 mt-16 p-5">
+      @for (item of [].constructor(5); track $index) {
+      <div class="film-card bg-white/55 rounded-lg shadow-md overflow-hidden animate-pulse">
+            <div class="film-image w-full h-60 bg-white/70 backdrop-blur"></div>
+            <div class="film-details p-4">
+                  <div class="h-6 bg-white/80 rounded mb-2"></div>
+                  <div class="h-4 bg-white/80 rounded mb-2"></div>
+                  <div class="h-3 bg-white/80 rounded"></div>
+            </div>
+      </div>
+      }
+</div>
+}@else {
+@if(filmResponse){
+<!-- Films List -->
+<div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5 mt-16 p-5">
+      @for (film of filmResponse; track $index) {
+      <div class="film-card bg-white rounded-lg shadow-md overflow-hidden">
+            <img [src]="serverUrl+film.imageUrl" alt="{{ film.title }}" class="film-image w-full object-cover" />
+            <div class="film-details p-4">
+                  <h3 class="text-lg font-bold">{{ film.title }} ({{ film.year }})</h3>
+                  <p class="text-sm text-gray-600">Duration: {{ film.duration }} min</p>
+                  @let screenings = film._embedded?.screenings;
+                  @if (screenings) {
+                  @let nextScreening = screenings[0];
+                  <p class="text-xs text-blue-900">
+                        Next Screening: {{ nextScreening.startTime | date: 'short' }}
+                  </p>
+                  }
+                  <button (click)="viewFilmDetails(film)" class="text-blue-500 hover:underline focus:outline-none">view
+                        details</button>
+            </div>
+      </div>
+      }
+</div>
+}
+
+}
+
+<!-- Pagination Controls -->
+<div class="pagination flex justify-center items-center gap-4 my-6">
+      @let filmPage = (films$|async)?.page;
+      @if(filmPage){
+
+      <!-- Previous Button -->
+      <button (click)="onPageChange(-1)"
+            class="page-btn px-4 py-2 bg-gray-400 text-white rounded-md shadow hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            [disabled]="filmPage.number === 0">
+            <fa-icon [icon]="previousIcon"></fa-icon>
+      </button>
+
+      <!-- Page Information -->
+      <span class="text-gray-700 text-sm">
+            Page {{ filmPage.number + 1 }} of {{ filmPage.totalPages }}
+      </span>
+
+      <!-- Next Button -->
+      <button (click)="onPageChange(1)"
+            class="page-btn px-4 py-2 bg-blue-400 text-white rounded-md shadow hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-blue-300 disabled:cursor-not-allowed"
+            [disabled]="filmPage.number + 1 === filmPage.totalPages">
+            <fa-icon [icon]="nextIcon"></fa-icon>
+      </button>
+      }
+</div>
+
+@let selected = selectedFilm();
+@if(selected){
+<app-film-details [(visible)]="filmDialogVisible" [film]="selected">
+</app-film-details>
+}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Dashboard</title>
+      <!-- Swiper.js and Styles -->
+      <script th:src="@{/js/swiper.js}"></script>
+      <link rel="stylesheet" th:href="@{/css/swiper.min.css}">
+</head>
+
+<body>
+      <main layout:fragment="content" class="p-6 flex flex-col gap-6 bg-gray-50 w-full overflow-hidden">
+            <div th:fragment="dashboardContent" id="dashboardContent">
+
+                  <!-- Dashboard Header -->
+                  <div class="flex justify-between items-center mb-5">
+                        <h1 class="text-2xl font-bold text-gray-800">
+                              <i class="fa-solid fa-gauge-high text-blue-500"></i> Admin Dashboard
+                        </h1>
+                        <button hx-get="/dashboard" hx-target="#dashboardContent" hx-swap="outerHTML"
+                              class="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600">
+                              <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
+                        </button>
+                  </div>
+
+                  <!-- Metrics Cards -->
+                  <div class="flex flex-wrap justify-center gap-6 mx-auto">
+                        <!-- Total Films -->
+                        <div class="bg-white rounded-lg shadow p-6 flex items-center gap-4 w-full sm:w-72 md:w-80">
+                              <div class="p-3 bg-blue-100 text-blue-500 rounded-lg">
+                                    <i class="fa-solid fa-film fa-2x"></i>
+                              </div>
+                              <div>
+                                    <h3 class="text-gray-600 text-sm font-medium">Total Films</h3>
+                                    <p class="text-xl font-bold text-gray-800" th:text="${dashboardData.totalFilms}">0
+                                    </p>
+                              </div>
+                        </div>
+
+                        <!-- Total Genres -->
+                        <div class="bg-white rounded-lg shadow p-6 flex items-center gap-4 w-full sm:w-72 md:w-80">
+                              <div class="p-3 bg-green-100 text-green-500 rounded-lg">
+                                    <i class="fa-solid fa-tags fa-2x"></i>
+                              </div>
+                              <div>
+                                    <h3 class="text-gray-600 text-sm font-medium">Total Genres</h3>
+                                    <p class="text-xl font-bold text-gray-800" th:text="${dashboardData.totalGenres}">0
+                                    </p>
+                              </div>
+                        </div>
+
+                        <!-- Total Users -->
+                        <div class="bg-white rounded-lg shadow p-6 flex items-center gap-4 w-full sm:w-72 md:w-80">
+                              <div class="p-3 bg-purple-100 text-purple-500 rounded-lg">
+                                    <i class="fa-solid fa-user fa-2x"></i>
+                              </div>
+                              <div>
+                                    <h3 class="text-gray-600 text-sm font-medium">Total Users</h3>
+                                    <p class="text-xl font-bold text-gray-800" th:text="${dashboardData.totalUsers}">0
+                                    </p>
+                              </div>
+                        </div>
+
+                        <!-- Total Screenings -->
+                        <div class="bg-white rounded-lg shadow p-6 flex items-center gap-4 w-full sm:w-72 md:w-80">
+                              <div class="p-3 bg-yellow-100 text-yellow-500 rounded-lg">
+                                    <i class="fa-solid fa-calendar fa-2x"></i>
+                              </div>
+                              <div>
+                                    <h3 class="text-gray-600 text-sm font-medium">Total Screenings</h3>
+                                    <p class="text-xl font-bold text-gray-800"
+                                          th:text="${dashboardData.totalScreenings}">0</p>
+                              </div>
+                        </div>
+
+                        <!-- Average Rating -->
+                        <div class="bg-white rounded-lg shadow p-6 flex items-center gap-4 w-full sm:w-72 md:w-80">
+                              <div class="p-3 bg-red-100 text-red-500 rounded-lg">
+                                    <i class="fa-solid fa-star fa-2x"></i>
+                              </div>
+                              <div>
+                                    <h3 class="text-gray-600 text-sm font-medium">Average Rating</h3>
+                                    <p class="text-xl font-bold text-gray-800" th:text="${dashboardData.averageRating}">
+                                          0</p>
+                              </div>
+                        </div>
+                  </div>
+
+
+
+                  <!-- Upcoming Screenings Carousel -->
+                  <div class="p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                              <i class="fa-solid fa-calendar-alt text-blue-500"></i> Upcoming Screenings
+                        </h2>
+
+                        <!-- Swiper Container for Films' Images -->
+                        <div class="swiper-container relative">
+                              <div class="swiper-wrapper mb-4">
+                                    <!-- Iterate over screenings and display their images in the slide -->
+                                    <div th:each="screening : ${screenings}" class="swiper-slide">
+                                          <div class="bg-white rounded-lg shadow-lg p-4">
+                                                <!-- Film Image -->
+                                                <img th:src="@{${screening.film.imageUrl}}" alt="Film Poster"
+                                                      class="w-40 h-56 object-cover rounded-lg mb-4 mx-auto" />
+                                                <h3 class="text-center text-sm font-semibold text-gray-800 mb-2">
+                                                      <span th:text="${screening.film.title}"></span>
+                                                </h3>
+                                                <p class="text-center text-xs text-gray-500">
+                                                      <span
+                                                            th:text="${#temporals.format(screening.startTime, 'dd MMM yyyy HH:mm')}"></span><br>
+                                                      Hall: <span th:text="${screening.hall.number}"></span>
+                                                </p>
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <!-- Pagination Controls -->
+                              <div class="swiper-pagination"></div>
+                              <!-- Navigation Buttons -->
+                              <div class="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
+                              </div>
+                              <div class="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+                              </div>
+                        </div>
+
+
+                  </div>
+
+
+            </div>
+
+
+
+            <style>
+                  .swiper-pagination {
+                        position: absolute !important;
+                        bottom: -2rem !important;
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        z-index: 10;
+                  }
+            </style>
+
+            <script>
+                  // Log to debug Swiper initialization
+                  console.log("Swiper script loaded");
+
+                  let swiperInstance = null;
+
+                  // Function to initialize Swiper
+                  function initializeSwiper(containerSelector) {
+                        // Destroy existing instance if present
+                        if (swiperInstance) {
+                              swiperInstance.destroy(true, true);
+                        }
+
+                        // Initialize a new Swiper instance
+                        swiperInstance = new Swiper(containerSelector, {
+                              slidesPerView: 2,
+                              spaceBetween: 10,
+                              pagination: {
+                                    el: '.swiper-pagination',
+                                    clickable: true,
+                              },
+                              navigation: {
+                                    nextEl: '.swiper-button-next',
+                                    prevEl: '.swiper-button-prev',
+                              },
+                              breakpoints: {
+                                    640: {
+                                          slidesPerView: 1,
+                                    },
+                                    1024: {
+                                          slidesPerView: 4,
+                                    },
+                              },
+                        });
+                  }
+
+                  // Initialize Swiper on page load
+                  document.addEventListener("DOMContentLoaded", function () {
+                        initializeSwiper('.swiper-container');
+                  });
+
+                  // Reinitialize Swiper after HTMX content swap
+                  document.body.addEventListener("htmx:afterSwap", function (event) {
+                        const targetId = event.detail.target.id;
+                        if (targetId === "dashboardContent") {
+                              console.log("Reinitializing Swiper after HTMX swap");
+                              initializeSwiper(`#${targetId} .swiper-container`);
+                        }
+                  });
+            </script>
+
+
+      </main>
+</body>
+
+</html>

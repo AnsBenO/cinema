@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/app}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Film Ratings</title>
+</head>
+
+<body>
+    <main layout:fragment="content" id="content" class="p-6 w-full" data-location="film-ratings">
+
+        <!-- Film Ratings Table -->
+        <div id="filmRatingsTable" th:fragment="film-ratings-table" class="w-full">
+            <header class="flex flex-row justify-between">
+                <!-- Search Form -->
+                <form hx-get="/film-ratings" hx-replace="outerHtml" hx-target="#filmRatingsTable"
+                    class="flex items-center space-x-2 mb-4">
+                    <div class="relative flex items-center">
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" name="keyword" placeholder="Search film ratings..."
+                            class="pl-8 pr-2 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-celeste-dark h-10 w-64"
+                            th:value="${keyword}" />
+                    </div>
+                    <input type="hidden" name="page" th:value="1" />
+                    <select name="genre"
+                        class="p-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900 h-10">
+                        <option value="" selected>All Genres</option>
+                        <option th:each="option : ${genres}" th:selected="${#strings.equals(genre, option)}"
+                            th:value="${option}" th:text="${option}">
+                        </option>
+                    </select>
+                    <button type="submit" class="px-4 py-2 bg-blue-900 hover:bg-blue-600 text-white rounded-r-lg h-10">
+                        Search
+                    </button>
+                </form>
+
+                
+                <!-- Pagination Controls -->
+                <a th:if="${filmRatings.hasPrevious}"
+                    th:hx-get="'/film-ratings?page=' + ${filmRatings.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
+                    hx-target="#filmRatingsTable"
+                    class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+
+                <a th:if="${filmRatings.hasNext}"
+                    th:hx-get="'/film-ratings?page=' + ${filmRatings.pageNumber + 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
+                    hx-target="#filmRatingsTable"
+                    class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </header>
+
+            <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+                <thead class="bg-zinc-100 text-blue-900 font-bold">
+                    <tr>
+                        <th class="py-3 px-4 text-left">Id</th>
+                        <th class="py-3 px-4 text-left">Film</th>
+                        <th class="py-3 px-4 text-left">Score</th>
+                        <th class="py-3 px-4 text-left">Customer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="filmRating : ${filmRatings.data}" class="border-b hover:bg-gray-100">
+                        <td class="py-3 px-4" th:text="${filmRating.id}"></td>
+                        <td class="py-3 px-4" th:text="${filmRating.film.title}"></td>
+                        <td class="py-3 px-4" th:text="${filmRating.score}"></td>
+                        <td class="py-3 px-4" th:text="${filmRating.customer.username}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <div class="flex justify-between items-center mt-4">
+                <div>
+                    Page <span th:text="${filmRatings.pageNumber}"></span> of <span
+                        th:text="${filmRatings.totalPages}"></span>
+                    (Total items: <span th:text="${filmRatings.totalElements}"></span>)
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a th:if="${filmRatings.hasPrevious}"
+                        th:hx-get="'/film-ratings?page=' + ${filmRatings.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
+                        hx-target="#filmRatingsTable"
+                        class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+
+                    <a th:if="${filmRatings.hasNext}"
+                        th:hx-get="'/film-ratings?page=' + ${filmRatings.pageNumber + 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
+                        hx-target="#filmRatingsTable"
+                        class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

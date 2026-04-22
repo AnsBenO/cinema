@@ -1,0 +1,48 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: 'min(90vw, 800px)' }" [closable]="false"
+      [closeOnEscape]="true" (onHide)="closeDialog()" class="film-dialog">
+      <div class="dialog-content" (click)="onContentClick($event)">
+            <button (click)="closeDialog()" class="close-button" aria-label="Close" [disabled]="isSubmitting()">
+                  <fa-icon [icon]="closeIcon"></fa-icon>
+            </button>
+
+            @if (hasFilm()) {
+            <div class="film-details">
+                  <div class="film-header">
+                        <h2 class="film-title">{{ film!.title }}</h2>
+                        <span class="film-year">{{ film!.year }}</span>
+                  </div>
+
+                  <div class="film-body">
+                        <img [src]="serverUrl + film!.imageUrl" [alt]="film!.title + ' poster'" class="film-poster" />
+
+                        <div class="film-info">
+                              <p class="film-duration">
+                                    <strong>Duration:</strong> {{ film!.duration }} mins
+                              </p>
+                              <p class="film-description">
+                                    {{ film!.description }}
+                              </p>
+                        </div>
+                  </div>
+
+
+                  <div class="action-buttons">
+                        <div class="rating-section">
+                              <label for="score" class="rating-label">
+                                    Rate this film:
+                              </label>
+                              <p-rating [(ngModel)]="score" [stars]="5" [disabled]="isSubmitting()"></p-rating>
+                        </div>
+                        <button pButton (click)="submitRating()" [disabled]="!hasValidScore() || isSubmitting()"
+                              class="submit-button">
+                              @if (isSubmitting()) {
+                              Submitting...
+                              } @else {
+                              Submit Rating
+                              }
+                        </button>
+                  </div>
+            </div>
+            }
+      </div>
+</p-dialog>

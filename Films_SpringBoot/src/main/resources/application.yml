@@ -1,0 +1,57 @@
+spring:
+    application:
+        name: films
+    output:
+        ansi:
+            enabled: always
+    datasource:
+        url: jdbc:h2:mem:filmsDb
+        driverClassName: org.h2.Driver
+        username: sa
+        password: ""
+    jpa:
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+        hibernate:
+            ddl-auto: create-drop
+        open-in-view: true
+    h2:
+        console:
+            path: /h2-console
+            settings:
+                trace: false
+                web-allow-others: false
+    servlet:
+        multipart:
+            enabled: true
+            max-file-size: 2MB
+            max-request-size: 2MB
+    reactor:
+        debug-agent:
+            enabled: true
+    web:
+        resources:
+            add-mappings: true
+    data:
+        rest:
+            base-path: api
+
+security:
+    jwt:
+        expiration:
+            minutes: 15
+        secret:
+            key: TGV0IG1lIElOIFBsRWFzRSBJIHdpTEwgQmUgQSBnT29kIEJPeQ==
+
+springdoc:
+    swagger-ui:
+        operationsSorter: method
+
+logging:
+    level:
+        org.springframework.security: DEBUG
+
+image:
+    directory: /images/
