@@ -78,13 +78,15 @@
 						<td class="py-3 px-4" th:text="${person.firstName}"></td>
 						<td class="py-3 px-4" th:text="${person.lastName}"></td>
 						<td class="py-3 px-4" th:text="${person.nationality.label}"></td>
-						<td class="py-3 px-4" th:text="${PersonType}"></td>
-						<td class="py-3 px-4"><a th:hx-get="@{/persons/edit/{id}(id=${person.id})}"
+						<td class="py-3 px-4" th:text="${person.personType}"></td>
+						<td class="py-3 px-4">
+							<a th:hx-get="@{/persons/edit/{id}(id=${person.id})}"
 								th:hx-target="${'.modalDiv'}" th:hx-swap="outerHtml"
 								class="text-blue-500 cursor-pointer">Edit</a> | <a
 								th:href="@{/persons/delete/{id}(id=${person.id})}"
 								onclick="return confirmDelete(this);"
-								class="text-red-500 cursor-pointer"> Delete </a></td>
+								class="text-red-500 cursor-pointer"> Delete </a>
+						</td>
 						</td>
 					</tr>
 				</tbody>

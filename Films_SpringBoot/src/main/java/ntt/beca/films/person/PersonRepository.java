@@ -14,8 +14,8 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
 	@Query("""
 			SELECT p FROM Person p
-			WHERE LOWER(p.firstName) LIKE CONCAT('%', LOWER(:keyword), '%')
-			OR LOWER(p.lastName) LIKE CONCAT('%', LOWER(:keyword), '%')
+			WHERE LOWER(p.firstName) LIKE CONCAT('%', LOWER(CAST(:keyword AS String)), '%')
+			OR LOWER(p.lastName) LIKE CONCAT('%', LOWER(CAST(:keyword AS String)), '%')
 			""")
 	Page<Person> findByFirstNameOrLastName(@Param("keyword") String keyword, Pageable pageable);
 
@@ -23,7 +23,9 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
 	@Query("""
 			    SELECT p FROM Person p
-			    WHERE (:keyword IS NULL OR LOWER(p.firstName) LIKE CONCAT('%', LOWER(:keyword), '%') OR LOWER(p.lastName) LIKE CONCAT('%', LOWER(:keyword), '%'))
+			    WHERE (:keyword IS NULL OR LOWER(p.firstName)
+			    LIKE CONCAT('%', LOWER(CAST(:keyword AS String)), '%') OR LOWER(p.lastName)
+			    LIKE CONCAT('%', LOWER(CAST(:keyword AS String)), '%'))
 			    AND (:personType IS NULL OR p.personType = :personType)
 			""")
 	Page<Person> findByKeywordAndPersonType(@Param("keyword") String keyword,

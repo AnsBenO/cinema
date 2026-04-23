@@ -5,15 +5,16 @@ spring:
         ansi:
             enabled: always
     datasource:
-        url: jdbc:h2:mem:filmsDb
-        driverClassName: org.h2.Driver
-        username: sa
-        password: ""
+        url: jdbc:postgresql://localhost:5435/cinema_dev
+        driverClassName: org.postgresql.Driver
+        username: dev
+        password: devpass
     jpa:
         show-sql: true
         properties:
             hibernate:
                 format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
         hibernate:
             ddl-auto: create-drop
         open-in-view: true
