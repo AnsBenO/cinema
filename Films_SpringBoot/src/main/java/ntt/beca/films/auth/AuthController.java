@@ -81,11 +81,8 @@ class AuthController {
 
       private boolean isUserAuthenticated() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            log.info("Authentication {}", authentication.getName());
-            boolean isAuthenticated = (authentication != null
+            return (authentication != null
                         && !(authentication instanceof AnonymousAuthenticationToken));
-            log.info("Is user authenticated {}, name :{}", isAuthenticated, authentication.getName());
-            return isAuthenticated;
       }
 
 }

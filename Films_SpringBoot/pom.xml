@@ -10,10 +10,10 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>ntt.beca</groupId>
-	<artifactId>films-backend</artifactId>
+	<artifactId>Films_SpringBoot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>films</name>
+	<name>Films_SpringBoot</name>
 	<description>Film project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -29,7 +29,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 

@@ -26,7 +26,7 @@ public class GenreController {
             @RequestParam(required = false, defaultValue = "") String genre,
             HttpServletRequest request,
             Model model) {
-        PagedResultDto<Genre> genres = genreService.getAll(page, keyword, genre);
+        PagedResultDto<GenreDto> genres = genreService.getAll(page, keyword, genre);
 
         model.addAttribute("genres", genres);
         model.addAttribute("keyword", keyword);
@@ -44,14 +44,14 @@ public class GenreController {
     // Show form to add new genre
     @GetMapping("/add")
     public String showAddGenreForm(Model model) {
-        Genre genre = new Genre();
-        model.addAttribute("genre", genre);
+        GenreDto genreDto = new GenreDto();
+        model.addAttribute("genre", genreDto);
         return "views/genres/add-genre"; // Path to the HTML form for adding genre
     }
 
     // Create new genre
     @PostMapping
-    public String createGenre(@ModelAttribute Genre genre, RedirectAttributes redirectAttributes) {
+    public String createGenre(@ModelAttribute GenreDto genre, RedirectAttributes redirectAttributes) {
         genreService.save(genre);
         redirectAttributes.addFlashAttribute("message", "Genre added successfully!");
         redirectAttributes.addFlashAttribute("status", true);
@@ -75,8 +75,8 @@ public class GenreController {
     @GetMapping("/edit/{id}")
     public String showEditGenreForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Genre genre = genreService.getOne(id);
-            model.addAttribute("genre", genre);
+            GenreDto genreDto = genreService.getOne(id);
+            model.addAttribute("genre", genreDto);
             return "views/genres/edit-genre"; // Path to the HTML form for editing genre
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Genre not found.");
@@ -87,11 +87,11 @@ public class GenreController {
 
     // Update genre information
     @PostMapping("/edit/{id}")
-    public String updateGenre(@PathVariable Long id, @ModelAttribute Genre genre,
+    public String updateGenre(@PathVariable Long id, @ModelAttribute GenreDto genreDto,
             RedirectAttributes redirectAttributes) {
         try {
-            Genre existingGenre = genreService.getOne(id);
-            existingGenre.setLabel(genre.getLabel());
+            GenreDto existingGenre = genreService.getOne(id);
+            existingGenre.setLabel(genreDto.getLabel());
             genreService.save(existingGenre);
             redirectAttributes.addFlashAttribute("message", "Genre updated successfully!");
             redirectAttributes.addFlashAttribute("status", true);

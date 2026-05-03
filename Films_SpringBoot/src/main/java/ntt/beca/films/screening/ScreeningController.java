@@ -12,8 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ntt.beca.films.film.Film;
-import ntt.beca.films.hall.Hall;
+import ntt.beca.films.film.FilmDto;
+import ntt.beca.films.hall.HallDto;
 import ntt.beca.films.film.FilmService;
 import ntt.beca.films.hall.HallService;
 import ntt.beca.films.shared.service.PagedResultDto;
@@ -40,15 +40,16 @@ public class ScreeningController {
         int pageNumber = Math.max(0, page - 1); // Convert to 0-based index
 
         // Fetch paginated screenings
-        PagedResultDto<Screening> screenings = screeningService.getAllByDate(keyword, date, hallNumber, pageNumber);
+        PagedResultDto<ScreeningDto> screeningDtos = screeningService.getAllByDate(keyword, date, hallNumber,
+                pageNumber);
 
         // Fetch halls for the dropdown
-        List<Hall> halls = hallService.getAllNoPagination();
+        List<HallDto> hallDtos = hallService.getAllNoPagination();
 
         // Add attributes for rendering
-        model.addAttribute("halls", halls);
+        model.addAttribute("halls", hallDtos);
         model.addAttribute("hallNumber", hallNumber);
-        model.addAttribute("screenings", screenings);
+        model.addAttribute("screenings", screeningDtos);
         model.addAttribute("keyword", keyword);
         model.addAttribute("date", date);
 
@@ -65,19 +66,19 @@ public class ScreeningController {
     // Show form to add new screening
     @GetMapping("/add")
     public String showAddScreeningForm(Model model) {
-        List<Hall> halls = hallService.getAllNoPagination();
-        List<Film> films = filmService.getAllNoPagination();
-        Screening screening = new Screening();
-        model.addAttribute("halls", halls);
-        model.addAttribute("films", films);
-        model.addAttribute("screening", screening);
+        List<HallDto> hallDtos = hallService.getAllNoPagination();
+        List<FilmDto> filmDtos = filmService.getAllNoPagination();
+        ScreeningDto screeningDto = new ScreeningDto();
+        model.addAttribute("halls", hallDtos);
+        model.addAttribute("films", filmDtos);
+        model.addAttribute("screening", screeningDto);
         return "views/screenings/add-screening";
     }
 
     // Create new screening
     @PostMapping
-    public String createScreening(@ModelAttribute Screening screening) {
-        screeningService.save(screening);
+    public String createScreening(@ModelAttribute ScreeningDto screeningDto) {
+        screeningService.save(screeningDto);
         return "redirect:/screenings";
     }
 
@@ -98,12 +99,12 @@ public class ScreeningController {
     @GetMapping("/edit/{id}")
     public String showEditScreeningForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            List<Hall> halls = hallService.getAllNoPagination();
-            List<Film> films = filmService.getAllNoPagination();
-            Screening screening = screeningService.getOne(id);
+            List<HallDto> halls = hallService.getAllNoPagination();
+            List<FilmDto> films = filmService.getAllNoPagination();
+            ScreeningDto screeningDto = screeningService.getOne(id);
             model.addAttribute("halls", halls);
             model.addAttribute("films", films);
-            model.addAttribute("screening", screening);
+            model.addAttribute("screening", screeningDto);
             return "views/screenings/edit-screening";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Screening not found.");
@@ -114,18 +115,18 @@ public class ScreeningController {
 
     @PostMapping("/edit/{id}")
     public String updateScreening(@PathVariable Long id,
-            @ModelAttribute Screening screening,
+            @ModelAttribute ScreeningDto screeningDto,
             RedirectAttributes redirectAttributes) {
         try {
-            Screening existingScreening = screeningService.getOne(id);
+            ScreeningDto existingScreening = screeningService.getOne(id);
             log.info("Before Update: {}", existingScreening);
-            existingScreening.setFilm(screening.getFilm());
-            existingScreening.setStartTime(screening.getStartTime());
-            existingScreening.setEndTime(screening.getEndTime());
-            Hall hall = screening.getHall();
-            existingScreening.setHall(hall);
-            Film film = screening.getFilm();
-            existingScreening.setFilm(film);
+            existingScreening.setFilm(screeningDto.getFilm());
+            existingScreening.setStartTime(screeningDto.getStartTime());
+            existingScreening.setEndTime(screeningDto.getEndTime());
+            HallDto hallDto = screeningDto.getHall();
+            existingScreening.setHall(hallDto);
+            FilmDto filmDto = screeningDto.getFilm();
+            existingScreening.setFilm(filmDto);
             log.info("After Update: {}", existingScreening);
             screeningService.save(existingScreening);
             redirectAttributes.addFlashAttribute("message", "Screening updated successfully!");
@@ -150,9 +151,9 @@ public class ScreeningController {
         // Re-fetch the screenings for the current page
         int pageNumber = Math.max(0, page - 1); // Convert to 0-based index
 
-        PagedResultDto<Screening> screenings = screeningService.getAllByDate(null, null, pageNumber, pageNumber);
+        PagedResultDto<ScreeningDto> screeningDtos = screeningService.getAllByDate(null, null, pageNumber, pageNumber);
 
-        model.addAttribute("screenings", screenings);
+        model.addAttribute("screenings", screeningDtos);
 
         return "views/screenings/list-screenings :: screenings-table";
 

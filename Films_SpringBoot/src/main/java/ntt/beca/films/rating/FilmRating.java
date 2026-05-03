@@ -6,15 +6,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ntt.beca.films.shared.base.AbstractEntity;
 import ntt.beca.films.user.UserEntity;
 import ntt.beca.films.film.Film;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,11 +24,11 @@ import ntt.beca.films.film.Film;
 public class FilmRating extends AbstractEntity {
 
       @ManyToOne
-      @JoinColumn(name = "customer_id",nullable = false)
+      @JoinColumn(name = "customer_id", nullable = false)
       private UserEntity customer;
 
       @ManyToOne
-      @JoinColumn(name = "film_id",nullable = false)
+      @JoinColumn(name = "film_id", nullable = false)
       private Film film;
 
       private int score;

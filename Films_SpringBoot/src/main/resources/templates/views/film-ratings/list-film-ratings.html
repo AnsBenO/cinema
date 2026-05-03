@@ -37,7 +37,7 @@
                     </button>
                 </form>
 
-                
+
                 <!-- Pagination Controls -->
                 <a th:if="${filmRatings.hasPrevious}"
                     th:hx-get="'/film-ratings?page=' + ${filmRatings.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
@@ -66,9 +66,9 @@
                 <tbody>
                     <tr th:each="filmRating : ${filmRatings.data}" class="border-b hover:bg-gray-100">
                         <td class="py-3 px-4" th:text="${filmRating.id}"></td>
-                        <td class="py-3 px-4" th:text="${filmRating.film.title}"></td>
+                        <td class="py-3 px-4" th:text="${filmRating.film}"></td>
                         <td class="py-3 px-4" th:text="${filmRating.score}"></td>
-                        <td class="py-3 px-4" th:text="${filmRating.customer.username}"></td>
+                        <td class="py-3 px-4" th:text="${filmRating.user.username}"></td>
                     </tr>
                 </tbody>
             </table>

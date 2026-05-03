@@ -2,8 +2,10 @@ package ntt.beca.films.user;
 
 import org.springframework.stereotype.Component;
 
+import ntt.beca.films.shared.base.BaseMapper;
+
 @Component
-public class UserMapper {
+public class UserMapper implements BaseMapper<UserEntity, UserDto> {
 
       public UserDto toDto(UserEntity entity) {
             return UserDto.builder()

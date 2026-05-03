@@ -13,9 +13,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ntt.beca.films.shared.base.AbstractEntity;
 import ntt.beca.films.person.Person;
 
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

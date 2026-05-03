@@ -63,11 +63,16 @@ public class ApiFilmRatingController {
                               .score(rating.score())
                               .build();
 
-                  // Persist the rating
-                  filmRatingRepository.save(filmRating);
+                  if (filmRating != null) {
+                        // Persist the rating
+                        filmRatingRepository.save(filmRating);
+                        response.put("message", "Rating submitted successfully.");
+                        return ResponseEntity.ok(response);
+                  }
 
-                  response.put("message", "Rating submitted successfully.");
-                  return ResponseEntity.ok(response);
+                  response.put("message", "Could not submit rating.");
+                  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
             } catch (Exception e) {
                   response.put("message", "Could not submit rating: " + e.getMessage());
                   return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

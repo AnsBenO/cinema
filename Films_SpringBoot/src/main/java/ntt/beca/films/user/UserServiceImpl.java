@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.security.Role;
 import ntt.beca.films.shared.service.PagedResultDto;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
       }
 
       @Override
-      public UserDto getOne(Long id) {
+      public UserDto getOne(@NonNull Long id) {
             UserEntity userEntity = userRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("User not found"));
             return userMapper.toDto(userEntity);
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
       }
 
       @Override
-      public boolean delete(Long id) {
+      public boolean delete(@NonNull Long id) {
             if (userRepository.existsById(id)) {
                   userRepository.deleteById(id);
                   return true;

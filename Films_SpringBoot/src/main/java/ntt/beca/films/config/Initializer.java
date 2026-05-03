@@ -36,6 +36,7 @@ import ntt.beca.films.person.PersonType;
 import ntt.beca.films.screening.ScreeningRepository;
 import ntt.beca.films.user.UserRepository;
 
+@SuppressWarnings("all")
 @Slf4j
 @RequiredArgsConstructor
 @Component

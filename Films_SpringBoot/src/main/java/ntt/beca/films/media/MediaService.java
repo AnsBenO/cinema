@@ -4,34 +4,40 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import ntt.beca.films.shared.exception.ResourceNotFoundException;
 import ntt.beca.films.shared.service.CrudService;
 import ntt.beca.films.shared.service.PagedResultDto;
 
+@RequiredArgsConstructor
 @Service
-public class MediaService implements CrudService<Media, Long> {
+public class MediaService implements CrudService<MediaDto, Long> {
 
-	private MediaRepository mediaRepository;
+	private final MediaMapper mediaMapper;
 
-	// constructor and repository injection
-	public MediaService(MediaRepository mediaRepository) {
-		this.mediaRepository = mediaRepository;
-	}
+	private final MediaRepository mediaRepository;
 
 	// saving method
 	@Override
-	public void save(Media t) {
-		mediaRepository.save(t);
+	public void save(@NonNull MediaDto dto) {
+		Media media = mediaMapper.toEntity(dto);
+		if (media != null) {
+			mediaRepository.save(media);
+		}
 	}
 
 	// getting one Media by Id
 	@Override
-	public Media getOne(Long id) {
-		return mediaRepository.findById(id).get();
+	public MediaDto getOne(@NonNull Long id) {
+		Media media = mediaRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Media not found"));
+		return mediaMapper.toDto(media);
 	}
 
 	// deleting one Media by Id
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(@NonNull Long id) {
 		if (mediaRepository.existsById(id)) {
 			mediaRepository.deleteById(id);
 			return true;
@@ -41,15 +47,16 @@ public class MediaService implements CrudService<Media, Long> {
 
 	// getting all the medias of films using pagination
 	@Override
-	public PagedResultDto<Media> getAll(int pageNumber, String keyword, String genre) {
-
+	public PagedResultDto<MediaDto> getAll(int pageNumber, String keyword, String genre) {
+		// TODO
 		return null;
-
 	}
 
-	public List<Media> findMediaOfFilms(Long id) {
+	public List<MediaDto> findMediaOfFilms(Long id) {
 		List<Media> medias = mediaRepository.findMediasOfFilms(id);
-		return medias;
+		return medias.stream()
+				.map(mediaMapper::toDto)
+				.toList();
 	}
 
 }

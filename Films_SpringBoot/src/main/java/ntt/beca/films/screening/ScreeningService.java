@@ -13,36 +13,44 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import ntt.beca.films.film.Film;
 import ntt.beca.films.hall.Hall;
+import ntt.beca.films.shared.exception.ResourceNotFoundException;
 import ntt.beca.films.shared.service.CrudService;
 import ntt.beca.films.shared.service.PagedResultDto;
 
+@RequiredArgsConstructor
 @Service
-public class ScreeningService implements CrudService<Screening, Long> {
+public class ScreeningService implements CrudService<ScreeningDto, Long> {
 
-	private ScreeningRepository screeningRepository;
+	private final ScreeningRepository screeningRepository;
 
-	// constructor and repository injection
-	public ScreeningService(ScreeningRepository screeningRepository) {
-		this.screeningRepository = screeningRepository;
-	}
+	private final ScreeningMapper screeningMapper;
 
 	// saving method
 	@Override
-	public void save(Screening t) {
-		screeningRepository.save(t);
+	public void save(@NonNull ScreeningDto dto) {
+		Screening screening = screeningMapper.toEntity(dto);
+		if (screening == null) {
+			return;
+		}
+		screeningRepository.save(screening);
 	}
 
 	// getting one screening by Id
 	@Override
-	public Screening getOne(Long id) {
-		return screeningRepository.findById(id).get();
+	public ScreeningDto getOne(@NonNull Long id) {
+		Screening screening = screeningRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Screening not found"));
+
+		return screeningMapper.toDto(screening);
 	}
 
 	// deleting one screening by Id
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(@NonNull Long id) {
 		if (screeningRepository.existsById(id)) {
 			screeningRepository.deleteById(id);
 			return true;
@@ -51,13 +59,15 @@ public class ScreeningService implements CrudService<Screening, Long> {
 	}
 
 	@Override
-	public PagedResultDto<Screening> getAll(int pageNumber, String keyword, String genre) {
+	public PagedResultDto<ScreeningDto> getAll(int pageNumber, String keyword, String genre) {
 		Sort sort = Sort.by("id").ascending();
 		pageNumber = pageNumber <= 1 ? 0 : pageNumber - 1;
 		Pageable pageable = PageRequest.of(pageNumber, 5, sort);
 		Page<Screening> screeningPage = genre.isEmpty() ? screeningRepository.findAll(pageable)
 				: screeningRepository.findByFilmTitle(keyword, pageable);
-		return PagedResultDto.<Screening>builder().data(screeningPage.toList())
+
+		return PagedResultDto.<ScreeningDto>builder().data(screeningPage.toList().stream()
+				.map(screeningMapper::toDto).toList())
 				.totalElements(screeningPage.getTotalElements()).pageNumber(pageNumber + 1)
 				.totalPages(screeningPage.getTotalPages()).isFirst(screeningPage.isFirst())
 				.isLast(screeningPage.isLast()).hasNext(screeningPage.hasNext())
@@ -66,7 +76,7 @@ public class ScreeningService implements CrudService<Screening, Long> {
 	}
 
 	// getting all the screenings using pagination
-	public PagedResultDto<Screening> getAllByDate(String filmTitle, LocalDate date, Integer hallNumber,
+	public PagedResultDto<ScreeningDto> getAllByDate(String filmTitle, LocalDate date, Integer hallNumber,
 			int pageNumber) {
 		Pageable pageable = PageRequest.of(pageNumber, 5, Sort.by("startTime").ascending());
 
@@ -99,8 +109,8 @@ public class ScreeningService implements CrudService<Screening, Long> {
 		};
 
 		Page<Screening> screeningPage = screeningRepository.findAll(spec, pageable);
-		return PagedResultDto.<Screening>builder()
-				.data(screeningPage.toList())
+		return PagedResultDto.<ScreeningDto>builder()
+				.data(screeningPage.toList().stream().map(screeningMapper::toDto).toList())
 				.totalElements(screeningPage.getTotalElements())
 				.pageNumber(pageNumber + 1) // Return 1-based page number
 				.totalPages(screeningPage.getTotalPages())

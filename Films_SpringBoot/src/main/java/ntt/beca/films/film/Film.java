@@ -15,10 +15,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ntt.beca.films.shared.base.AbstractEntity;
 import ntt.beca.films.genre.Genre;
 import ntt.beca.films.nationality.Nationality;
@@ -27,7 +27,7 @@ import ntt.beca.films.rating.FilmRating;
 import ntt.beca.films.screening.Screening;
 import ntt.beca.films.media.Media;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

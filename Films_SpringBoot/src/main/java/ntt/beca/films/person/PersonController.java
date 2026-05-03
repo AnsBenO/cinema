@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ntt.beca.films.nationality.Nationality;
+import ntt.beca.films.nationality.NationalityDto;
 import ntt.beca.films.nationality.NationalityService;
 import ntt.beca.films.shared.service.PagedResultDto;
 
@@ -31,9 +31,9 @@ public class PersonController {
             @RequestParam(required = false, defaultValue = "") String personType,
             HttpServletRequest request,
             Model model) {
-        PagedResultDto<Person> persons = personService.getAll(page, keyword, personType);
+        PagedResultDto<PersonDto> personDtos = personService.getAll(page, keyword, personType);
         List<String> types = Arrays.stream(PersonType.values()).map(Enum::name).toList();
-        model.addAttribute("persons", persons);
+        model.addAttribute("persons", personDtos);
         model.addAttribute("keyword", keyword);
         model.addAttribute("genre", genre);
         model.addAttribute("personType", personType);
@@ -45,16 +45,16 @@ public class PersonController {
     @GetMapping("/add")
     public String showAddPersonForm(Model model) {
         List<String> types = Arrays.stream(PersonType.values()).map(Enum::name).toList();
-        List<Nationality> nationalities = nationalityService.getAllNoPagination();
+        List<NationalityDto> nationalityDtos = nationalityService.getAllNoPagination();
 
-        model.addAttribute("person", new Person());
-        model.addAttribute("nationalities", nationalities);
+        model.addAttribute("person", new PersonDto());
+        model.addAttribute("nationalities", nationalityDtos);
         model.addAttribute("types", types);
         return "views/persons/add-person";
     }
 
     @PostMapping
-    public String createPerson(@ModelAttribute Person person, RedirectAttributes redirectAttributes) {
+    public String createPerson(@ModelAttribute PersonDto person, RedirectAttributes redirectAttributes) {
 
         personService.save(person);
         redirectAttributes.addFlashAttribute("message", "Person added successfully!");
@@ -79,13 +79,13 @@ public class PersonController {
     @GetMapping("/edit/{id}")
     public String showEditPersonForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
-            Person person = personService.getOne(id);
+            PersonDto personDto = personService.getOne(id);
             List<String> types = Arrays.stream(PersonType.values()).map(Enum::name).toList();
-            List<Nationality> nationalities = nationalityService.getAllNoPagination();
+            List<NationalityDto> nationalityDtos = nationalityService.getAllNoPagination();
 
-            model.addAttribute("nationalities", nationalities);
+            model.addAttribute("nationalities", nationalityDtos);
             model.addAttribute("types", types);
-            model.addAttribute("person", person);
+            model.addAttribute("person", personDto);
             return "views/persons/edit-person";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Person not found: " + e.getMessage());
@@ -96,10 +96,10 @@ public class PersonController {
 
     @PostMapping("/edit/{id}")
     public String updatePerson(@PathVariable Long id,
-            @ModelAttribute Person person,
+            @ModelAttribute PersonDto person,
             RedirectAttributes redirectAttributes) {
         try {
-            Person existingPerson = personService.getOne(id);
+            PersonDto existingPerson = personService.getOne(id);
             existingPerson.setFirstName(person.getFirstName());
             existingPerson.setLastName(person.getLastName());
             existingPerson.setPhoto(person.getPhoto());

@@ -11,37 +11,48 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.film.Film;
 
 import ntt.beca.films.film.FilmRepository;
+import ntt.beca.films.shared.exception.ResourceNotFoundException;
 import ntt.beca.films.shared.service.CrudService;
 import ntt.beca.films.shared.service.PagedResultDto;
 
 @Service
 @RequiredArgsConstructor
-public class PersonService implements CrudService<Person, Long> {
+public class PersonService implements CrudService<PersonDto, Long> {
 
 	private final PersonRepository personRepository;
 
 	private final FilmRepository filmRepository;
 
+	private final PersonMapper personMapper;
+
 	// saving method
 	@Override
-	public void save(Person t) {
-		personRepository.save(t);
+	public void save(@NonNull PersonDto personDto) {
+		Person person = personMapper.toEntity(personDto);
+		if (person == null) {
+			return;
+		}
+		personRepository.save(person);
 	}
 
 	// getting one person by Id
 	@Override
-	public Person getOne(Long id) {
-		return personRepository.findById(id).get();
+	public PersonDto getOne(@NonNull Long id) {
+		Person person = personRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Person not found"));
+
+		return personMapper.toDto(person);
 	}
 
 	// deleting one person by Id
 	@Override
 	@Transactional
-	public boolean delete(Long personId) {
+	public boolean delete(@NonNull Long personId) {
 		// Fetch the person by ID
 		Person person = personRepository.findById(personId)
 				.orElseThrow(() -> new EntityNotFoundException("Person not found with ID: " + personId));
@@ -73,7 +84,7 @@ public class PersonService implements CrudService<Person, Long> {
 	}
 
 	@Override
-	public PagedResultDto<Person> getAll(int pageNumber, String keyword, String personType) {
+	public PagedResultDto<PersonDto> getAll(int pageNumber, String keyword, String personType) {
 		Sort sort = Sort.by("id").ascending();
 		pageNumber = pageNumber <= 1 ? 0 : pageNumber - 1;
 		Pageable pageable = PageRequest.of(pageNumber, 5, sort);
@@ -86,8 +97,8 @@ public class PersonService implements CrudService<Person, Long> {
 				typeFilter,
 				pageable);
 
-		return PagedResultDto.<Person>builder()
-				.data(personPage.toList())
+		return PagedResultDto.<PersonDto>builder()
+				.data(personPage.toList().stream().map(personMapper::toDto).toList())
 				.totalElements(personPage.getTotalElements())
 				.pageNumber(pageNumber + 1)
 				.totalPages(personPage.getTotalPages())
@@ -98,12 +109,17 @@ public class PersonService implements CrudService<Person, Long> {
 				.build();
 	}
 
-	public List<Person> getAllDirectorsNoPagination() {
-		return personRepository.findByPersonType(PersonType.DIRECTOR);
+	public List<PersonDto> getAllDirectorsNoPagination() {
+		List<Person> person = personRepository.findByPersonType(PersonType.DIRECTOR);
+
+		return person.stream().map(personMapper::toDto).toList();
+
 	}
 
-	public List<Person> getAllActorsNoPagination() {
-		return personRepository.findByPersonType(PersonType.ACTOR);
+	public List<PersonDto> getAllActorsNoPagination() {
+		List<Person> persons = personRepository.findByPersonType(PersonType.ACTOR);
+
+		return persons.stream().map(personMapper::toDto).toList();
 	}
 
 }

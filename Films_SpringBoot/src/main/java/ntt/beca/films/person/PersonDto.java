@@ -9,12 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ntt.beca.films.nationality.NationalityDto;
+import ntt.beca.films.shared.base.BaseDto;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDto {
+public class PersonDto extends BaseDto {
       private Long id;
       private String firstName;
       private String lastName;

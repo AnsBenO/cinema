@@ -24,7 +24,7 @@ public class FilmRatingController {
 			@RequestParam(required = false, defaultValue = "") String genre,
 			HttpServletRequest request,
 			Model model) {
-		PagedResultDto<FilmRating> filmRatings = filmRatingService.getAll(page, keyword, genre);
+		PagedResultDto<RatingDto> filmRatings = filmRatingService.getAll(page, keyword, genre);
 
 		model.addAttribute("filmRatings", filmRatings);
 		model.addAttribute("keyword", keyword);

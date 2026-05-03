@@ -12,15 +12,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ntt.beca.films.shared.base.AbstractEntity;
 import ntt.beca.films.film.Film;
 import ntt.beca.films.hall.Hall;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -38,11 +38,11 @@ public class Screening extends AbstractEntity {
       private LocalDateTime endTime;
 
       @ManyToOne(fetch = FetchType.EAGER)
-      @JoinColumn(name = "film_id",nullable = false)
+      @JoinColumn(name = "film_id", nullable = false)
       private Film film;
 
       @ManyToOne(fetch = FetchType.EAGER)
-      @JoinColumn(name = "hall_id",nullable = false)
+      @JoinColumn(name = "hall_id", nullable = false)
 
       private Hall hall;
 

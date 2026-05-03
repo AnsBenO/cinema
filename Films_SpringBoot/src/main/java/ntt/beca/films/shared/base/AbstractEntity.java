@@ -10,8 +10,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
+@SuperBuilder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AbstractEntity {
 
       @Id
@@ -26,47 +34,18 @@ public class AbstractEntity {
       @Column(nullable = false)
       private LocalDateTime updatedAt;
 
-      public LocalDateTime getCreatedAt() {
-            return createdAt;
-      }
-
-      public void setCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-      }
-
-      public LocalDateTime getUpdatedAt() {
-            return updatedAt;
-      }
-
-      public void setUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-      }
-
-      public Long getId() {
-            return id;
-      }
-
-      public void setId(Long id) {
-            this.id = id;
-      }
-
       @Override
-      public boolean equals(Object obj) {
-            if (this == obj) {
+      public boolean equals(Object o) {
+            if (this == o)
                   return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
+            if (o == null || getClass() != o.getClass())
                   return false;
-            }
-
-            AbstractEntity entity = (AbstractEntity) obj;
-
-            return id.equals(entity.id);
+            AbstractEntity that = (AbstractEntity) o;
+            return this.getId().equals(that.getId());
       }
 
       @Override
       public int hashCode() {
-            return id.hashCode();
+            return this.getId().hashCode();
       }
-
 }

@@ -10,29 +10,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.service.PagedResultDto;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/halls")
 public class HallController {
 
-	private HallService hallService;
-
-	public void setCategorieSeviceImpl(HallService hallService) {
-		this.hallService = hallService;
-	}
-
-	public HallController(HallService hallService) {
-		this.hallService = hallService;
-	}
+	private final HallService hallService;
 
 	@GetMapping("")
 	public String getAllHalls(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "") String keyword,
 			HttpServletRequest request, Model model) {
 
-		PagedResultDto<Hall> halls = hallService.getAll(page, keyword);
-		model.addAttribute("halls", halls);
+		PagedResultDto<HallDto> hallDtos = hallService.getAll(page, keyword);
+		model.addAttribute("halls", hallDtos);
 		model.addAttribute("keyword", keyword);
 		boolean isHtmxRequest = request.getHeader("HX-Request") != null;
 		// Return partial HTML if it's an HTMX request
@@ -44,7 +38,7 @@ public class HallController {
 
 	@GetMapping("/edit/{id}")
 	public String getHallById(@PathVariable Long id, Model model) {
-		Hall hall = hallService.getOne(id);
+		HallDto hall = hallService.getOne(id);
 		model.addAttribute("hall", hall);
 
 		return "views/halls/edit-hall";
@@ -52,31 +46,31 @@ public class HallController {
 
 	//
 	@GetMapping("/add")
-	public String ashowAddHall(Model model) {
-		Hall hall = new Hall();
-		model.addAttribute("hall", hall);
+	public String showAddHall(Model model) {
+		HallDto hallDto = new HallDto();
+		model.addAttribute("hall", hallDto);
 
 		return "views/halls/add-hall";
 	}
 
 	@PostMapping("/save")
-	public String createHall(@ModelAttribute Hall hall) {
-		if (hall.getId() != null) {
-			Hall existingHall = hallService.getOne(hall.getId());
+	public String createHall(@ModelAttribute HallDto hallDto) {
+		if (hallDto.getId() != null) {
+			HallDto existingHall = hallService.getOne(hallDto.getId());
 			if (existingHall != null) {
 
-				existingHall.setNumber(hall.getNumber());
-				existingHall.setCapacity(hall.getCapacity());
+				existingHall.setNumber(hallDto.getNumber());
+				existingHall.setCapacity(hallDto.getCapacity());
 				hallService.save(existingHall);
 			}
 		} else {
-			hallService.save(hall);
+			hallService.save(hallDto);
 		}
 		return "redirect:/halls";
 	}
 
 	@GetMapping("/delete/{id}")
-	public String deletHall(@PathVariable Long id, Model model) {
+	public String deleteHall(@PathVariable Long id, Model model) {
 
 		hallService.delete(id);
 		return "redirect:/halls";

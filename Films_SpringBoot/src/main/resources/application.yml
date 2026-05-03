@@ -50,9 +50,5 @@ springdoc:
     swagger-ui:
         operationsSorter: method
 
-logging:
-    level:
-        org.springframework.security: DEBUG
-
 image:
     directory: /images/

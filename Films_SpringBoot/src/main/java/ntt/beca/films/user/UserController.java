@@ -40,7 +40,7 @@ public class UserController {
 
       @GetMapping("/add")
       public String showAddUserForm(Model model) {
-            model.addAttribute("user", new UserEntity());
+            model.addAttribute("user", new UserDto());
             model.addAttribute("roles", Role.values());
             return "views/users/add-user";
       }

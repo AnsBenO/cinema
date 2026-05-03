@@ -6,34 +6,28 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import ntt.beca.films.shared.service.CrudService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import ntt.beca.films.shared.exception.ResourceNotFoundException;
 import ntt.beca.films.shared.service.PagedResultDto;
 
+@RequiredArgsConstructor
 @Service
-public class FilmRatingService implements CrudService<FilmRating, Long> {
+public class FilmRatingService {
 
-	private FilmRatingRepository filmRatingRepository;
+	private final FilmRatingRepository filmRatingRepository;
+	private final RatingMapper ratingMapper;
 
-	// constructor and repository injection
-	public FilmRatingService(FilmRatingRepository filmRatingRepository) {
-		this.filmRatingRepository = filmRatingRepository;
-	}
+	public RatingDto getOne(@NonNull Long id) {
+		FilmRating rating = filmRatingRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Rating not found"));
 
-	// saving method
-	@Override
-	public void save(FilmRating t) {
-		filmRatingRepository.save(t);
-	}
-
-	// getting one film rating by Id
-	@Override
-	public FilmRating getOne(Long id) {
-		return filmRatingRepository.findById(id).get();
+		return ratingMapper.toDto(rating);
 	}
 
 	// deleting one film rating by id
-	@Override
-	public boolean delete(Long id) {
+
+	public boolean delete(@NonNull Long id) {
 		if (filmRatingRepository.existsById(id)) {
 			filmRatingRepository.deleteById(id);
 			return true;
@@ -42,14 +36,15 @@ public class FilmRatingService implements CrudService<FilmRating, Long> {
 	}
 
 	// getting all the films ratings using pagination
-	@Override
-	public PagedResultDto<FilmRating> getAll(int pageNumber, String keyword, String genre) {
+
+	public PagedResultDto<RatingDto> getAll(int pageNumber, String keyword, String genre) {
 		Sort sort = Sort.by("id").ascending();
 		pageNumber = pageNumber <= 1 ? 0 : pageNumber - 1;
 		Pageable pageable = PageRequest.of(pageNumber, 5, sort);
 		Page<FilmRating> filmRatingPage = genre.isEmpty() ? filmRatingRepository.findAll(pageable)
 				: filmRatingRepository.findByFilmTitle(keyword, pageable);
-		return PagedResultDto.<FilmRating>builder().data(filmRatingPage.toList())
+		return PagedResultDto.<RatingDto>builder().data(filmRatingPage.toList()
+				.stream().map(ratingMapper::toDto).toList())
 				.totalElements(filmRatingPage.getTotalElements()).pageNumber(pageNumber + 1)
 				.totalPages(filmRatingPage.getTotalPages()).isFirst(filmRatingPage.isFirst())
 				.isLast(filmRatingPage.isLast()).hasNext(filmRatingPage.hasNext())

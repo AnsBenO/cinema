@@ -6,35 +6,44 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Sort;
+
+import ntt.beca.films.shared.exception.ResourceNotFoundException;
 import ntt.beca.films.shared.service.CrudService;
 import ntt.beca.films.shared.service.PagedResultDto;
 
+@RequiredArgsConstructor
 @Service
-public class FilmService implements CrudService<Film, Long> {
+public class FilmService implements CrudService<FilmDto, Long> {
 
-	private FilmRepository filmRepository;
-
-	// constructor and repository injection
-	public FilmService(FilmRepository filmRepository) {
-		this.filmRepository = filmRepository;
-	}
+	private final FilmMapper filmMapper;
+	private final FilmRepository filmRepository;
 
 	// saving method
 	@Override
-	public void save(Film film) {
+	public void save(@NonNull FilmDto filmDto) {
+		Film film = filmMapper.toEntity(filmDto);
+		if (film == null) {
+			return;
+		}
 		filmRepository.save(film);
 	}
 
 	// getting one film by Id
 	@Override
-	public Film getOne(Long id) {
-		return filmRepository.findById(id).get();
+	public FilmDto getOne(@NonNull Long id) {
+		Film film = filmRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Film not found"));
+
+		return filmMapper.toDto(film);
 	}
 
 	// deleting one film by Id
 	@Override
-	public boolean delete(Long id) {
+	public boolean delete(@NonNull Long id) {
 		if (filmRepository.existsById(id)) {
 			filmRepository.deleteById(id);
 			return true;
@@ -47,7 +56,7 @@ public class FilmService implements CrudService<Film, Long> {
 	}
 
 	@Override
-	public PagedResultDto<Film> getAll(int pageNumber, String keyword, String genre) {
+	public PagedResultDto<FilmDto> getAll(int pageNumber, String keyword, String genre) {
 		Sort sort = Sort.by("id").ascending();
 		pageNumber = pageNumber <= 1 ? 0 : pageNumber - 1;
 		Pageable pageable = PageRequest.of(pageNumber, 5, sort);
@@ -58,8 +67,8 @@ public class FilmService implements CrudService<Film, Long> {
 
 		Page<Film> filmPage = filmRepository.findByTitleAndGenre(normalizedKeyword, normalizedGenre, pageable);
 
-		return PagedResultDto.<Film>builder()
-				.data(filmPage.toList())
+		return PagedResultDto.<FilmDto>builder()
+				.data(filmPage.toList().stream().map(filmMapper::toDto).toList())
 				.totalElements(filmPage.getTotalElements())
 				.pageNumber(pageNumber + 1)
 				.totalPages(filmPage.getTotalPages())
@@ -70,7 +79,8 @@ public class FilmService implements CrudService<Film, Long> {
 				.build();
 	}
 
-	public List<Film> getAllNoPagination() {
-		return filmRepository.findAll();
+	public List<FilmDto> getAllNoPagination() {
+		List<Film> films = filmRepository.findAll();
+		return films.stream().map(filmMapper::toDto).toList();
 	}
 }

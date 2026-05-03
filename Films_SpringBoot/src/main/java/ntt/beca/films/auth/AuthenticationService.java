@@ -30,7 +30,8 @@ public class AuthenticationService {
 
             authenticationManager.authenticate(token);
 
-            UserEntity user = userRepository.findByEmail(request.email()).get();
+            UserEntity user = userRepository.findByEmail(request.email()).orElseThrow(
+                        () -> new UsernameNotFoundException("User not found"));
             String jwt = jwtService.generateToken(user, generateExtraClaims(user));
 
             return new AuthenticationResponse(jwt, new CurrentUserDto(user.getUsername(), user.getEmail()));
@@ -51,9 +52,12 @@ public class AuthenticationService {
                         .password(encoder.encode(request.password()))
                         .role(Role.CUSTOMER)
                         .build();
-            userRepository.save(user);
-            String token = jwtService.generateToken(user, generateExtraClaims(user));
-            return new AuthenticationResponse(token, new CurrentUserDto(user.getUsername(), user.getEmail()));
+            if (user != null) {
+                  userRepository.save(user);
+                  String token = jwtService.generateToken(user, generateExtraClaims(user));
+                  return new AuthenticationResponse(token, new CurrentUserDto(user.getUsername(), user.getEmail()));
+            }
+            return null;
 
       }
 

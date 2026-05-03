@@ -14,9 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ntt.beca.films.shared.base.AbstractEntity;
 import ntt.beca.films.screening.Screening;
 
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -30,7 +32,7 @@ public class Hall extends AbstractEntity {
       @Column(nullable = false, length = 40)
       private int capacity;
 
-      @OneToMany(mappedBy = "hall",cascade = CascadeType.REMOVE)
+      @OneToMany(mappedBy = "hall", cascade = CascadeType.REMOVE)
       @JsonIgnore
       private List<Screening> screenings;
 }
