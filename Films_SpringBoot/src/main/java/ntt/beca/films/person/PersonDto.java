@@ -1,9 +1,9 @@
 package ntt.beca.films.person;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +24,8 @@ public class PersonDto extends BaseDto {
       private LocalDate birthDate;
       private PersonType personType;
       private NationalityDto nationality;
+
+      private LocalDateTime createdAt;
+
+      private LocalDateTime updatedAt;
 }

@@ -3,13 +3,17 @@ package ntt.beca.films.person;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import ntt.beca.films.nationality.Nationality;
 import ntt.beca.films.nationality.NationalityMapper;
+import ntt.beca.films.nationality.NationalityRepository;
 
 @Component
 @RequiredArgsConstructor
 public class PersonMapper {
 
       private final NationalityMapper nationalityMapper;
+
+      private final NationalityRepository nationalityRepository;
 
       public PersonDto toDto(Person person) {
             PersonDto personDto = new PersonDto();
@@ -19,7 +23,17 @@ public class PersonMapper {
             personDto.setPhoto(person.getPhoto());
             personDto.setBirthDate(person.getBirthDate());
             personDto.setPersonType(person.getPersonType());
-            personDto.setNationality(nationalityMapper.toDto(person.getNationality()));
+            Long nationalityId = person.getNationality().getId();
+            if (nationalityId == null) {
+                  return personDto;
+            }
+            Nationality nationality = nationalityRepository
+                        .findById(nationalityId)
+                        .orElseThrow(() -> new RuntimeException("Nationality not found"));
+
+            personDto.setNationality(nationalityMapper.toDto(nationality));
+            personDto.setCreatedAt(person.getCreatedAt());
+            personDto.setUpdatedAt(person.getUpdatedAt());
             return personDto;
       }
 
@@ -31,7 +45,16 @@ public class PersonMapper {
             person.setPhoto(personDto.getPhoto());
             person.setBirthDate(personDto.getBirthDate());
             person.setPersonType(personDto.getPersonType());
-            person.setNationality(nationalityMapper.toEntity(personDto.getNationality()));
+            Long nationalityId = personDto.getNationality().getId();
+            if (nationalityId == null) {
+                  return person;
+            }
+            Nationality nationality = nationalityRepository
+                        .findById(nationalityId)
+                        .orElseThrow(() -> new RuntimeException("Nationality not found"));
+            person.setNationality(nationality);
+            person.setCreatedAt(personDto.getCreatedAt());
+            person.setUpdatedAt(personDto.getUpdatedAt());
             return person;
       }
 
