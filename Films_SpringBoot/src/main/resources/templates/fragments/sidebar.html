@@ -1,0 +1,83 @@
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 z-30 bg-gray-100 hidden md:block border-r transition-all duration-300 relative">
+      <button id="toggleSidebar"
+            class="absolute top-2 -right-3 px-2 bg-gray-200 rounded-full hover:bg-gray-300 shadow-md">
+            <i id="toggleIcon" class="fa-solid fa-angle-left"></i>
+      </button>
+      <nav class="w-full h-full py-7 flex flex-col justify-between" aria-label="Side navigation menu">
+            <div class="">
+
+                  <!-- Logo -->
+                  <div class="flex items-center gap-3 py-3 px-4 text-gray-800 text-sm mb-5">
+                        <i class="fa-solid fa-film text-[#1e3a8a] text-2xl"></i>
+                        <span class="sidebar-label font-bold text-2xl">Cinema</span>
+                  </div>
+
+                  <!-- Dashboard -->
+                  <a th:href="@{/dashboard}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span class="sidebar-label">Dashboard</span>
+                  </a>
+
+                  <!-- Users -->
+                  <a th:href="@{/users}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="sidebar-label">Users</span>
+                  </a>
+                  <a th:href="@{/persons}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+
+                        <i class="fa-solid fa-users"></i>
+                        <span class="sidebar-label">Persons</span>
+                  </a>
+
+                  <!-- Films -->
+                  <a th:href="@{/films}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-film"></i>
+                        <span class="sidebar-label">Films</span>
+                  </a>
+
+                  <!-- Screenings -->
+                  <a th:href="@{/screenings}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-calendar"></i>
+                        <span class="sidebar-label">Screenings</span>
+                  </a>
+
+                  <!-- Genres -->
+                  <a th:href="@{/genres}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-tags"></i>
+                        <span class="sidebar-label">Genres</span>
+                  </a>
+
+                  <!-- Nationalities -->
+                  <a th:href="@{/nationalities}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-flag"></i>
+                        <span class="sidebar-label">Nationalities</span>
+                  </a>
+
+                  <!-- Halls -->
+                  <a th:href="@{/halls}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-building"></i>
+                        <span class="sidebar-label">Halls</span>
+                  </a>
+
+                  <!-- Film Ratings -->
+                  <a th:href="@{/film-ratings}"
+                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="sidebar-label">Film Ratings</span>
+                  </a>
+            </div>
+
+            <!-- Auth Section -->
+            <div th:replace="~{/fragments/auth-buttons}"></div>
+
+      </nav>
+</aside>

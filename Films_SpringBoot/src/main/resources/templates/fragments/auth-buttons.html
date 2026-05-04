@@ -1,0 +1,24 @@
+<!-- Auth Section (Sidebar) -->
+<div class="mt-6 px-4 space-y-2 border-t pt-4">
+
+      <!-- Not authenticated -->
+      <div sec:authorize="!isAuthenticated()" class="flex flex-col gap-2">
+            <a th:href="@{/login}" class="flex items-center justify-center gap-2 w-full text-sm font-medium py-2 rounded 
+                      bg-[#1e3a8a] text-white hover:bg-blue-900 transition">
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                  <span class="sidebar-label">Login</span>
+            </a>
+      </div>
+
+      <!-- Authenticated -->
+      <div sec:authorize="isAuthenticated()" class="flex flex-col gap-2">
+            <form th:action="@{/logout}" method="post">
+                  <button class="flex items-center justify-center gap-2 w-full text-sm font-medium py-2 rounded 
+                               bg-[#1e3a8a] text-white hover:bg-blue-900 transition">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="sidebar-label">Logout</span>
+                  </button>
+            </form>
+      </div>
+
+</div>

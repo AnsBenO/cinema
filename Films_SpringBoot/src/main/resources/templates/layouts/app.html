@@ -19,91 +19,22 @@
       </title>
 </head>
 
-<body class="font-rubik bg-gray-50 text-gray-800">
+<body class="font-rubik text-gray-800">
       <!-- Container for the layout -->
-      <div class="min-h-screen flex flex-col">
-
-            <div th:replace="~{fragments/navbar}"></div>
-
+      <div class="min-h-screen">
             <!-- Main Layout with Sidebar and Content -->
-            <div class="flex flex-1 mt-16">
+            <div class="flex flex-1 min-h-screen">
                   <!-- Sidebar -->
-                  <aside id="sidebar"
-                        class="w-64 bg-gray-100 hidden md:block border-r transition-all duration-300 relative">
-                        <button id="toggleSidebar"
-                              class="absolute top-2 -right-3 px-2 bg-gray-200 rounded-full hover:bg-gray-300 shadow-md">
-                              <i id="toggleIcon" class="fa-solid fa-angle-left"></i>
-                        </button>
-                        <nav class="w-full h-full py-7" aria-label="Side navigation menu">
-                              <!-- Dashboard -->
-                              <a th:href="@{/dashboard}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                    <span class="sidebar-label">Dashboard</span>
-                              </a>
+                  <div th:replace="~{fragments/sidebar}"></div>
 
-                              <!-- Users -->
-                              <a th:href="@{/users}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-user"></i>
-                                    <span class="sidebar-label">Users</span>
-                              </a>
-                              <a th:href="@{/persons}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                  <!--  Main Content -->
+                  <main class="flex-1 p-6 bg-gradient-to-br from-white to-blue-100">
+                        <div layout:fragment="content">
+                              <!-- Content will be inserted here -->
 
-                                    <i class="fa-solid fa-users"></i>
-                                    <span class="sidebar-label">Persons</span>
-                              </a>
-
-                              <!-- Films -->
-                              <a th:href="@{/films}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-film"></i>
-                                    <span class="sidebar-label">Films</span>
-                              </a>
-
-                              <!-- Screenings -->
-                              <a th:href="@{/screenings}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-calendar"></i>
-                                    <span class="sidebar-label">Screenings</span>
-                              </a>
-
-                              <!-- Genres -->
-                              <a th:href="@{/genres}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-tags"></i>
-                                    <span class="sidebar-label">Genres</span>
-                              </a>
-
-                              <!-- Nationalities -->
-                              <a th:href="@{/nationalities}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-flag"></i>
-                                    <span class="sidebar-label">Nationalities</span>
-                              </a>
-
-                              <!-- Halls -->
-                              <a th:href="@{/halls}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-building"></i>
-                                    <span class="sidebar-label">Halls</span>
-                              </a>
-
-                              <!-- Film Ratings -->
-                              <a th:href="@{/film-ratings}"
-                                    class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
-                                    <i class="fa-solid fa-star"></i>
-                                    <span class="sidebar-label">Film Ratings</span>
-                              </a>
-
-                        </nav>
-                  </aside>
-
-
-                  <main id="mainContent" class="transition-all duration-300">
-                        <!-- Main content here -->
+                        </div>
                   </main>
+
 
                   <script>
                         document.addEventListener('DOMContentLoaded', () => {
@@ -150,14 +81,9 @@
                         }
                   </script>
 
-                  <!--?  Main Content -->
-                  <main layout:fragment="content" class="flex-1 p-6">
 
-                        <!-- ? Placeholder for dynamic Thymeleaf content -->
 
-                  </main>
-
-                  <!--? ERROR MESSAGE BOX -->
+                  <!-- ERROR MESSAGE BOX -->
                   <div th:replace="~{/fragments/error-message :: errorMessageBox(error=${error})}"></div>
 
                   <!-- ? SUCCESS MESSAGE BOX -->

@@ -12,7 +12,7 @@
 </head>
 
 <body>
-      <main layout:fragment="content" class="p-6 flex flex-col gap-6 bg-gray-50 w-full overflow-hidden">
+      <div layout:fragment="content" class="p-3 flex flex-col gap-6 w-full overflow-hidden">
             <div th:fragment="dashboardContent" id="dashboardContent">
 
                   <!-- Dashboard Header -->
@@ -89,20 +89,18 @@
                         </div>
                   </div>
 
-
-
                   <!-- Upcoming Screenings Carousel -->
-                  <div class="p-6">
+                  <div class="p-6 max-w-[1020px] flex flex-col">
                         <h2 class="text-lg font-semibold text-gray-800 mb-4">
                               <i class="fa-solid fa-calendar-alt text-blue-500"></i> Upcoming Screenings
                         </h2>
 
                         <!-- Swiper Container for Films' Images -->
-                        <div class="swiper-container relative">
+                        <div id="upcomingScreeningsCarousel" class="swiper-container relative">
                               <div class="swiper-wrapper mb-4">
                                     <!-- Iterate over screenings and display their images in the slide -->
                                     <div th:each="screening : ${screenings}" class="swiper-slide">
-                                          <div class="bg-white rounded-lg shadow-lg p-4">
+                                          <div class="bg-white rounded-lg shadow-lg p-4 max-w-full">
                                                 <!-- Film Image -->
                                                 <img th:src="@{${screening.film.imageUrl}}" alt="Film Poster"
                                                       class="w-40 h-56 object-cover rounded-lg mb-4 mx-auto" />
@@ -129,8 +127,6 @@
 
 
                   </div>
-
-
             </div>
 
 
@@ -197,7 +193,7 @@
             </script>
 
 
-      </main>
+      </div>
 </body>
 
 </html>
