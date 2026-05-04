@@ -3,7 +3,7 @@ package ntt.beca.films.user;
 import ntt.beca.films.shared.service.PagedResultDto;
 
 public interface UserService {
-      void save(UserDto userDto);
+      void save(RegistrationDto userDto);
 
       UserDto getOne(Long id);
 

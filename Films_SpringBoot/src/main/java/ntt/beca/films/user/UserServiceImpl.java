@@ -2,10 +2,10 @@ package ntt.beca.films.user;
 
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.NonNull;
@@ -19,14 +19,25 @@ public class UserServiceImpl implements UserService {
 
       private final UserRepository userRepository;
       private final UserMapper userMapper;
-      private final PasswordEncoder passwordEncoder;
 
       @Override
-      public void save(UserDto userDto) {
-            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            UserEntity userEntity = userMapper.toEntity(userDto);
+      public void save(RegistrationDto registrationDto) {
+            UserEntity userEntity = userMapper.toEntity(registrationDto);
             userEntity.setRole(Role.ADMIN);
             userRepository.save(userEntity);
+      }
+
+      public void update(UserDto userDto) {
+            Long userId = userDto.getId();
+            if (userId == null) {
+                  throw new IllegalArgumentException("User ID is required");
+            }
+            UserEntity userToUpdate = userRepository.findById(userId).orElseThrow(
+                        () -> new IllegalArgumentException("User not found"));
+            userToUpdate.setUsername(userDto.getUsername());
+            userToUpdate.setEmail(userDto.getEmail());
+            userToUpdate.setRole(userDto.getRole());
+            userRepository.save(userToUpdate);
       }
 
       @Override

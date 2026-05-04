@@ -40,15 +40,15 @@ public class UserController {
 
       @GetMapping("/add")
       public String showAddUserForm(Model model) {
-            model.addAttribute("user", new UserDto());
+            model.addAttribute("user", new RegistrationDto());
             model.addAttribute("roles", Role.values());
             return "views/users/add-user";
       }
 
       @PostMapping
-      public String createUser(@ModelAttribute UserDto user, RedirectAttributes redirectAttributes) {
+      public String createUser(@ModelAttribute RegistrationDto registrationDto, RedirectAttributes redirectAttributes) {
             try {
-                  userService.save(user);
+                  userService.save(registrationDto);
                   redirectAttributes.addFlashAttribute("message", "User added successfully!");
                   redirectAttributes.addFlashAttribute("status", true);
             } catch (Exception e) {
@@ -60,15 +60,10 @@ public class UserController {
 
       @GetMapping("/delete/{id}")
       public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-            // try {
             userService.delete(id);
             redirectAttributes.addFlashAttribute("message", "User deleted successfully!");
             redirectAttributes.addFlashAttribute("status", true);
-            // } catch (Exception e) {
-            // redirectAttributes.addFlashAttribute("message", "Failed to delete user: " +
-            // e.getMessage());
-            // redirectAttributes.addFlashAttribute("status", false);
-            // }
+
             return "redirect:/users";
       }
 
@@ -94,9 +89,8 @@ public class UserController {
                   UserDto existingUser = userService.getOne(id);
                   existingUser.setUsername(user.getUsername());
                   existingUser.setEmail(user.getEmail());
-                  existingUser.setPassword(user.getPassword());
                   existingUser.setRole(user.getRole());
-                  userService.save(existingUser);
+                  userService.update(existingUser);
                   redirectAttributes.addFlashAttribute("message", "User updated successfully!");
                   redirectAttributes.addFlashAttribute("status", true);
             } catch (Exception e) {

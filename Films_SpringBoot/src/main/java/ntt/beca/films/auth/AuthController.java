@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ntt.beca.films.user.UserDto;
+import ntt.beca.films.user.RegistrationDto;
 import ntt.beca.films.user.UserService;
 
 @Slf4j
@@ -30,14 +30,14 @@ class AuthController {
             if (isUserAuthenticated()) {
                   return "redirect:/";
             }
-            UserDto user = new UserDto();
+            RegistrationDto user = new RegistrationDto();
             model.addAttribute("user", user);
             return "views/auth/register";
       }
 
       @PostMapping("/register")
       String registerUser(
-                  @Valid @ModelAttribute("user") UserDto user,
+                  @Valid @ModelAttribute("user") RegistrationDto user,
                   BindingResult result) {
             if (isUserAuthenticated()) {
                   return "redirect:/";
