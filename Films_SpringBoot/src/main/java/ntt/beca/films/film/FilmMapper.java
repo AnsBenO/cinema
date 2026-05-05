@@ -16,16 +16,17 @@ public class FilmMapper implements BaseMapper<Film, FilmDto> {
       private final NationalityMapper nationalityMapper;
       private final PersonMapper personMapper;
 
-      public Film toEntity(FilmDto filmRequest) {
+      public Film toEntity(FilmDto dto) {
             return Film.builder()
-                        .id(filmRequest.getId())
-                        .title(filmRequest.getTitle())
-                        .description(filmRequest.getDescription())
-                        .year(filmRequest.getYear())
-                        .duration(filmRequest.getDuration())
-                        .genre(genreMapper.toEntity(filmRequest.getGenre()))
-                        .nationality(nationalityMapper.toEntity(filmRequest.getNationality()))
-                        .director(personMapper.toEntity(filmRequest.getDirector()))
+                        .id(dto.getId())
+                        .title(dto.getTitle())
+                        .description(dto.getDescription())
+                        .imageUrl(dto.getImageUrl())
+                        .year(dto.getYear())
+                        .duration(dto.getDuration())
+                        .genre(genreMapper.toEntity(dto.getGenre()))
+                        .nationality(nationalityMapper.toEntity(dto.getNationality()))
+                        .director(personMapper.toEntity(dto.getDirector()))
                         .build();
       }
 
@@ -34,6 +35,7 @@ public class FilmMapper implements BaseMapper<Film, FilmDto> {
                         .id(film.getId())
                         .title(film.getTitle())
                         .description(film.getDescription())
+                        .imageUrl(film.getImageUrl())
                         .year(film.getYear())
                         .duration(film.getDuration())
                         .genre(genreMapper.toDto(film.getGenre()))
