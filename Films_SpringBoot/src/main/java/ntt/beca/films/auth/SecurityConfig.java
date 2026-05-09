@@ -50,6 +50,9 @@ class SecurityConfig {
                               authConfig.requestMatchers(HttpMethod.POST, "/api/register").permitAll();
                               authConfig.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
                               authConfig.requestMatchers(HttpMethod.POST, "/api/**").authenticated();
+                              authConfig.requestMatchers(HttpMethod.PUT, "/api/**").authenticated();
+                              authConfig.requestMatchers(HttpMethod.DELETE, "/api/**").authenticated();
+                              authConfig.requestMatchers(HttpMethod.PATCH, "/api/**").authenticated();
                               authConfig.anyRequest().denyAll(); // Deny other requests in this chain
                         })
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -114,7 +117,7 @@ class SecurityConfig {
       CorsConfigurationSource corsConfigurationSource() {
             CorsConfiguration configuration = new CorsConfiguration();
             configuration.setAllowedOrigins(List.of(allowedOrigins));
-            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
             configuration.setAllowedHeaders(List.of("*"));
             configuration.setExposedHeaders(List.of("Authorization"));
             configuration.setAllowCredentials(true);
