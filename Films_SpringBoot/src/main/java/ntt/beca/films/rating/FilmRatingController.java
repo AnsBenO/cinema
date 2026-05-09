@@ -21,19 +21,17 @@ public class FilmRatingController {
 	@GetMapping("")
 	public String getAllFilmRatings(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "") String keyword,
-			@RequestParam(required = false, defaultValue = "") String genre,
 			HttpServletRequest request,
 			Model model) {
-		PagedResultDto<RatingDto> filmRatings = filmRatingService.getAll(page, keyword, genre);
+		PagedResultDto<RatingDto> filmRatings = filmRatingService.getAll(page, keyword);
 
 		model.addAttribute("filmRatings", filmRatings);
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("genre", genre);
 
 		boolean isHtmxRequest = request.getHeader("HX-Request") != null;
 
 		if (isHtmxRequest) {
-			return "views/film-ratings/list-film-ratings :: ratings-table";
+			return "views/film-ratings/list-film-ratings :: film-ratings-table";
 		}
 		return "views/film-ratings/list-film-ratings";
 	}

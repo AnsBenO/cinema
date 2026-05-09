@@ -1,35 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/app}">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Screenings</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Screenings</title>
 </head>
 
 <body>
-	<main layout:fragment="content" id="content" class="p-6 w-full"
-		data-location="screenings">
+	<main layout:fragment="content" id="content" class="p-6 w-full" data-location="screenings">
 
 		<!-- Screenings Table -->
-		<div id="screeningsTable" th:fragment="screenings-table"
-			class="w-full">
+		<div id="screeningsTable" th:fragment="screenings-table" class="w-full">
 			<header class="flex flex-row justify-between">
-				<form hx-get="/screenings" hx-replace="outerHtml"
-					hx-target="#screeningsTable"
+				<form hx-get="/screenings" hx-replace="outerHtml" hx-target="#screeningsTable"
 					class="flex items-center space-x-2 mb-4">
 					<div class="relative flex items-center">
 						<i
 							class="fa-solid fa-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"></i>
-						<input type="text" name="keyword"
-							placeholder="Search screenings..."
+						<input type="text" name="keyword" placeholder="Search screenings..."
 							class="pl-8 pr-2 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-celeste-dark h-10 w-64"
 							th:value="${keyword}" />
 					</div>
-					<input type="hidden" name="page" th:value="1" /> <input
-						type="date" name="date"
+					<input type="hidden" name="page" th:value="1" /> <input type="date" name="date"
 						class="p-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900 h-10"
 						th:value="${date}" /> <select name="hallNumber"
 						class="p-2 border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900 h-10">
@@ -47,8 +41,7 @@
 
 				<!-- Add Screening Button -->
 				<div class="flex items-center space-x-2">
-					<a hx-get="/screenings/add" hx-swap="innerHtml"
-						hx-target=".modalDiv"
+					<a hx-get="/screenings/add" hx-swap="innerHtml" hx-target=".modalDiv"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none text-green-500">
 						<i class="fa-solid fa-plus"></i> <span class="text-xs font-bold">Add
 							Screening</span>
@@ -58,8 +51,7 @@
 
 			</header>
 
-			<table
-				class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+			<table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
 				<thead class="bg-zinc-100 text-blue-900 font-bold">
 					<tr>
 						<th class="py-3 px-4 text-left">Id</th>
@@ -72,8 +64,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="screening : ${screenings.data}"
-						class="border-b hover:bg-gray-100">
+					<tr th:each="screening : ${screenings.data}" class="border-b hover:bg-gray-100">
 						<td class="py-3 px-4" th:text="${screening.id}"></td>
 						<td class="py-3 px-4" th:text="${screening.film.title}"></td>
 						<td class="py-3 px-4"
@@ -84,13 +75,12 @@
 						</td>
 						<td class="py-3 px-4" th:text="${screening.film.title}"></td>
 						<td class="py-3 px-4" th:text="${screening.hall.number}"></td>
-						<td class="py-3 px-4"><a
-							th:hx-get="@{/screenings/edit/{id}(id=${screening.id})}"
-							th:hx-swap="${'innerHtml'}" th:hx-target="${'.modalDiv'}"
-							class="text-blue-500 cursor-pointer">Edit</a> | <a
-							th:href="@{/screenings/delete/{id}(id=${screening.id})}"
-							onclick="return confirmDelete(this);"
-							class="text-red-500 cursor-pointer"> Delete </a></td>
+						<td class="py-3 px-4"><a th:hx-get="@{/screenings/edit/{id}(id=${screening.id})}"
+								th:hx-swap="${'innerHtml'}" th:hx-target="${'.modalDiv'}"
+								class="text-blue-500 cursor-pointer">Edit</a> | <a
+								th:href="@{/screenings/delete/{id}(id=${screening.id})}"
+								onclick="return confirmDelete(this);"
+								class="text-red-500 cursor-pointer"> Delete </a></td>
 						</td>
 					</tr>
 				</tbody>
@@ -105,13 +95,14 @@
 				</div>
 				<div class="flex items-center space-x-2">
 					<a th:if="${screenings.hasPrevious}"
-						th:hx-get="'/screenings?page=' + ${screenings.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-						hx-target="#screeningsTable"
+						th:hx-get="@{/screenings(page=${screenings.pageNumber - 1}, keyword=${keyword}, date=${date}, hallNumber=${hallNumber})}"
+						hx-target="#screeningsTable" hx-swap="outerHTML"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
 						<i class="fa-solid fa-arrow-left"></i>
-					</a> <a th:if="${screenings.hasNext}"
-						th:hx-get="'/screenings?page=' + ${screenings.pageNumber + 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-						hx-target="#screeningsTable"
+					</a>
+					<a th:if="${screenings.hasNext}"
+						th:hx-get="@{/screenings(page=${screenings.pageNumber + 1}, keyword=${keyword}, date=${date}, hallNumber=${hallNumber})}"
+						hx-target="#screeningsTable" hx-swap="outerHTML"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
 						<i class="fa-solid fa-arrow-right"></i>
 					</a>

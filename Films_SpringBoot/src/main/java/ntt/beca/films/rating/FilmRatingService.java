@@ -37,11 +37,11 @@ public class FilmRatingService {
 
 	// getting all the films ratings using pagination
 
-	public PagedResultDto<RatingDto> getAll(int pageNumber, String keyword, String genre) {
+	public PagedResultDto<RatingDto> getAll(int pageNumber, String keyword) {
 		Sort sort = Sort.by("id").ascending();
 		pageNumber = pageNumber <= 1 ? 0 : pageNumber - 1;
 		Pageable pageable = PageRequest.of(pageNumber, 5, sort);
-		Page<FilmRating> filmRatingPage = genre.isEmpty() ? filmRatingRepository.findAll(pageable)
+		Page<FilmRating> filmRatingPage = keyword.isEmpty() ? filmRatingRepository.findAll(pageable)
 				: filmRatingRepository.findByFilmTitle(keyword, pageable);
 		return PagedResultDto.<RatingDto>builder().data(filmRatingPage.toList()
 				.stream().map(ratingMapper::toDto).toList())

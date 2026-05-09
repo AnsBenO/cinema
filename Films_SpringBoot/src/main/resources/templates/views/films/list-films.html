@@ -101,14 +101,14 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <a th:if="${films.hasPrevious}"
-                        th:hx-get="'/films?page=' + ${films.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre.label}"
-                        hx-target="#filmsTable"
+                        th:hx-get="'/films?page=' + ${films.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
+                        hx-target="#filmsTable" hx-swap="outerHTML"
                         class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
                         <i class="fa-solid fa-arrow-left"></i>
                     </a>
                     <a th:if="${films.hasNext}"
                         th:hx-get="'/films?page=' + ${films.pageNumber + 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-                        hx-target="#filmsTable"
+                        hx-target="#filmsTable" hx-swap="outerHTML"
                         class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>

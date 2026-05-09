@@ -24,6 +24,7 @@
 							class="pl-8 pr-2 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-celeste-dark h-10 w-64"
 							th:value="${keyword}" />
 					</div>
+					<input type="hidden" name="page" th:value="1" />
 					<select name="personType" class="py-2 pl-2 pr-4 border border-gray-300 h-10">
 						<option value="" th:selected="${#strings.equals(personType, '')}" selected>Select a
 							Type</option>
@@ -46,19 +47,6 @@
 							Person</span>
 					</a>
 				</div>
-
-				<!-- Pagination Controls -->
-				<a th:if="${persons.hasPrevious}"
-					th:hx-get="'/persons?page=' + ${persons.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-					hx-target="#personsTable"
-					class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
-					<i class="fa-solid fa-arrow-left"></i>
-				</a> <a th:if="${persons.hasNext}"
-					th:hx-get="'/persons?page=' + ${persons.pageNumber + 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-					hx-target="#personsTable"
-					class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
-					<i class="fa-solid fa-arrow-right"></i>
-				</a>
 			</header>
 
 			<table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
@@ -101,13 +89,14 @@
 				</div>
 				<div class="flex items-center space-x-2">
 					<a th:if="${persons.hasPrevious}"
-						th:hx-get="'/persons?page=' + ${persons.pageNumber - 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-						hx-target="#personsTable"
+						th:hx-get="'/persons?page=' + ${persons.pageNumber - 1} + '&keyword=' + ${keyword} + '&personType=' + ${personType}"
+						hx-target="#personsTable" hx-swap="outerHTML"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
 						<i class="fa-solid fa-arrow-left"></i>
-					</a> <a th:if="${persons.hasNext}"
-						th:hx-get="'/persons?page=' + ${persons.pageNumber + 1} + '&keyword=' + ${keyword} + '&genre=' + ${genre}"
-						hx-target="#personsTable"
+					</a>
+					<a th:if="${persons.hasNext}"
+						th:hx-get="'/persons?page=' + ${persons.pageNumber + 1} + '&keyword=' + ${keyword} + '&personType=' + ${personType}"
+						hx-target="#personsTable" hx-swap="outerHTML"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
 						<i class="fa-solid fa-arrow-right"></i>
 					</a>
