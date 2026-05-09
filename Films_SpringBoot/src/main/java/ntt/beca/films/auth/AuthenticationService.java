@@ -2,6 +2,7 @@ package ntt.beca.films.auth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import ntt.beca.films.shared.exception.EmailAlreadyRegisteredException;
 import ntt.beca.films.shared.security.Role;
 import ntt.beca.films.user.UserEntity;
 import ntt.beca.films.user.UserRepository;
@@ -46,18 +48,21 @@ public class AuthenticationService {
       }
 
       public AuthenticationResponse register(RegisterUserDto request) {
+
+            if (userRepository.existsUserEntityByEmail(request.email())) {
+                  throw new EmailAlreadyRegisteredException(request.email());
+            }
+
             UserEntity user = UserEntity.builder()
                         .username(request.username())
                         .email(request.email())
                         .password(encoder.encode(request.password()))
                         .role(Role.CUSTOMER)
                         .build();
-            if (user != null) {
-                  userRepository.save(user);
-                  String token = jwtService.generateToken(user, generateExtraClaims(user));
-                  return new AuthenticationResponse(token, new CurrentUserDto(user.getUsername(), user.getEmail()));
-            }
-            return null;
+
+            userRepository.save(Objects.requireNonNull(user));
+            String token = jwtService.generateToken(user, generateExtraClaims(user));
+            return new AuthenticationResponse(token, new CurrentUserDto(user.getUsername(), user.getEmail()));
 
       }
 
