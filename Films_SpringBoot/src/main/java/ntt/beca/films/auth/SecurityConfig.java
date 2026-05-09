@@ -22,6 +22,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.security.Role;
 
@@ -31,6 +33,9 @@ import ntt.beca.films.shared.security.Role;
 class SecurityConfig {
 
       private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+      @Value("${app.cors.allowed-origins}")
+      private String allowedOrigins;
 
       // JWT-based security for API endpoints
       @Bean
@@ -108,7 +113,7 @@ class SecurityConfig {
       @Bean
       CorsConfigurationSource corsConfigurationSource() {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Frontend URL
+            configuration.setAllowedOrigins(List.of(allowedOrigins));
             configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             configuration.setAllowedHeaders(List.of("*"));
             configuration.setExposedHeaders(List.of("Authorization"));

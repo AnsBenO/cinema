@@ -7,7 +7,7 @@ import java.util.Objects;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class AuthenticationService {
       private final AuthenticationManager authenticationManager;
       private final UserRepository userRepository;
       private final JwtService jwtService;
-      private final BCryptPasswordEncoder encoder;
+      private final PasswordEncoder encoder;
 
       public AuthenticationResponse login(AuthenticationRequest request) {
 
@@ -42,7 +42,7 @@ public class AuthenticationService {
 
       private Map<String, Object> generateExtraClaims(UserEntity user) {
             Map<String, Object> extraClaims = new HashMap<>();
-            extraClaims.put("name", user.getEmail());
+            extraClaims.put("name", user.getUsername());
             extraClaims.put("role", user.getRole().name());
             return extraClaims;
 

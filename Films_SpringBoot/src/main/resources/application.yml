@@ -52,3 +52,7 @@ springdoc:
 
 image:
     directory: /images/
+
+app:
+    cors:
+        allowed-origins: http://localhost:4200
