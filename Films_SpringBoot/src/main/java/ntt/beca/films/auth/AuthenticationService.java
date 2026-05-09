@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.exception.EmailAlreadyRegisteredException;
+import ntt.beca.films.shared.exception.UsernameAlreadyTakenException;
 import ntt.beca.films.shared.security.Role;
 import ntt.beca.films.user.UserEntity;
 import ntt.beca.films.user.UserRepository;
@@ -51,6 +52,10 @@ public class AuthenticationService {
 
             if (userRepository.existsUserEntityByEmail(request.email())) {
                   throw new EmailAlreadyRegisteredException(request.email());
+            }
+
+            if (userRepository.existsUserEntityByUsername(request.username())) {
+                  throw new UsernameAlreadyTakenException(request.username());
             }
 
             UserEntity user = UserEntity.builder()

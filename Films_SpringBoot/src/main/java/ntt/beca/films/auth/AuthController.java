@@ -38,7 +38,8 @@ class AuthController {
       @PostMapping("/register")
       String registerUser(
                   @Valid @ModelAttribute("user") RegistrationDto user,
-                  BindingResult result) {
+                  BindingResult result,
+                  Model model) {
             if (isUserAuthenticated()) {
                   return "redirect:/";
             }
@@ -46,11 +47,17 @@ class AuthController {
             if (result.hasErrors()) {
                   return "views/auth/register";
             }
-            boolean existsByEmail = userService.existsByEmail(user.getEmail());
 
-            if (existsByEmail) {
-                  return "redirect:/register?fail";
+            if (userService.existsByEmail(user.getEmail())) {
+                  model.addAttribute("error", "Email is already registered: " + user.getEmail());
+                  return "views/auth/register";
             }
+
+            if (userService.existsByUsername(user.getUsername())) {
+                  model.addAttribute("error", "Username is already taken: " + user.getUsername());
+                  return "views/auth/register";
+            }
+
             userService.save(user);
             return "redirect:/login";
       }
