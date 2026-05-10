@@ -13,7 +13,8 @@
 			<i class="fa-solid fa-box"></i> Add Hall
 		</h2>
 
-		<form method="POST" th:action="@{/halls/save}" th:object="${hall}" accept-charset="UTF-8">
+		<form th:object="${hall}" hx-post="/halls/save" hx-target="#modal" hx-swap="outerHTML">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<input type="hidden" th:field="*{id}" />
 			<div class="mb-4">
 				<label for="hallNumber" class="block text-sm font-medium text-gray-700">Hall Number</label>

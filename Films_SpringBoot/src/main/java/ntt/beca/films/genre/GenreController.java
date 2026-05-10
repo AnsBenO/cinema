@@ -52,8 +52,9 @@ public class GenreController {
     // Create new genre
     @PostMapping
     public String createGenre(@Valid @ModelAttribute("genre") GenreDto genre, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
+            response.setStatus(422);
             return "views/genres/add-genre";
         }
         genreService.save(genre);

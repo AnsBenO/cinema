@@ -13,7 +13,9 @@
             </h2>
 
             <!-- Add User Form -->
-            <form th:action="@{/users}" th:object="${user}" method="post" class="space-y-8">
+            <form th:object="${user}" hx-post="/users" hx-target="#modal" hx-swap="outerHTML" class="space-y-8">
+
+                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- First Column -->

@@ -58,12 +58,13 @@ public class PersonController {
 
     @PostMapping
     public String createPerson(@Valid @ModelAttribute("person") PersonDto person, BindingResult bindingResult,
-            Model model, RedirectAttributes redirectAttributes) {
+            Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             List<String> types = Arrays.stream(PersonType.values()).map(Enum::name).toList();
             List<NationalityDto> nationalityDtos = nationalityService.getAllNoPagination();
             model.addAttribute("nationalities", nationalityDtos);
             model.addAttribute("types", types);
+            response.setStatus(422);
             return "views/persons/add-person";
         }
         personService.save(person);

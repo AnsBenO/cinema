@@ -13,7 +13,8 @@
 			<i class="fa-solid fa-flag"></i> Add Nationality
 		</h2>
 
-		<form method="POST" th:action="@{/nationalities/save}" th:object="${nationality}" accept-charset="UTF-8">
+		<form th:object="${nationality}" hx-post="/nationalities/save" hx-target="#modal" hx-swap="outerHTML">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<div class="mb-4">
 				<label for="nationalityLabel" class="block text-sm font-medium text-gray-700">
 					Nationality Label

@@ -82,14 +82,16 @@
                                           class="text-gray-700 font-semibold flex items-center gap-2">
                                           <i class="fa-solid fa-flag"></i> Nationality
                                     </label>
-                                    <select id="nationality" th:field="*{nationality}"
+                                    <select id="nationality" name="nationality"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
-                                          <option value="" selected>Select Nationality</option>
+                                          <option value="">Select Nationality</option>
                                           <option th:each="nat : ${nationalities}" th:value="${nat.id}"
-                                                th:text="${nat.label}"></option>
+                                                th:text="${nat.label}"
+                                                th:selected="${person.nationality != null and nat.id == person.nationality.id}">
+                                          </option>
                                     </select>
                                     <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"
-                                          class="text-red-600 text-xs mt-1 block">error</span>
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
                         </div>
                   </div>

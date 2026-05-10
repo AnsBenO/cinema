@@ -81,12 +81,13 @@ public class ScreeningController {
     // Create new screening
     @PostMapping
     public String createScreening(@Valid @ModelAttribute("screening") ScreeningDto screeningDto,
-            BindingResult bindingResult, Model model) {
+            BindingResult bindingResult, Model model, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             List<HallDto> hallDtos = hallService.getAllNoPagination();
             List<FilmDto> filmDtos = filmService.getAllNoPagination();
             model.addAttribute("halls", hallDtos);
             model.addAttribute("films", filmDtos);
+            response.setStatus(422);
             return "views/screenings/add-screening";
         }
         screeningService.save(screeningDto);

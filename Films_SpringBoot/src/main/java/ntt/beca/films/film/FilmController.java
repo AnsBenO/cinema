@@ -69,12 +69,14 @@ public class FilmController {
             @Valid @ModelAttribute("film") FilmDto filmDto,
             BindingResult bindingResult,
             Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("genres", genreService.getAllNoPagination());
             model.addAttribute("nationalities", nationalityService.getAllNoPagination());
             model.addAttribute("actors", personService.getAllActorsNoPagination());
             model.addAttribute("directors", personService.getAllDirectorsNoPagination());
+            response.setStatus(422);
             return "views/films/add-film";
         }
         try {

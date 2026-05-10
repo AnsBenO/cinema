@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.security.Role;
 import ntt.beca.films.shared.service.PagedResultDto;
@@ -50,19 +51,31 @@ public class UserController {
       }
 
       @PostMapping
-      public String createUser(@Valid @ModelAttribute RegistrationDto registrationDto,
+      public String createUser(@Valid @ModelAttribute("user") RegistrationDto registrationDto,
                   BindingResult bindingResult,
                   Model model,
-                  RedirectAttributes redirectAttributes) {
+                  RedirectAttributes redirectAttributes,
+                  HttpServletRequest request,
+                  HttpServletResponse response) {
             if (bindingResult.hasErrors()) {
                   model.addAttribute("roles", Role.values());
+                  response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
                   return "views/users/add-user";
             }
             try {
                   userService.save(registrationDto);
+                  if (request.getHeader("HX-Request") != null) {
+                        response.setHeader("HX-Redirect", "/users");
+                        return "views/users/add-user";
+                  }
                   redirectAttributes.addFlashAttribute("message", "User added successfully!");
                   redirectAttributes.addFlashAttribute("status", true);
             } catch (Exception e) {
+                  if (request.getHeader("HX-Request") != null) {
+                        model.addAttribute("errorMessage", "Failed to add user: " + e.getMessage());
+                        response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+                        return "views/users/add-user";
+                  }
                   redirectAttributes.addFlashAttribute("message", "Failed to add user: " + e.getMessage());
                   redirectAttributes.addFlashAttribute("status", false);
             }

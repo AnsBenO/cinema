@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/app}">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Genres</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Genres</title>
 </head>
 
 <body>
-	<main layout:fragment="content" id="content" class="p-6 w-full"
-		data-location="genre-list">
+	<main layout:fragment="content" id="content" class="p-6 w-full" data-location="genre-list">
 
 		<!-- Genre Table -->
 		<div id="genreTable" th:fragment="genre-table" class="w-full">
 			<header class="flex flex-row justify-between">
 				<!-- Search Form -->
-				<form hx-get="/genres" hx-replace="outerHtml"
-					hx-target="#genreTable" class="flex items-center space-x-2 mb-4">
+				<form hx-get="/genres" hx-swap="outerHTML" hx-target="#genreTable"
+					class="flex items-center space-x-2 mb-4">
 					<div class="relative flex items-center">
 						<i
 							class="fa-solid fa-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-gray-500"></i>
@@ -34,7 +32,7 @@
 
 				<!-- Add Genre Button -->
 				<div class="flex items-center space-x-2">
-					<a hx-get="/genres/add" hx-swap="outerHtml" hx-target=".modalDiv"
+					<a hx-get="/genres/add" hx-swap="outerHTML" hx-target=".modalDiv"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none text-green-500">
 						<i class="fa-solid fa-plus"></i> <span class="text-xs font-bold">Add
 							Genre</span>
@@ -44,8 +42,7 @@
 
 			</header>
 
-			<table
-				class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+			<table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
 				<thead class="bg-zinc-100 text-blue-900 font-bold">
 					<tr>
 						<th class="py-3 px-4 text-left">Id</th>
@@ -54,17 +51,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="genre : ${genres.data}"
-						class="border-b hover:bg-gray-100">
+					<tr th:each="genre : ${genres.data}" class="border-b hover:bg-gray-100">
 						<td class="py-3 px-4" th:text="${genre.id}"></td>
 						<td class="py-3 px-4" th:text="${genre.label}"></td>
-						<td class="py-3 px-4"><a
-							th:hx-get="@{/genres/edit/{id}(id=${genre.id})}"
-							th:hx-swap="${'innerHtml'}" th:hx-target="${'.modalDiv'}"
-							class="text-blue-500 cursor-pointer">Edit</a> | <a
-							th:href="@{/genres/delete/{id}(id=${genre.id})}"
-							onclick="return confirmDelete(this);"
-							class="text-red-500 cursor-pointer"> Delete </a></td>
+						<td class="py-3 px-4"><a th:hx-get="@{/genres/edit/{id}(id=${genre.id})}"
+								hx-swap="outerHTML" th:hx-target="${'.modalDiv'}"
+								class="text-blue-500 cursor-pointer">Edit</a> | <a
+								th:href="@{/genres/delete/{id}(id=${genre.id})}"
+								onclick="return confirmDelete(this);"
+								class="text-red-500 cursor-pointer"> Delete </a></td>
 						</td>
 					</tr>
 				</tbody>
@@ -80,12 +75,12 @@
 				<div class="flex items-center space-x-2">
 					<a th:if="${genres.hasPrevious}"
 						th:hx-get="'/genres?page=' + ${genres.pageNumber - 1} + '&keyword=' + ${keyword}"
-						hx-target="#genreTable"
+						hx-target="#genreTable" hx-swap="outerHTML"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
 						<i class="fa-solid fa-arrow-left"></i>
 					</a> <a th:if="${genres.hasNext}"
 						th:hx-get="'/genres?page=' + ${genres.pageNumber + 1} + '&keyword=' + ${keyword}"
-						hx-target="#genreTable"
+						hx-target="#genreTable" hx-swap="outerHTML"
 						class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 cursor-pointer select-none">
 						<i class="fa-solid fa-arrow-right"></i>
 					</a>
@@ -97,7 +92,7 @@
 						if (isConfirmed) {
 							window.location.href = link.getAttribute("href");
 						}
-						return false; 
+						return false;
 					}
 				</script>
 			</div>
