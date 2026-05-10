@@ -75,12 +75,14 @@
 						</td>
 						<td class="py-3 px-4" th:text="${screening.film.title}"></td>
 						<td class="py-3 px-4" th:text="${screening.hall.number}"></td>
-						<td class="py-3 px-4"><a th:hx-get="@{/screenings/edit/{id}(id=${screening.id})}"
+						<td class="py-3 px-4"><button type="button"
+								th:hx-get="@{/screenings/edit/{id}(id=${screening.id})}"
 								th:hx-swap="${'innerHtml'}" th:hx-target="${'.modalDiv'}"
-								class="text-blue-500 cursor-pointer">Edit</a> | <a
-								th:href="@{/screenings/delete/{id}(id=${screening.id})}"
+								class="text-blue-500 cursor-pointer">Edit</button> | <button
+								type="button" th:href="@{/screenings/delete/{id}(id=${screening.id})}"
 								onclick="return confirmDelete(this);"
-								class="text-red-500 cursor-pointer"> Delete </a></td>
+								class="text-red-500 cursor-pointer"> Delete </>
+						</td>
 						</td>
 					</tr>
 				</tbody>
@@ -111,7 +113,7 @@
 					function confirmDelete(link) {
 						const isConfirmed = confirm("Are you sure you want to delete this screening?");
 						if (isConfirmed) {
-							window.location.href = link.getAttribute("href");
+							globalThis.location.href = link.getAttribute("href");
 						}
 						return false;
 					}

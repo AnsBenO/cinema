@@ -40,7 +40,7 @@ import ntt.beca.films.user.UserRepository;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class Initializer {
+public class DataInitializer {
 
       @Value("${image.directory}")
       String imageBasePath;

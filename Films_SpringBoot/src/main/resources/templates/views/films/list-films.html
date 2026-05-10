@@ -86,8 +86,8 @@
                         <td class="py-3 px-4">
                             <a th:hx-get="@{/films/edit/{id}(id=${film.id})}" th:hx-swap="${'innerHtml'}"
                                 th:hx-target="${'.modalDiv'}" class="text-blue-500 cursor-pointer">Edit</a> |
-                            <a th:href="@{/films/delete/{id}(id=${film.id})}" onclick="return confirmDelete(this);"
-                                class="text-red-500">Delete</a>
+                            <button type="button" th:href="@{/films/delete/{id}(id=${film.id})}"
+                                onclick="return confirmDelete(this);" class="text-red-500">Delete</button>
                         </td>
                     </tr>
                 </tbody>
