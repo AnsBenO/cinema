@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.validation.Valid;
+
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.security.Role;
 import ntt.beca.films.shared.service.PagedResultDto;
@@ -46,7 +50,14 @@ public class UserController {
       }
 
       @PostMapping
-      public String createUser(@ModelAttribute RegistrationDto registrationDto, RedirectAttributes redirectAttributes) {
+      public String createUser(@Valid @ModelAttribute RegistrationDto registrationDto,
+                  BindingResult bindingResult,
+                  Model model,
+                  RedirectAttributes redirectAttributes) {
+            if (bindingResult.hasErrors()) {
+                  model.addAttribute("roles", Role.values());
+                  return "views/users/add-user";
+            }
             try {
                   userService.save(registrationDto);
                   redirectAttributes.addFlashAttribute("message", "User added successfully!");
@@ -83,14 +94,28 @@ public class UserController {
 
       @PostMapping("/edit/{id}")
       public String updateUser(@PathVariable Long id,
-                  @ModelAttribute UserDto user,
-                  RedirectAttributes redirectAttributes) {
+                  @Valid @ModelAttribute("user") UserDto user,
+                  BindingResult bindingResult,
+                  Model model,
+                  RedirectAttributes redirectAttributes,
+                  HttpServletRequest request,
+                  HttpServletResponse response) {
+            if (bindingResult.hasErrors()) {
+                  user.setId(id);
+                  model.addAttribute("roles", Role.values());
+                  response.setStatus(422);
+                  return "views/users/edit-user";
+            }
             try {
                   UserDto existingUser = userService.getOne(id);
                   existingUser.setUsername(user.getUsername());
                   existingUser.setEmail(user.getEmail());
                   existingUser.setRole(user.getRole());
                   userService.update(existingUser);
+                  if (request.getHeader("HX-Request") != null) {
+                        response.setHeader("HX-Redirect", "/users");
+                        return "views/users/edit-user";
+                  }
                   redirectAttributes.addFlashAttribute("message", "User updated successfully!");
                   redirectAttributes.addFlashAttribute("status", true);
             } catch (Exception e) {

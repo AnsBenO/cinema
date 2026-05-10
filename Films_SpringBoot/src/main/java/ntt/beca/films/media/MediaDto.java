@@ -1,10 +1,11 @@
 package ntt.beca.films.media;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
 import ntt.beca.films.shared.base.BaseDto;
 
@@ -14,10 +15,14 @@ import ntt.beca.films.shared.base.BaseDto;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MediaDto extends BaseDto {
-      @NotNull
       private Long id;
+
+      @NotBlank(message = "Media URL is required")
       private String media;
+
+      @NotNull(message = "Media type is required")
       private MediaType mediaType;
-      @NotNull
+
+      @NotNull(message = "Film is required")
       private Long filmId;
 }

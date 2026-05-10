@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.film.Film;
 import ntt.beca.films.user.UserEntity;
@@ -35,7 +36,7 @@ public class ApiFilmRatingController {
        * Submit a film rating.
        */
       @PostMapping
-      public ResponseEntity<Map<String, String>> submitRating(@RequestBody RatingPayload rating,
+      public ResponseEntity<Map<String, String>> submitRating(@Valid @RequestBody RatingPayload rating,
                   HttpServletRequest request) {
 
             String authHeader = request.getHeader("Authorization");
@@ -43,35 +44,23 @@ public class ApiFilmRatingController {
             String email = jwtService.extractEmail(token);
             Map<String, String> response = new HashMap<>();
             try {
-                  // Validate score
-                  if (rating.score() < 1 || rating.score() > 10) {
-                        response.put("message", "Rating must be between 1 and 10.");
-                        return ResponseEntity.badRequest().body(response);
-                  }
-
-                  // Authenticate user (simplified user fetch logic for now)
+                  // Authenticate user
                   UserEntity customer = userRepository.findByEmail(email).orElseThrow();
 
-                  // Fetch film by name
+                  // Fetch film by title
                   Film film = filmRepository.findByTitle(rating.film())
                               .orElseThrow(() -> new RuntimeException("Film not found."));
 
-                  // Map payload to entity
+                  // Map payload to entity and persist
                   FilmRating filmRating = FilmRating.builder()
                               .customer(customer)
                               .film(film)
                               .score(rating.score())
                               .build();
 
-                  if (filmRating != null) {
-                        // Persist the rating
-                        filmRatingRepository.save(filmRating);
-                        response.put("message", "Rating submitted successfully.");
-                        return ResponseEntity.ok(response);
-                  }
-
-                  response.put("message", "Could not submit rating.");
-                  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+                  filmRatingRepository.save(filmRating);
+                  response.put("message", "Rating submitted successfully.");
+                  return ResponseEntity.ok(response);
 
             } catch (Exception e) {
                   response.put("message", "Could not submit rating: " + e.getMessage());

@@ -13,7 +13,10 @@
             </h2>
 
             <!-- Edit User Form -->
-            <form th:action="@{'/users/edit/'+${user.id} }" th:object="${user}" method="post" class="space-y-8">
+            <form th:object="${user}" th:attr="hx-post=@{/users/edit/{id}(id=${user.id})}" hx-target="#modal"
+                  hx-swap="outerHTML" class="space-y-8">
+                  <input type="hidden" th:field="*{id}" />
+                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- First Column -->
@@ -26,9 +29,10 @@
                                     </label>
                                     <input type="text" id="username" th:field="*{username}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
-                                          placeholder="Enter username" required>
+                                          placeholder="Enter username">
+                                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
-
 
                               <!-- Email -->
                               <div class="flex flex-col">
@@ -37,9 +41,10 @@
                                     </label>
                                     <input type="email" id="email" th:field="*{email}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
-                                          placeholder="Enter email" required>
+                                          placeholder="Enter email">
+                                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
-
 
                         </div>
 
@@ -51,15 +56,14 @@
                                           <i class="fa-solid fa-users-cog"></i> User Role
                                     </label>
                                     <select id="role" th:field="*{role}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800"
-                                          required>
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800">
                                           <option value="" selected>Select a Role</option>
                                           <option th:each="role : ${T(ntt.beca.films.shared.security.Role).values()}"
                                                 th:value="${role}" th:text="${role}"></option>
                                     </select>
+                                    <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
-
-
                         </div>
                   </div>
 

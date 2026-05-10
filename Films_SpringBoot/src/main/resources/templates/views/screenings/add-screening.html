@@ -20,8 +20,9 @@
                               <i class="fa-regular fa-clock"></i> Start Time
                         </label>
                         <input type="datetime-local" id="startTime" th:field="*{startTime}"
-                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                              required>
+                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                        <span th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"
+                              class="text-red-600 text-xs mt-1 block"></span>
                   </div>
 
                   <!-- End Time -->
@@ -30,8 +31,9 @@
                               <i class="fa-regular fa-clock"></i> End Time
                         </label>
                         <input type="datetime-local" id="endTime" th:field="*{endTime}"
-                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                              required>
+                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                        <span th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"
+                              class="text-red-600 text-xs mt-1 block"></span>
                   </div>
 
                   <!-- Film -->
@@ -40,11 +42,12 @@
                               <i class="fa-solid fa-film"></i> Film
                         </label>
                         <select id="film" th:field="*{film}"
-                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                              required>
+                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                               <option value="" selected>Select a Film</option>
                               <option th:each="film : ${films}" th:value="${film.id}" th:text="${film.title}"></option>
                         </select>
+                        <span th:if="${#fields.hasErrors('film')}" th:errors="*{film}"
+                              class="text-red-600 text-xs mt-1 block"></span>
                   </div>
 
                   <!-- Hall -->
@@ -53,11 +56,12 @@
                               <i class="fa-solid fa-building"></i> Hall
                         </label>
                         <select id="hall" th:field="*{hall}"
-                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                              required>
+                              class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                               <option value="" selected>Select a Hall</option>
                               <option th:each="hall : ${halls}" th:value="${hall.id}" th:text="${hall.number}"></option>
                         </select>
+                        <span th:if="${#fields.hasErrors('hall')}" th:errors="*{hall}"
+                              class="text-red-600 text-xs mt-1 block"></span>
                   </div>
 
                   <!-- Submit Button -->

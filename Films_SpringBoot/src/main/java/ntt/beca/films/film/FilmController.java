@@ -7,11 +7,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.genre.GenreDto;
 import ntt.beca.films.nationality.NationalityDto;
@@ -62,12 +65,20 @@ public class FilmController {
     }
 
     @PostMapping("")
-    public String createFilm(@RequestParam("file") MultipartFile file, @ModelAttribute FilmDto filmDto,
+    public String createFilm(@RequestParam(value = "file", required = false) MultipartFile file,
+            @Valid @ModelAttribute("film") FilmDto filmDto,
+            BindingResult bindingResult,
+            Model model,
             RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("genres", genreService.getAllNoPagination());
+            model.addAttribute("nationalities", nationalityService.getAllNoPagination());
+            model.addAttribute("actors", personService.getAllActorsNoPagination());
+            model.addAttribute("directors", personService.getAllDirectorsNoPagination());
+            return "views/films/add-film";
+        }
         try {
-            if (file.isEmpty()) {
-                System.out.println("empty");
-            } else {
+            if (file != null && !file.isEmpty()) {
                 String uploadDir = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main"
                         + File.separator + "resources" + File.separator + "static" + File.separator + "images";
 
@@ -120,9 +131,21 @@ public class FilmController {
 
     @PostMapping("/edit/{id}")
     public String updateFilm(@PathVariable Long id,
-            @RequestParam("file") MultipartFile file,
-            @ModelAttribute FilmDto filmDto,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @Valid @ModelAttribute("film") FilmDto filmDto,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("nationalities", nationalityService.getAllNoPagination());
+            model.addAttribute("genres", genreService.getAllNoPagination());
+            model.addAttribute("directors", personService.getAllDirectorsNoPagination());
+            model.addAttribute("actors", personService.getAllActorsNoPagination());
+            response.setStatus(422);
+            return "views/films/edit-film";
+        }
         try {
             FilmDto existingFilm = filmService.getOne(id);
 
@@ -135,7 +158,7 @@ public class FilmController {
             existingFilm.setDirector(filmDto.getDirector());
             existingFilm.setActors(filmDto.getActors());
 
-            if (!file.isEmpty()) {
+            if (file != null && !file.isEmpty()) {
                 String oldImageUrl = existingFilm.getImageUrl();
                 if (oldImageUrl != null && !oldImageUrl.isEmpty()) {
                     File oldFile = new File(
@@ -165,6 +188,10 @@ public class FilmController {
 
             // Save the updated film
             filmService.save(existingFilm);
+            if (request.getHeader("HX-Request") != null) {
+                response.setHeader("HX-Redirect", "/films");
+                return "views/films/edit-film";
+            }
             redirectAttributes.addFlashAttribute("message", "Film updated successfully!");
             redirectAttributes.addFlashAttribute("status", true);
         } catch (Exception e) {

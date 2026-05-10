@@ -2,22 +2,22 @@ package ntt.beca.films.genre;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.service.PagedResultDto;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/genres")
 public class GenreController {
 
     private final GenreService genreService;
-
-    public GenreController(GenreService genreService) {
-        this.genreService = genreService;
-    }
 
     // Get all genres with pagination and search
     @GetMapping("")
@@ -51,7 +51,11 @@ public class GenreController {
 
     // Create new genre
     @PostMapping
-    public String createGenre(@ModelAttribute GenreDto genre, RedirectAttributes redirectAttributes) {
+    public String createGenre(@Valid @ModelAttribute("genre") GenreDto genre, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "views/genres/add-genre";
+        }
         genreService.save(genre);
         redirectAttributes.addFlashAttribute("message", "Genre added successfully!");
         redirectAttributes.addFlashAttribute("status", true);
@@ -87,15 +91,28 @@ public class GenreController {
 
     // Update genre information
     @PostMapping("/edit/{id}")
-    public String updateGenre(@PathVariable Long id, @ModelAttribute GenreDto genreDto,
-            RedirectAttributes redirectAttributes) {
+    public String updateGenre(@PathVariable Long id, @Valid @ModelAttribute("genre") GenreDto genreDto,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            HttpServletRequest request, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            response.setStatus(422);
+            return "views/genres/edit-genre";
+        }
         try {
             GenreDto existingGenre = genreService.getOne(id);
             existingGenre.setLabel(genreDto.getLabel());
             genreService.save(existingGenre);
+            if (request.getHeader("HX-Request") != null) {
+                response.setHeader("HX-Redirect", "/genres");
+                return "views/genres/edit-genre";
+            }
             redirectAttributes.addFlashAttribute("message", "Genre updated successfully!");
             redirectAttributes.addFlashAttribute("status", true);
         } catch (Exception e) {
+            if (request.getHeader("HX-Request") != null) {
+                response.setHeader("HX-Redirect", "/genres");
+                return "views/genres/edit-genre";
+            }
             redirectAttributes.addFlashAttribute("message", "Failed to update genre.");
             redirectAttributes.addFlashAttribute("status", false);
         }

@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ntt.beca.films.shared.exception.ResourceNotFoundException;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +25,29 @@ public class NationalityService implements CrudService<NationalityDto, Long> {
 
 	// saving method
 	@Override
+	@Transactional
 	public void save(@NonNull NationalityDto nationalityDto) {
-		Nationality nationality = nationalityMapper.toEntity(nationalityDto);
-		if (nationality == null) {
-			return;
+		Long nationalityId = nationalityDto.getId();
+		if (nationalityId != null) {
+			Nationality existing = nationalityRepository.findById(nationalityId)
+					.orElseThrow(() -> new ResourceNotFoundException("Nationality not found"));
+			existing.setLabel(nationalityDto.getLabel());
+			// No explicit save() needed — entity is managed within @Transactional context;
+			// Hibernate auto-flushes dirty state at transaction commit.
+		} else {
+			Nationality nationality = nationalityMapper.toEntity(nationalityDto);
+			if (nationality == null) {
+				return;
+			}
+			nationalityRepository.save(nationality);
 		}
-		nationalityRepository.save(nationality);
 	}
 
 	// getting one nationality by Id
 	@Override
 	public NationalityDto getOne(@NonNull Long id) {
-		Nationality nationality = nationalityRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+		Nationality nationality = nationalityRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Nationality not found"));
 
 		return nationalityMapper.toDto(nationality);
 	}

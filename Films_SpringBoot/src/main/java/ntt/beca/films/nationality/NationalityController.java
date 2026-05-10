@@ -2,6 +2,7 @@ package ntt.beca.films.nationality;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.shared.service.PagedResultDto;
 
@@ -54,11 +57,22 @@ public class NationalityController {
     }
 
     @PostMapping("/save")
-    public String createNationality(@ModelAttribute NationalityDto nationalityDto,
-            RedirectAttributes redirectAttributes) {
-
+    public String createNationality(@Valid @ModelAttribute("nationality") NationalityDto nationalityDto,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            HttpServletRequest request, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            response.setStatus(422);
+            return nationalityDto.getId() != null
+                    ? "views/nationalities/edit-nationality"
+                    : "views/nationalities/add-nationality";
+        }
         nationalityService.save(nationalityDto);
-
+        if (request.getHeader("HX-Request") != null) {
+            response.setHeader("HX-Redirect", "/nationalities");
+            return nationalityDto.getId() != null
+                    ? "views/nationalities/edit-nationality"
+                    : "views/nationalities/add-nationality";
+        }
         redirectAttributes.addFlashAttribute("message", "Nationality created successfully!");
         redirectAttributes.addFlashAttribute("status", true);
         return "redirect:/nationalities";

@@ -25,7 +25,9 @@
                                     </label>
                                     <input type="text" id="username" th:field="*{username}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter username" required>
+                                          placeholder="Enter username">
+                                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
 
                               <!-- Email -->
@@ -35,7 +37,9 @@
                                     </label>
                                     <input type="email" id="email" th:field="*{email}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter email address" required>
+                                          placeholder="Enter email address">
+                                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
 
                               <!-- Password -->
@@ -45,7 +49,9 @@
                                     </label>
                                     <input type="password" id="password" th:field="*{password}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter password" required>
+                                          placeholder="Enter password">
+                                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
                         </div>
 
@@ -57,15 +63,14 @@
                                           <i class="fa-solid fa-users-cog"></i> Role
                                     </label>
                                     <select id="role" th:field="*{role}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          required>
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                                           <option value="" selected>Select a Role</option>
                                           <option th:each="role : ${T(ntt.beca.films.shared.security.Role).values()}"
                                                 th:value="${role}" th:text="${role}"></option>
                                     </select>
+                                    <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
-
-                              <!-- Submit Button -->
                         </div>
                   </div>
                   <div class="flex justify-end">

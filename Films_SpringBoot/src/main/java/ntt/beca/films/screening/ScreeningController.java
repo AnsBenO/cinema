@@ -6,10 +6,13 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ntt.beca.films.film.FilmDto;
@@ -77,7 +80,15 @@ public class ScreeningController {
 
     // Create new screening
     @PostMapping
-    public String createScreening(@ModelAttribute ScreeningDto screeningDto) {
+    public String createScreening(@Valid @ModelAttribute("screening") ScreeningDto screeningDto,
+            BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<HallDto> hallDtos = hallService.getAllNoPagination();
+            List<FilmDto> filmDtos = filmService.getAllNoPagination();
+            model.addAttribute("halls", hallDtos);
+            model.addAttribute("films", filmDtos);
+            return "views/screenings/add-screening";
+        }
         screeningService.save(screeningDto);
         return "redirect:/screenings";
     }
@@ -115,8 +126,19 @@ public class ScreeningController {
 
     @PostMapping("/edit/{id}")
     public String updateScreening(@PathVariable Long id,
-            @ModelAttribute ScreeningDto screeningDto,
-            RedirectAttributes redirectAttributes) {
+            @Valid @ModelAttribute("screening") ScreeningDto screeningDto,
+            BindingResult bindingResult,
+            Model model, RedirectAttributes redirectAttributes,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            List<HallDto> halls = hallService.getAllNoPagination();
+            List<FilmDto> films = filmService.getAllNoPagination();
+            model.addAttribute("halls", halls);
+            model.addAttribute("films", films);
+            response.setStatus(422);
+            return "views/screenings/edit-screening";
+        }
         try {
             ScreeningDto existingScreening = screeningService.getOne(id);
             log.info("Before Update: {}", existingScreening);
@@ -129,6 +151,10 @@ public class ScreeningController {
             existingScreening.setFilm(filmDto);
             log.info("After Update: {}", existingScreening);
             screeningService.save(existingScreening);
+            if (request.getHeader("HX-Request") != null) {
+                response.setHeader("HX-Redirect", "/screenings");
+                return "views/screenings/edit-screening";
+            }
             redirectAttributes.addFlashAttribute("message", "Screening updated successfully!");
             redirectAttributes.addFlashAttribute("status", true);
         } catch (Exception e) {

@@ -25,7 +25,9 @@
                                     </label>
                                     <input type="text" id="firstName" th:field="*{firstName}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter first name" required>
+                                          placeholder="Enter first name">
+                                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
 
                               <!-- Last Name -->
@@ -35,7 +37,9 @@
                                     </label>
                                     <input type="text" id="lastName" th:field="*{lastName}"
                                           class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter last name" required>
+                                          placeholder="Enter last name">
+                                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
 
                               <!-- Birth Date -->
@@ -44,8 +48,9 @@
                                           <i class="fa-regular fa-calendar"></i> Birth Date
                                     </label>
                                     <input type="date" id="birthDate" th:field="*{birthDate}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          required>
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                                    <span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
                         </div>
 
@@ -57,12 +62,13 @@
                                           <i class="fa-solid fa-users"></i> Person Type
                                     </label>
                                     <select id="personType" th:field="*{personType}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          required>
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                                           <option value="" selected>Select a Type</option>
                                           <option th:each="type : ${T(ntt.beca.films.person.PersonType).values()}"
                                                 th:value="${type}" th:text="${type}"></option>
                                     </select>
+                                    <span th:if="${#fields.hasErrors('personType')}" th:errors="*{personType}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
 
                               <!-- Nationality -->
@@ -72,12 +78,13 @@
                                           <i class="fa-solid fa-flag"></i> Nationality
                                     </label>
                                     <select id="nationality" th:field="*{nationality.id}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          required>
+                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                                           <option value="" selected>Select Nationality</option>
                                           <option th:each="nat : ${nationalities}" th:value="${nat.id}"
                                                 th:text="${nat.label}"></option>
                                     </select>
+                                    <span th:if="${#fields.hasErrors('nationality.id')}" th:errors="*{nationality.id}"
+                                          class="text-red-600 text-xs mt-1 block"></span>
                               </div>
 
                               <!-- Submit Button -->

@@ -1,19 +1,20 @@
 <div id="modal"
-     class="modal fixed flex items-center justify-center inset-0 bg-gray-900 bg-opacity-60 transition-opacity z-50 overflow-scroll">
+    class="modal fixed flex items-center justify-center inset-0 bg-gray-900 bg-opacity-60 transition-opacity z-50 overflow-scroll">
     <button class="absolute top-4 right-8 text-white text-3xl font-bold cursor-pointer hover:text-gray-400 close"
-            onclick="closeModal()">
+        onclick="closeModal()">
         <i class="fa-solid fa-xmark"></i>
     </button>
     <!-- Modal content -->
     <div class="p-5 bg-white shadow-lg rounded-lg relative w-4/5 max-w-3xl fade-in" id="contentDiv">
-        <h2 class="text-center text-gray-700 mb-6 text-2xl font-bold tracking-wide capitalize border-b-2 border-gray-300 py-2">
-            <i class="fa-solid fa-film"></i> 
+        <h2
+            class="text-center text-gray-700 mb-6 text-2xl font-bold tracking-wide capitalize border-b-2 border-gray-300 py-2">
+            <i class="fa-solid fa-film"></i>
             <span th:text="${film.id != null} ? 'Edit Film' : 'Create a New Film'"></span>
         </h2>
 
         <!-- Film Form -->
-        <form  enctype="multipart/form-data" th:action="@{/films}" th:object="${film}" method="post" class="space-y-6">
-            
+        <form enctype="multipart/form-data" th:action="@{/films}" th:object="${film}" method="post" class="space-y-6">
+
             <!-- Film Title and Genre -->
             <div class="flex gap-4">
                 <!-- Film Title -->
@@ -22,8 +23,9 @@
                         <i class="fa-solid fa-square-pen"></i> Title
                     </label>
                     <input type="text" id="title" th:field="*{title}"
-                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                        required>
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
                 <!-- Genre -->
@@ -31,10 +33,13 @@
                     <label for="genre" class="text-gray-700 font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-film"></i> Genre
                     </label>
-                    <select id="genre" th:field="*{genre}" class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default" required>
+                    <select id="genre" th:field="*{genre}"
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                         <option value="" disabled>Select Genre</option>
                         <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.label}"></option>
                     </select>
+                    <span th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
             </div>
 
@@ -46,8 +51,9 @@
                         <i class="fa-solid fa-clock"></i> Duration (in minutes)
                     </label>
                     <input type="number" id="duration" th:field="*{duration}"
-                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                        required>
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                    <span th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
                 <!-- Year -->
@@ -55,9 +61,11 @@
                     <label for="year" class="text-gray-700 font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-calendar"></i> Year
                     </label>
-                    <input type="number" id="year" th:field="*{year}" min=1900 max="${T(java.time.Year).now().value}" 
-                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                        required>
+                    <input type="number" id="year" th:field="*{year}" min="1900"
+                        th:max="${T(java.time.Year).now().value}"
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                    <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
             </div>
 
@@ -68,10 +76,14 @@
                     <label for="nationality" class="text-gray-700 font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-flag"></i> Nationality
                     </label>
-                    <select id="nationality" th:field="*{nationality}" class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default" required>
+                    <select id="nationality" th:field="*{nationality}"
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                         <option value="" disabled>Select Nationality</option>
-                        <option th:each="nationality : ${nationalities}" th:value="${nationality.id}" th:text="${nationality.label}"></option>
+                        <option th:each="nationality : ${nationalities}" th:value="${nationality.id}"
+                            th:text="${nationality.label}"></option>
                     </select>
+                    <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
                 <!-- Director -->
@@ -79,10 +91,14 @@
                     <label for="director" class="text-gray-700 font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-user-tie"></i> Director
                     </label>
-                    <select id="director" th:field="*{director}" class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default" required>
+                    <select id="director" th:field="*{director}"
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                         <option value="" disabled>Select Director</option>
-                        <option th:each="director : ${directors}" th:value="${director.id}" th:text="${director.firstName} + ' ' + ${director.lastName}"></option>
+                        <option th:each="director : ${directors}" th:value="${director.id}"
+                            th:text="${director.firstName} + ' ' + ${director.lastName}"></option>
                     </select>
+                    <span th:if="${#fields.hasErrors('director')}" th:errors="*{director}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
             </div>
 
@@ -93,13 +109,18 @@
                     <label for="actors" class="text-gray-700 font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-users"></i> Actors
                     </label>
-                    <select id="actors" th:field="*{actors}" class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default" multiple required>
+                    <select id="actors" th:field="*{actors}"
+                        class="mt-1 p-2 border rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                        multiple>
                         <option value="" disabled>Select Actors</option>
-                        <option th:each="actor : ${actors}" th:value="${actor.id}" th:text="${actor.firstName} + ' ' + ${actor.lastName}"></option>
+                        <option th:each="actor : ${actors}" th:value="${actor.id}"
+                            th:text="${actor.firstName} + ' ' + ${actor.lastName}"></option>
                     </select>
+                    <span th:if="${#fields.hasErrors('actors')}" th:errors="*{actors}"
+                        class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
-<!--                 Film Poster Image Upload -->
+                <!-- Film Poster Image Upload -->
                 <div class="flex flex-col w-1/2">
                     <label for="file" class="text-gray-700 font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-image"></i> Film Poster
@@ -111,9 +132,8 @@
 
             <!-- Submit Button -->
             <div class="flex justify-end">
-                <button type="submit"
-                        class="bg-blue-800 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-900">
-                    <i class="fa-solid fa-plus"></i> 
+                <button type="submit" class="bg-blue-800 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-900">
+                    <i class="fa-solid fa-plus"></i>
                     <span th:text="${film.id != null} ? 'Update Film' : 'Create Film'"></span>
                 </button>
             </div>

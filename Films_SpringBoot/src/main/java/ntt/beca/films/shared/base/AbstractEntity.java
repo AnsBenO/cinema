@@ -27,7 +27,7 @@ public class AbstractEntity {
       private Long id;
 
       @CreationTimestamp
-      @Column(nullable = false)
+      @Column(nullable = false, updatable = false)
       private LocalDateTime createdAt;
 
       @UpdateTimestamp

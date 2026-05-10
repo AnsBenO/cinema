@@ -66,6 +66,13 @@
                               });
                         });
 
+                        document.body.addEventListener('htmx:beforeSwap', function (evt) {
+                              if (evt.detail.xhr.status === 422) {
+                                    evt.detail.shouldSwap = true;
+                                    evt.detail.isError = false;
+                              }
+                        });
+
                         function closeModal() {
                               const modal = document.getElementById("modal");
                               const modalContent = document.getElementById("contentDiv")

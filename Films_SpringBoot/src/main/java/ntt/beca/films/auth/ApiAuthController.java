@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -18,12 +19,12 @@ public class ApiAuthController {
       private final JwtService jwtService;
 
       @PostMapping("/register")
-      ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterUserDto request) {
+      ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterUserDto request) {
             return ResponseEntity.ok(authenticationService.register(request));
       }
 
       @PostMapping("/authenticate")
-      ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+      ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
             return ResponseEntity.ok(authenticationService.login(request));
       }
 
