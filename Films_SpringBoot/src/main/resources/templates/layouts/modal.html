@@ -1,0 +1,31 @@
+<div th:fragment="modal(icon, title, formBody)" id="modal"
+      class="modal fixed flex items-center justify-center inset-0 bg-gray-900 bg-opacity-60 transition-opacity z-50 overflow-scroll">
+      <button class="absolute top-4 right-8 text-white text-3xl font-bold cursor-pointer hover:text-gray-400 close"
+            onclick="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+      </button>
+      <!-- Modal content -->
+      <div class="p-5 bg-white shadow-lg rounded-lg relative w-4/5 max-w-3xl fade-in" id="contentDiv">
+            <h2
+                  class="text-center text-gray-700 mb-6 text-2xl font-bold tracking-wide capitalize border-b-2 border-gray-300 py-2">
+                  <th:block th:replace="${icon}"></th:block>
+                  <th:block th:replace="${title}"></th:block>
+            </h2>
+            <th:block th:replace="${formBody}"></th:block>
+      </div>
+      <script>
+            function closeModal() {
+                  const modal = document.getElementById("modal");
+                  const modalContent = document.getElementById("contentDiv")
+                  if (modal) {
+                        modalContent.classList.remove("fade-in");
+                        modalContent.classList.add("fade-out");
+                        modal.classList.remove("fade-in-parent");
+                        modal.classList.add("fade-out-parent");
+                        setTimeout(() => {
+                              modal.classList.add("hidden");
+                        }, 150);
+                  }
+            }
+      </script>
+</div>

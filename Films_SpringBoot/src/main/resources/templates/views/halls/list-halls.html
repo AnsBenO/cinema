@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/app}">
 
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Halls</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Halls</title>
 </head>
 
 <body>
-	<main layout:fragment="content" id="content" class="p-6 w-full"
-		data-location="halls">
+	<main layout:fragment="content" id="content" class="p-6 w-full" data-location="halls">
 
 		<!-- Halls Table -->
 		<div id="hallsTable" th:fragment="halls-table" class="w-full">
@@ -45,12 +43,11 @@
 
 
 
-					
+
 				</div>
 			</header>
 
-			<table
-				class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+			<table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
 				<thead class="bg-zinc-100 text-blue-900 font-bold">
 					<tr>
 						<th class="py-3 px-4 text-left font-bold">Id</th>
@@ -60,18 +57,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="hall : ${halls.data}"
-						class="border-b hover:bg-gray-100">
+					<tr th:each="hall : ${halls.data}" class="border-b hover:bg-gray-100">
 						<td class="py-3 px-4" th:text="${hall.id}"></td>
 						<td class="py-3 px-4" th:text="${hall.capacity}"></td>
 						<td class="py-3 px-4" th:text="${hall.number}"></td>
-						<td class="py-3 px-4"><a
-							th:hx-get="@{/halls/edit/{id}(id=${hall.id})}"
-							th:hx-swap="${'innerHtml'}" th:hx-target=".modalDiv"
-							class="text-blue-500 cursor-pointer">Edit</a> | <a
-							th:href="@{/halls/delete/{id}(id=${hall.id})}"
-							onclick="return confirmDelete(this);"
-							class="text-red-500 cursor-pointer"> Delete </a></td>
+						<td class="py-3 px-4"><a th:hx-get="@{/halls/edit/{id}(id=${hall.id})}"
+								th:hx-swap="${'innerHtml'}" th:hx-target=".modalDiv"
+								class="text-blue-500 cursor-pointer">Edit</a> | <button type="button"
+								th:href="@{/halls/delete/{id}(id=${hall.id})}"
+								onclick="return confirmDelete(this);"
+								class="text-red-500 cursor-pointer"> Delete </button></td>
 						</td>
 					</tr>
 				</tbody>
@@ -101,7 +96,7 @@
 					function confirmDelete(link) {
 						const isConfirmed = confirm("Are you sure you want to delete this hall?");
 						if (isConfirmed) {
-							window.location.href = link.getAttribute("href");
+							globalThis.location.href = link.getAttribute("href");
 						}
 						return false;
 					}

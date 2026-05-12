@@ -1,6 +1,6 @@
-var modal = document.getElementById("viewImageModal");
-var modalImg = document.getElementById("modalImage");
-var captionText = document.getElementById("caption");
+let modal = document.getElementById("viewImageModal");
+let modalImg = document.getElementById("modalImage");
+let captionText = document.getElementById("caption");
 document.querySelectorAll(".view-image-btn").forEach((button) => {
 	button.onclick = function () {
 		modalImg.classList.remove("fade-out");
@@ -10,9 +10,9 @@ document.querySelectorAll(".view-image-btn").forEach((button) => {
 		setTimeout(() => {
 			modal.classList.remove("hidden");
 			modal.classList.add("flex");
-		}, 250);
-		modalImg.src = this.getAttribute("data-image-src");
-		captionText.innerHTML = this.getAttribute("data-image-alt");
+		}, 150);
+		modalImg.src = this.dataset.imageSrc;
+		captionText.innerHTML = this.dataset.imageAlt;
 	};
 });
 
@@ -23,5 +23,5 @@ document.querySelector(".close").onclick = function () {
 	modal.classList.add("fade-out-parent");
 	setTimeout(() => {
 		modal.classList.add("hidden");
-	}, 250);
+	}, 150);
 };

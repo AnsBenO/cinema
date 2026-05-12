@@ -1,108 +1,87 @@
-<div id="modal"
-      class="modal fixed flex items-center justify-center inset-0 bg-gray-900 bg-opacity-60 transition-opacity z-50 overflow-scroll">
-      <button class="absolute top-4 right-8 text-white text-3xl font-bold cursor-pointer hover:text-gray-400 close"
-            onclick="closeModal()">
-            <i class="fa-solid fa-xmark"></i>
-      </button>
-      <!-- Modal content -->
-      <div class="p-5 bg-white shadow-lg rounded-lg relative w-4/5 max-w-3xl fade-in" id="contentDiv">
-            <h2
-                  class="text-center text-gray-700 mb-6 text-2xl font-bold tracking-wide capitalize border-b-2 border-gray-300 py-2">
-                  <i class="fa-solid fa-user"></i>
-                  Update Person with ID <span th:text="${person.id}"></span>
-            </h2>
+<th:block th:replace="~{layouts/modal :: modal(~{::.modal-icon}, ~{::.modal-title}, ~{::.modal-form})}">
 
-            <!-- Edit Person Form -->
-            <form th:object="${person}" th:attr="hx-post=@{/persons/edit/{id}(id=${person.id})}" hx-target="#modal"
-                  hx-swap="outerHTML" class="space-y-8">
-                  <input type="hidden" th:field="*{id}" />
-                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <i class="fa-solid fa-user modal-icon"></i>
+      <span class="modal-title">Update Person with ID <span th:text="${person.id}"></span></span>
 
+      <form class="modal-form space-y-8" th:object="${person}" th:attr="hx-post=@{/persons/edit/{id}(id=${person.id})}"
+            hx-target="#modal" hx-swap="outerHTML">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- First Column -->
-                        <div class="space-y-4">
-
-                              <!-- First Name -->
-                              <div class="flex flex-col">
-                                    <label for="firstName" class="text-gray-700 font-semibold flex items-center gap-2">
-                                          <i class="fa-regular fa-user"></i> First Name
-                                    </label>
-                                    <input type="text" id="firstName" th:field="*{firstName}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter first name">
-                                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
-                                          class="text-red-600 text-xs mt-1 block"></span>
-                              </div>
-
-                              <!-- Last Name -->
-                              <div class="flex flex-col">
-                                    <label for="lastName" class="text-gray-700 font-semibold flex items-center gap-2">
-                                          <i class="fa-regular fa-user"></i> Last Name
-                                    </label>
-                                    <input type="text" id="lastName" th:field="*{lastName}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
-                                          placeholder="Enter last name">
-                                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
-                                          class="text-red-600 text-xs mt-1 block"></span>
-                              </div>
-
-                              <!-- Birth Date -->
-                              <div class="flex flex-col">
-                                    <label for="birthDate" class="text-gray-700 font-semibold flex items-center gap-2">
-                                          <i class="fa-regular fa-calendar"></i> Birth Date
-                                    </label>
-                                    <input type="date" id="birthDate" th:field="*{birthDate}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
-                                    <span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"
-                                          class="text-red-600 text-xs mt-1 block"></span>
-                              </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- First Column -->
+                  <div class="space-y-4">
+                        <div class="flex flex-col">
+                              <label for="firstName" class="text-gray-700 font-semibold flex items-center gap-2">
+                                    <i class="fa-regular fa-user"></i> First Name
+                              </label>
+                              <input type="text" id="firstName" th:field="*{firstName}"
+                                    class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                    placeholder="Enter first name">
+                              <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                    class="text-red-600 text-xs mt-1 block"></span>
                         </div>
 
-                        <!-- Second Column -->
-                        <div class="space-y-4">
-                              <!-- Person Type -->
-                              <div class="flex flex-col">
-                                    <label for="personType" class="text-gray-700 font-semibold flex items-center gap-2">
-                                          <i class="fa-solid fa-users"></i> Person Type
-                                    </label>
-                                    <select id="personType" th:field="*{personType}"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
-                                          <option value="" selected>Select a Type</option>
-                                          <option th:each="type : ${T(ntt.beca.films.person.PersonType).values()}"
-                                                th:value="${type}" th:text="${type}"></option>
-                                    </select>
-                                    <span th:if="${#fields.hasErrors('personType')}" th:errors="*{personType}"
-                                          class="text-red-600 text-xs mt-1 block"></span>
-                              </div>
+                        <div class="flex flex-col">
+                              <label for="lastName" class="text-gray-700 font-semibold flex items-center gap-2">
+                                    <i class="fa-regular fa-user"></i> Last Name
+                              </label>
+                              <input type="text" id="lastName" th:field="*{lastName}"
+                                    class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default"
+                                    placeholder="Enter last name">
+                              <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                    class="text-red-600 text-xs mt-1 block"></span>
+                        </div>
 
-                              <!-- Nationality -->
-                              <div class="flex flex-col">
-                                    <label for="nationality"
-                                          class="text-gray-700 font-semibold flex items-center gap-2">
-                                          <i class="fa-solid fa-flag"></i> Nationality
-                                    </label>
-                                    <select id="nationality" name="nationality"
-                                          class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
-                                          <option value="">Select Nationality</option>
-                                          <option th:each="nat : ${nationalities}" th:value="${nat.id}"
-                                                th:text="${nat.label}"
-                                                th:selected="${person.nationality != null and nat.id == person.nationality.id}">
-                                          </option>
-                                    </select>
-                                    <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"
-                                          class="text-red-600 text-xs mt-1 block"></span>
-                              </div>
+                        <div class="flex flex-col">
+                              <label for="birthDate" class="text-gray-700 font-semibold flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar"></i> Birth Date
+                              </label>
+                              <input type="date" id="birthDate" th:field="*{birthDate}"
+                                    class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                              <span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"
+                                    class="text-red-600 text-xs mt-1 block"></span>
                         </div>
                   </div>
 
-                  <!-- Submit Button -->
-                  <div class="flex justify-end">
-                        <button type="submit"
-                              class="bg-blue-800 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-900">
-                              <i class="fa-solid fa-save"></i> Save Changes
-                        </button>
+                  <!-- Second Column -->
+                  <div class="space-y-4">
+                        <div class="flex flex-col">
+                              <label for="personType" class="text-gray-700 font-semibold flex items-center gap-2">
+                                    <i class="fa-solid fa-users"></i> Person Type
+                              </label>
+                              <select id="personType" th:field="*{personType}"
+                                    class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                                    <option value="" selected>Select a Type</option>
+                                    <option th:each="type : ${T(ntt.beca.films.person.PersonType).values()}"
+                                          th:value="${type}" th:text="${type}"></option>
+                              </select>
+                              <span th:if="${#fields.hasErrors('personType')}" th:errors="*{personType}"
+                                    class="text-red-600 text-xs mt-1 block"></span>
+                        </div>
+
+                        <div class="flex flex-col">
+                              <label for="nationality" class="text-gray-700 font-semibold flex items-center gap-2">
+                                    <i class="fa-solid fa-flag"></i> Nationality
+                              </label>
+                              <select id="nationality" name="nationality"
+                                    class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
+                                    <option value="">Select Nationality</option>
+                                    <option th:each="nat : ${nationalities}" th:value="${nat.id}" th:text="${nat.label}"
+                                          th:selected="${person.nationality != null and nat.id == person.nationality.id}">
+                                    </option>
+                              </select>
+                              <span th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"
+                                    class="text-red-600 text-xs mt-1 block"></span>
+                        </div>
                   </div>
-            </form>
-      </div>
-</div>
+            </div>
+
+            <div class="flex justify-end">
+                  <button type="submit" class="bg-blue-800 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-900">
+                        <i class="fa-solid fa-save"></i> Save Changes
+                  </button>
+            </div>
+      </form>
+
+</th:block>
