@@ -2,6 +2,7 @@ package ntt.beca.films.rating;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,7 @@ public class ApiFilmRatingController {
                               .score(rating.score())
                               .build();
 
-                  filmRatingRepository.save(filmRating);
+                  filmRatingRepository.save(Objects.requireNonNull(filmRating));
                   response.put("message", "Rating submitted successfully.");
                   return ResponseEntity.ok(response);
 

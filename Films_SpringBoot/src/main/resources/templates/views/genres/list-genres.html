@@ -54,12 +54,13 @@
 					<tr th:each="genre : ${genres.data}" class="border-b hover:bg-gray-100">
 						<td class="py-3 px-4" th:text="${genre.id}"></td>
 						<td class="py-3 px-4" th:text="${genre.label}"></td>
-						<td class="py-3 px-4"><a th:hx-get="@{/genres/edit/{id}(id=${genre.id})}"
-								hx-swap="outerHTML" th:hx-target="${'.modalDiv'}"
-								class="text-blue-500 cursor-pointer">Edit</a> | <a
-								th:href="@{/genres/delete/{id}(id=${genre.id})}"
+						<td class="py-3 px-4"><button type="button"
+								th:hx-get="@{/genres/edit/{id}(id=${genre.id})}" hx-swap="outerHTML"
+								th:hx-target="${'.modalDiv'}"
+								class="text-blue-500 cursor-pointer">Edit</button> | <button
+								type="button" th:href="@{/genres/delete/{id}(id=${genre.id})}"
 								onclick="return confirmDelete(this);"
-								class="text-red-500 cursor-pointer"> Delete </a></td>
+								class="text-red-500 cursor-pointer"> Delete </button></td>
 						</td>
 					</tr>
 				</tbody>
@@ -90,7 +91,7 @@
 					function confirmDelete(link) {
 						const isConfirmed = confirm("Are you sure you want to delete this Genre (when you delete this, the films related to it are being deleted as well)?");
 						if (isConfirmed) {
-							window.location.href = link.getAttribute("href");
+							globalThis.location.href = link.getAttribute("href");
 						}
 						return false;
 					}

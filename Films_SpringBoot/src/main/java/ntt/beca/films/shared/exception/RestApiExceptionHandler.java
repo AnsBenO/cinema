@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,14 +32,12 @@ public class RestApiExceptionHandler {
             body.put("error", "Validation Failed");
             body.put("fieldErrors", fieldErrors);
             return ResponseEntity.unprocessableEntity()
-                        .contentType(MediaType.APPLICATION_JSON)
                         .body(body);
       }
 
       @ExceptionHandler(UserAlreadyExistsException.class)
       public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .body(Map.of("error", ex.getMessage()));
       }
 
