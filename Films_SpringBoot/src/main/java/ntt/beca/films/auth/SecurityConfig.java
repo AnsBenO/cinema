@@ -65,6 +65,7 @@ class SecurityConfig {
       @Order(2)
       SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             http
+                        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                         .csrf(csrf -> csrf
                                     .ignoringRequestMatchers("/h2-console/**", "/swagger-ui/**", "/api/**"))
                         .headers(headers -> headers
