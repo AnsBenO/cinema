@@ -1,6 +1,7 @@
 package ntt.beca.films.dashboard;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import ntt.beca.films.screening.Screening;
+import ntt.beca.films.screening.ScreeningDto;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -24,8 +25,9 @@ public class DashboardController {
 
         boolean isHtmxRequest = request.getHeader("HX-Request") != null;
 
-        List<Screening> upcomingScreenings = dashboardService.getUpcomingScreenings();
+        List<ScreeningDto> upcomingScreenings = dashboardService.getUpcomingScreenings();
         DashboardDataDto dashboardData = dashboardService.getDashboardData();
+
         model.addAttribute("screenings", upcomingScreenings);
         model.addAttribute("dashboardData", dashboardData);
 

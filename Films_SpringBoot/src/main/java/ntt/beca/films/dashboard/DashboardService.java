@@ -1,12 +1,15 @@
 package ntt.beca.films.dashboard;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ntt.beca.films.rating.FilmRating;
 import ntt.beca.films.screening.Screening;
+import ntt.beca.films.screening.ScreeningDto;
+import ntt.beca.films.screening.ScreeningMapper;
 import ntt.beca.films.rating.FilmRatingRepository;
 import ntt.beca.films.film.FilmRepository;
 import ntt.beca.films.genre.GenreRepository;
@@ -21,10 +24,12 @@ public class DashboardService {
       private final UserRepository userRepository;
       private final ScreeningRepository screeningRepository;
       private final FilmRatingRepository filmRatingRepository;
+      private final ScreeningMapper screeningMapper;
 
-      public List<Screening> getUpcomingScreenings() {
+      public List<ScreeningDto> getUpcomingScreenings() {
+            List<Screening> upcomingScreenings = screeningRepository.findUpcomingScreenings();
 
-            return screeningRepository.findUpcomingScreenings();
+            return upcomingScreenings.stream().map(screeningMapper::toDto).toList();
       }
 
       public DashboardDataDto getDashboardData() {
@@ -35,6 +40,7 @@ public class DashboardService {
 
             // Calculate average rating
             Double averageRating = filmRatingRepository.findAll().stream()
+                        .filter(Objects::nonNull)
                         .mapToInt(FilmRating::getScore)
                         .average()
                         .orElse(0.0);

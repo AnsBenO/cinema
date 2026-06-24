@@ -3,6 +3,7 @@ package ntt.beca.films.config;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -281,7 +282,7 @@ class DataInitializer {
 
             List<Screening> screenings = new ArrayList<>();
             for (int i = 0; i < films.length; i++) {
-                  LocalDateTime showTime = LocalDateTime.of(2026, 6, (i % 28) + 1, 10 + (i % 8), 0);
+                  LocalDateTime showTime = LocalDateTime.now();
                   Screening s = new Screening();
                   s.setFilm(films[i]);
                   s.setHall(halls[i % halls.length]);

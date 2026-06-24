@@ -1,6 +1,10 @@
+logging:
+    level:
+        ntt.beca: DEBUG
 spring:
     application:
         name: films
+
     output:
         ansi:
             enabled: always
