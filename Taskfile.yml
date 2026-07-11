@@ -4,12 +4,7 @@ tasks:
     infra:up:
         desc: Start local infrastructure services (Postgres) only if needed
         cmds:
-            - |
-                if [ "$(docker compose -f docker-compose.dev.yml ps -q postgres)" ]; then
-                  echo "Postgres is already running"
-                else
-                  docker compose -f docker-compose.dev.yml up -d
-                fi
+            - '{{if eq .OS "windows"}}powershell -NoProfile -Command "$id = docker compose -f docker-compose.dev.yml ps -q postgres; if ($id) { Write-Host \"Postgres is already running\" } else { docker compose -f docker-compose.dev.yml up -d }"{{else}}if [ "$(docker compose -f docker-compose.dev.yml ps -q postgres)" ]; then echo "Postgres is already running"; else docker compose -f docker-compose.dev.yml up -d; fi{{end}}'
 
     infra:down:
         desc: Stop local infrastructure services
@@ -21,7 +16,7 @@ tasks:
         deps: [infra:up]
         dir: Films_SpringBoot
         cmds:
-            - ./mvnw spring-boot:run
+            - '{{if eq .OS "windows"}}mvnw.cmd spring-boot:run{{else}}./mvnw spring-boot:run{{end}}'
 
     frontend:
         desc: Start the Angular frontend
