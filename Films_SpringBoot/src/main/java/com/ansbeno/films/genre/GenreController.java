@@ -1,0 +1,123 @@
+package com.ansbeno.films.genre;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.ansbeno.films.shared.service.PagedResultDto;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/genres")
+public class GenreController {
+
+    private final GenreService genreService;
+
+    // Get all genres with pagination and search
+    @GetMapping("")
+    public String getAllGenres(@RequestParam(defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "") String genre,
+            HttpServletRequest request,
+            Model model) {
+        PagedResultDto<GenreDto> genres = genreService.getAll(page, keyword, genre);
+
+        model.addAttribute("genres", genres);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("genre", genre);
+
+        boolean isHtmxRequest = request.getHeader("HX-Request") != null;
+
+        if (isHtmxRequest) {
+            return "views/genres/list-genres :: genre-table";
+        }
+
+        return "views/genres/list-genres"; // Path to the HTML view
+    }
+
+    // Show form to add new genre
+    @GetMapping("/add")
+    public String showAddGenreForm(Model model) {
+        GenreDto genreDto = new GenreDto();
+        model.addAttribute("genre", genreDto);
+        return "views/genres/add-genre"; // Path to the HTML form for adding genre
+    }
+
+    // Create new genre
+    @PostMapping
+    public String createGenre(@Valid @ModelAttribute("genre") GenreDto genre, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            response.setStatus(422);
+            return "views/genres/add-genre";
+        }
+        genreService.save(genre);
+        redirectAttributes.addFlashAttribute("message", "Genre added successfully!");
+        redirectAttributes.addFlashAttribute("status", true);
+        return "redirect:/genres";
+    }
+
+    // Delete genre by ID
+    @GetMapping("/delete/{id}")
+    public String deleteGenre(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (genreService.delete(id)) {
+            redirectAttributes.addFlashAttribute("message", "Genre deleted successfully!");
+            redirectAttributes.addFlashAttribute("status", true);
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Failed to delete genre.");
+            redirectAttributes.addFlashAttribute("status", false);
+        }
+        return "redirect:/genres";
+    }
+
+    // Show form to edit genre by ID
+    @GetMapping("/edit/{id}")
+    public String showEditGenreForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            GenreDto genreDto = genreService.getOne(id);
+            model.addAttribute("genre", genreDto);
+            return "views/genres/edit-genre"; // Path to the HTML form for editing genre
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Genre not found.");
+            redirectAttributes.addFlashAttribute("status", false);
+            return "redirect:/genres";
+        }
+    }
+
+    // Update genre information
+    @PostMapping("/edit/{id}")
+    public String updateGenre(@PathVariable Long id, @Valid @ModelAttribute("genre") GenreDto genreDto,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes,
+            HttpServletRequest request, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            response.setStatus(422);
+            return "views/genres/edit-genre";
+        }
+        try {
+            GenreDto existingGenre = genreService.getOne(id);
+            existingGenre.setLabel(genreDto.getLabel());
+            genreService.save(existingGenre);
+            if (request.getHeader("HX-Request") != null) {
+                response.setHeader("HX-Redirect", "/genres");
+                return "views/genres/edit-genre";
+            }
+            redirectAttributes.addFlashAttribute("message", "Genre updated successfully!");
+            redirectAttributes.addFlashAttribute("status", true);
+        } catch (Exception e) {
+            if (request.getHeader("HX-Request") != null) {
+                response.setHeader("HX-Redirect", "/genres");
+                return "views/genres/edit-genre";
+            }
+            redirectAttributes.addFlashAttribute("message", "Failed to update genre.");
+            redirectAttributes.addFlashAttribute("status", false);
+        }
+        return "redirect:/genres";
+    }
+}

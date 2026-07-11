@@ -1,6 +1,6 @@
 logging:
     level:
-        ntt.beca: DEBUG
+        com.ansbeno: DEBUG
 spring:
     application:
         name: films

@@ -43,7 +43,7 @@
                               <select id="role" th:field="*{role}"
                                     class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-800">
                                     <option value="" selected>Select a Role</option>
-                                    <option th:each="role : ${T(ntt.beca.films.shared.security.Role).values()}"
+                                    <option th:each="role : ${T(com.ansbeno.films.shared.security.Role).values()}"
                                           th:value="${role}" th:text="${role}"></option>
                               </select>
                               <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"

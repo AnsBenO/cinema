@@ -1,0 +1,72 @@
+package com.ansbeno.films.rating;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ansbeno.films.auth.JwtService;
+import com.ansbeno.films.film.Film;
+import com.ansbeno.films.film.FilmRepository;
+import com.ansbeno.films.user.UserEntity;
+import com.ansbeno.films.user.UserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/film-ratings")
+public class ApiFilmRatingController {
+
+      private final FilmRepository filmRepository;
+
+      private final UserRepository userRepository;
+
+      private final FilmRatingRepository filmRatingRepository;
+
+      private final JwtService jwtService;
+
+      /**
+       * Submit a film rating.
+       */
+      @PostMapping
+      public ResponseEntity<Map<String, String>> submitRating(@Valid @RequestBody RatingPayload rating,
+                  HttpServletRequest request) {
+
+            String authHeader = request.getHeader("Authorization");
+            String token = authHeader.split(" ")[1];
+            String email = jwtService.extractEmail(token);
+            Map<String, String> response = new HashMap<>();
+            try {
+                  // Authenticate user
+                  UserEntity customer = userRepository.findByEmail(email).orElseThrow();
+
+                  // Fetch film by title
+                  Film film = filmRepository.findByTitle(rating.film())
+                              .orElseThrow(() -> new RuntimeException("Film not found."));
+
+                  // Map payload to entity and persist
+                  FilmRating filmRating = FilmRating.builder()
+                              .customer(customer)
+                              .film(film)
+                              .score(rating.score())
+                              .build();
+
+                  filmRatingRepository.save(Objects.requireNonNull(filmRating));
+                  response.put("message", "Rating submitted successfully.");
+                  return ResponseEntity.ok(response);
+
+            } catch (Exception e) {
+                  response.put("message", "Could not submit rating: " + e.getMessage());
+                  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+      }
+}

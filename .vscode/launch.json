@@ -13,8 +13,18 @@
 			"name": "Spring Boot-FilmsApplication<films>",
 			"request": "launch",
 			"cwd": "${workspaceFolder}",
-			"mainClass": "ntt.beca.films.FilmsApplication",
+			"mainClass": "com.ansbeno.films.FilmsApplication",
 			"projectName": "films",
+			"args": "",
+			"envFile": "${workspaceFolder}/.env"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-FilmsApplication<Films_SpringBoot>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "com.ansbeno.films.FilmsApplication",
+			"projectName": "Films_SpringBoot",
 			"args": "",
 			"envFile": "${workspaceFolder}/.env"
 		},

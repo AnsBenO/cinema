@@ -52,7 +52,7 @@
                               <select id="personType" th:field="*{personType}"
                                     class="mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-celeste-default">
                                     <option value="" selected>Select a Type</option>
-                                    <option th:each="type : ${T(ntt.beca.films.person.PersonType).values()}"
+                                    <option th:each="type : ${T(com.ansbeno.films.person.PersonType).values()}"
                                           th:value="${type}" th:text="${type}"></option>
                               </select>
                               <span th:if="${#fields.hasErrors('personType')}" th:errors="*{personType}"

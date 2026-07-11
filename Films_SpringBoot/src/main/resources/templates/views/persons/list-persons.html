@@ -28,7 +28,7 @@
 					<select name="personType" class="py-2 pl-2 pr-4 border border-gray-300 h-10">
 						<option value="" th:selected="${#strings.equals(personType, '')}" selected>Select a
 							Type</option>
-						<option th:each="type : ${T(ntt.beca.films.person.PersonType).values()}"
+						<option th:each="type : ${T(com.ansbeno.films.person.PersonType).values()}"
 							th:value="${type}" th:text="${type}"
 							th:selected="${#strings.equals(personType, type)}"></option>
 					</select>
