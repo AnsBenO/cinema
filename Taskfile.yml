@@ -1,0 +1,41 @@
+version: "3"
+
+tasks:
+    infra:up:
+        desc: Start local infrastructure services (Postgres) only if needed
+        cmds:
+            - |
+                if [ "$(docker compose -f docker-compose.dev.yml ps -q postgres)" ]; then
+                  echo "Postgres is already running"
+                else
+                  docker compose -f docker-compose.dev.yml up -d
+                fi
+
+    infra:down:
+        desc: Stop local infrastructure services
+        cmds:
+            - docker compose -f docker-compose.dev.yml down
+
+    backend:
+        desc: Start the Spring Boot backend
+        deps: [infra:up]
+        dir: Films_SpringBoot
+        cmds:
+            - ./mvnw spring-boot:run
+
+    frontend:
+        desc: Start the Angular frontend
+        dir: Films_Angular
+        cmds:
+            - ng serve
+
+    dev:backend:
+        desc: Start infra and run the backend
+        deps: [infra:up]
+        cmds:
+            - task backend
+
+    dev:frontend:
+        desc: Start infra and run the frontend
+        cmds:
+            - task frontend

@@ -15,19 +15,16 @@ The admin area is built using **Thymeleaf templates**, **HTMX**, and **Tailwind 
    ![Dashboard](screenshots/dashboard.png)
 
 2. **Manage Screenings**
-
     - List all screenings in the system.  
       ![List Screenings](screenshots/list-screenings.png)
     - Edit screening details.  
       ![Edit Screening](screenshots/edit-screening.png)
 
 3. **Manage Users**
-
     - View and manage user accounts.  
       ![List Users](screenshots/list-users.png)
 
 4. **Authentication**
-
     - Secure login for administrators.  
       ![Login](screenshots/login.png)
 
@@ -41,22 +38,19 @@ The admin area is built using **Thymeleaf templates**, **HTMX**, and **Tailwind 
 
 The backend also provides a RESTful API that is consumed by an Angular frontend application. This API allows customers to interact with the system, including:
 
--   Viewing available movies and upcoming screenings.
--   Rating Movies
-
-The Angular frontend for this project can be found in the following repository:  
-[https://github.com/Kaouthar15/Films_Angular](https://github.com/Kaouthar15/Films_Angular)
+- Viewing available movies and upcoming screenings.
+- Rating Movies
 
 ---
 
 ## Technologies Used
 
--   **Spring Boot**: Backend framework.
--   **Thymeleaf**: Server-side rendering for the admin area.
--   **HTMX**: For dynamic, interactive web pages.
--   **Tailwind CSS**: For styling the admin interface.
--   **Spring Data JPA**: For database interactions.
--   **Spring Security**: For authentication and authorization.
--   **Springdoc OpenAPI**: For API documentation.
+- **Spring Boot**: Backend framework.
+- **Thymeleaf**: Server-side rendering for the admin area.
+- **HTMX**: For dynamic, interactive web pages.
+- **Tailwind CSS**: For styling the admin interface.
+- **Spring Data JPA**: For database interactions.
+- **Spring Security**: For authentication and authorization.
+- **Springdoc OpenAPI**: For API documentation.
 
 ---
