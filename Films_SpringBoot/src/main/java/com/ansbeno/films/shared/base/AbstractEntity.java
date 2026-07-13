@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AbstractEntity {
+public abstract class AbstractEntity {
 
       @Id
       @GeneratedValue(strategy = GenerationType.IDENTITY)

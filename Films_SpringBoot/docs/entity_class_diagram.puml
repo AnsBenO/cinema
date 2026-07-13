@@ -1,0 +1,120 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+abstract class AbstractEntity {
+  +Long id
+  +LocalDateTime createdAt
+  +LocalDateTime updatedAt
+}
+
+enum PersonType {
+  ACTOR
+  DIRECTOR
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+enum Role {
+  CUSTOMER
+  MODERATOR
+  ADMIN
+}
+
+class Genre {
+  +String label
+}
+
+class Nationality {
+  +String label
+}
+
+class Person {
+  +String lastName
+  +String firstName
+  +String photo
+  +LocalDate birthDate
+  +PersonType personType
+}
+
+class Film {
+  +String title
+  +int duration
+  +String description
+  +String imageUrl
+  +int year
+}
+
+class Media {
+  +String media
+  +MediaType mediaType
+}
+
+class Hall {
+  +int number
+  +int capacity
+}
+
+class Screening {
+  +LocalDateTime startTime
+  +LocalDateTime endTime
+}
+
+class FilmRating {
+  +int score
+}
+
+class UserEntity {
+  +Long id
+  +String username
+  +String email
+  +String password
+  +Role role
+  +LocalDateTime createdAt
+  +LocalDateTime updatedAt
+}
+
+AbstractEntity <|-- Genre
+AbstractEntity <|-- Nationality
+AbstractEntity <|-- Person
+AbstractEntity <|-- Film
+AbstractEntity <|-- Media
+AbstractEntity <|-- Hall
+AbstractEntity <|-- Screening
+AbstractEntity <|-- FilmRating
+
+Genre "1" --> "0..*" Film : films
+Nationality "1" --> "0..*" Person : persons
+Nationality "1" --> "0..*" Film : films
+
+Film "1" --> "1" Genre : genre
+Film "1" --> "1" Nationality : nationality
+Film "1" --> "1" Person : director
+Film "1" --> "0..*" Person : actors
+Film "1" --> "0..*" Screening : screenings
+Film "1" --> "0..*" Media : medias
+Film "1" --> "0..*" FilmRating : ratings
+
+Person "1" --> "0..*" Film : directedFilms
+Person "1" --> "0..*" Film : films
+Person "1" --> "1" Nationality : nationality
+
+Hall "1" --> "0..*" Screening : screenings
+Screening "1" --> "1" Film : film
+Screening "1" --> "1" Hall : hall
+
+Media "1" --> "1" Film : film
+FilmRating "1" --> "1" UserEntity : customer
+FilmRating "1" --> "1" Film : film
+
+Person ..> PersonType : uses
+Media ..> MediaType : uses
+UserEntity ..> Role : uses
+
+@enduml
