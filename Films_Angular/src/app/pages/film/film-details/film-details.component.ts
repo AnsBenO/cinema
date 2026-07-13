@@ -42,11 +42,9 @@ export class FilmDetailsComponent implements OnChanges {
   readonly closeIcon = faXmark;
   readonly serverUrl = environment.SERVER_URL;
 
-  // Use signals for better reactivity
   score = signal(0);
   isSubmitting = signal(false);
 
-  // Computed signals
   hasFilm = computed(() => !!this.film);
   hasValidScore = computed(() => this.score() > 0);
 
@@ -61,7 +59,7 @@ export class FilmDetailsComponent implements OnChanges {
     if (!this.film || !this.hasValidScore()) {
       this.notificationStore.notify(
         'Please select a rating',
-        NotificationType.INFO
+        NotificationType.INFO,
       );
       return;
     }
@@ -74,13 +72,13 @@ export class FilmDetailsComponent implements OnChanges {
         .toPromise();
       this.notificationStore.notify(
         'Rating submitted successfully',
-        NotificationType.SUCCESS
+        NotificationType.SUCCESS,
       );
       this.closeDialog();
     } catch (error) {
       this.notificationStore.notify(
         'You need to signup first',
-        NotificationType.ERROR
+        NotificationType.ERROR,
       );
     } finally {
       this.isSubmitting.set(false);

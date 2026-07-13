@@ -1,70 +1,71 @@
-<p-carousel class="p-11" [value]="screeningsList" [numVisible]="3" [numScroll]="1" [circular]="false"
-      [autoplayInterval]="5000" [styleClass]="'screening-carousel mx-auto px-4'"
-      [responsiveOptions]="responsiveOptions">
+<div
+      class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 p-3 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.3)] backdrop-blur sm:p-6">
+      <p-carousel class="block w-full max-w-full overflow-hidden p-2 sm:p-4" [value]="screeningsList" [numVisible]="3"
+            [numScroll]="1" [circular]="false" [autoplayInterval]="5000"
+            [styleClass]="'screening-carousel mx-auto w-full max-w-full overflow-hidden px-0 sm:px-2'"
+            [responsiveOptions]="responsiveOptions">
 
-      <!-- Custom Previous Button -->
-      <ng-template pTemplate="previousicon">
-            <button class="carousel-nav-btn carousel-prev-btn" aria-label="Previous screenings">
-                  <fa-icon [icon]="previousIcon"></fa-icon>
-            </button>
-      </ng-template>
+            <ng-template pTemplate="previousicon">
+                  <button
+                        class="rounded-full border border-slate-200 bg-white p-3 text-slate-700 shadow-sm transition hover:border-indigo-300 hover:text-indigo-700"
+                        aria-label="Previous screenings">
+                        <fa-icon [icon]="previousIcon"></fa-icon>
+                  </button>
+            </ng-template>
 
-      <!-- Custom Next Button -->
-      <ng-template pTemplate="nexticon">
-            <button class="carousel-nav-btn carousel-next-btn" aria-label="Next screenings">
-                  <fa-icon [icon]="nextIcon"></fa-icon>
-            </button>
-      </ng-template>
+            <ng-template pTemplate="nexticon">
+                  <button
+                        class="rounded-full border border-slate-200 bg-white p-3 text-slate-700 shadow-sm transition hover:border-indigo-300 hover:text-indigo-700"
+                        aria-label="Next screenings">
+                        <fa-icon [icon]="nextIcon"></fa-icon>
+                  </button>
+            </ng-template>
 
-      <ng-template let-screening pTemplate="item">
-            <div class="screening-card">
-                  <div class="card-image-container">
-                        <!-- Film Image -->
-                        <img [src]="serverUrl + screening.film.imageUrl" [alt]="screening.film.title + ' poster'"
-                              class="screening-image" />
+            <ng-template let-screening pTemplate="item">
+                  <div
+                        class="screening-card mx-2 overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <div class="card-image-container relative">
+                              <img [src]="serverUrl + screening.film.imageUrl" [alt]="screening.film.title + ' poster'"
+                                    class="screening-image h-56 w-full object-cover" />
 
-                        <!-- Hall Number -->
-                        <div class="hall-badge">
-                              <span class="hall-icon">
-                                    <fa-icon [icon]="hallIcon"></fa-icon>
-                              </span>
-                              Hall {{ screening.hall.number }}
+                              <div
+                                    class="hall-badge absolute left-3 top-3 rounded-full bg-slate-900/80 px-3 py-1 text-sm font-semibold text-white">
+                                    <span class="mr-2">
+                                          <fa-icon [icon]="hallIcon"></fa-icon>
+                                    </span>
+                                    Hall {{ screening.hall.number }}
+                              </div>
+
+                              <div
+                                    class="time-badge absolute right-3 top-3 rounded-full bg-indigo-600 px-3 py-1 text-sm font-semibold text-white">
+                                    {{ screening.startTime | date: 'HH:mm' }}
+                              </div>
                         </div>
 
-                        <!-- Screening Time Badge -->
-                        <div class="time-badge">
-                              {{ screening.startTime | date: 'HH:mm' }}
+                        <div class="card-content space-y-3 p-4">
+                              <h3 class="film-title text-lg font-semibold text-slate-800">
+                                    {{ screening.film.title }}
+                              </h3>
+
+                              <div class="screening-details space-y-2 text-sm text-slate-600">
+                                    <div class="detail-item flex items-center gap-2">
+                                          <fa-icon [icon]="calendarIcon" class="detail-icon text-indigo-600"></fa-icon>
+                                          <span>{{ screening.startTime | date: 'MMM d, y' }}</span>
+                                    </div>
+
+                                    <div class="detail-item flex items-center gap-2">
+                                          <fa-icon [icon]="clockIcon" class="detail-icon text-indigo-600"></fa-icon>
+                                          <span>{{ screening.startTime | date: 'HH:mm' }} - {{ screening.endTime | date:
+                                                'HH:mm' }}</span>
+                                    </div>
+
+                                    <div class="detail-item flex items-center gap-2">
+                                          <fa-icon [icon]="timeIcon" class="detail-icon text-indigo-600"></fa-icon>
+                                          <span>{{ screening.film.duration }} mins</span>
+                                    </div>
+                              </div>
                         </div>
                   </div>
-
-                  <!-- Card Content -->
-                  <div class="card-content">
-                        <!-- Film Title -->
-                        <h3 class="film-title">
-                              {{ screening.film.title }}
-                        </h3>
-
-                        <!-- Screening Details -->
-                        <div class="screening-details">
-                              <div class="detail-item">
-                                    <fa-icon [icon]="calendarIcon" class="detail-icon"></fa-icon>
-                                    <span>{{ screening.startTime | date: 'MMM d, y' }}</span>
-                              </div>
-
-                              <div class="detail-item">
-                                    <fa-icon [icon]="clockIcon" class="detail-icon"></fa-icon>
-                                    <span>{{ screening.startTime | date: 'HH:mm' }} - {{ screening.endTime | date:
-                                          'HH:mm' }}</span>
-                              </div>
-
-                              <div class="detail-item">
-                                    <fa-icon [icon]="timeIcon" class="detail-icon"></fa-icon>
-                                    <span>{{ screening.film.duration }} mins</span>
-                              </div>
-                        </div>
-
-
-                  </div>
-            </div>
-      </ng-template>
-</p-carousel>
+            </ng-template>
+      </p-carousel>
+</div>

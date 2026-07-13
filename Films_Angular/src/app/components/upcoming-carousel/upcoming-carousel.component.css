@@ -1,6 +1,20 @@
-/* Carousel Styles */
+/* Carousel styles aligned with the rest of the app */
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+:host ::ng-deep .screening-carousel,
+:host ::ng-deep .screening-carousel .p-carousel-content,
+:host ::ng-deep .screening-carousel .p-carousel-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
 :host ::ng-deep .screening-carousel .p-carousel-content .p-carousel-container {
-  padding: 0 2.5rem;
+  padding: 0;
 }
 
 :host ::ng-deep .screening-carousel .p-carousel-prev,
@@ -8,19 +22,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 2.5rem;
-  height: 2.5rem;
-  background: transparent;
-  border: none;
   z-index: 10;
-}
-
-:host ::ng-deep .screening-carousel .p-carousel-prev {
-  left: 0;
-}
-
-:host ::ng-deep .screening-carousel .p-carousel-next {
-  right: 0;
 }
 
 .carousel-nav-btn {
@@ -29,38 +31,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  color: #2d3748;
-  transition: all 0.3s ease;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.95);
+  color: #334155;
+  box-shadow: 0 10px 25px -12px rgba(15, 23, 42, 0.3);
+  transition: all 0.2s ease;
   cursor: pointer;
+}
 
-  &:hover {
-    background: #ffffff;
-    @apply text-blue-800;
-  }
+.carousel-nav-btn:hover {
+  border-color: #c7d2fe;
+  color: #4338ca;
+  transform: translateY(-1px);
+}
 
-  &:active {
-    transform: scale(0.95);
-  }
+.carousel-nav-btn:active {
+  transform: scale(0.96);
 }
 
 .screening-card {
-  border: 1px solid rgba(255, 255, 255, 0.546);
-  border-radius: 12px;
-  max-width: 300px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #f8f8f873 0%, #d7dcff 100%);
-  transition: all 0.3s ease;
-  margin: 0 0.75rem;
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  margin: 0 0.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 60px -30px rgba(15, 23, 42, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
 
-  &:hover {
-    transform: translateY(-5px);
-  }
+.screening-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 70px -25px rgba(15, 23, 42, 0.4);
 }
 
 .card-image-container {
@@ -72,104 +79,72 @@
   width: 100%;
   height: 280px;
   object-fit: cover;
-  transition: transform 0.5s ease;
-
-  .screening-card:hover & {
-    transform: scale(1.05);
-  }
+  transition: transform 0.3s ease;
 }
 
-.hall-badge {
+.screening-card:hover .screening-image {
+  transform: scale(1.04);
+}
+
+.hall-badge,
+.time-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(75, 110, 236, 0.9);
-  @apply text-blue-800;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
+  top: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 9999px;
   font-size: 0.8rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.hall-badge {
+  left: 0.75rem;
+  background: rgba(15, 23, 42, 0.75);
 }
 
 .time-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(66, 153, 225, 0.9);
-  color: white;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  right: 0.75rem;
+  background: rgba(79, 70, 229, 0.9);
 }
 
 .card-content {
-  padding: 1.25rem;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  flex-grow: 1;
+  gap: 0.75rem;
+  padding: 1.1rem;
 }
 
 .film-title {
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: 1.1rem;
   font-weight: 700;
-  @apply text-blue-950;
-  margin: 0 0 1rem 0;
-  line-height: 1.3;
-  text-align: center;
+  line-height: 1.35;
+  color: #0f172a;
 }
 
 .screening-details {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 0.6rem;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
+  font-size: 0.9rem;
+  color: #475569;
 }
 
 .detail-item {
   display: flex;
-  align-items: start;
-  gap: 0.5rem;
-  @apply text-blue-900;
-  font-size: 0.9rem;
+  align-items: flex-start;
+  gap: 0.45rem;
 }
 
 .detail-icon {
-  color: rgba(75, 110, 236, 0.9);
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
-.book-btn {
-  margin-top: auto;
-  background: linear-gradient(
-    135deg,
-    rgba(75, 110, 236, 0.9) 0%,
-    rgba(32, 77, 243, 0.9) 100%
-  );
-  border: none;
-  @apply text-blue-800;
-  font-weight: 600;
-  padding: 0.75rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: linear-gradient(
-      135deg,
-      rgba(89, 121, 236, 0.9) 0%,
-      rgba(75, 110, 236, 0.9) 100%
-    );
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
+  margin-top: 0.15rem;
+  color: #4f46e5;
 }
 
 /* Responsive adjustments */
@@ -188,24 +163,12 @@
 }
 
 @media (max-width: 768px) {
-  :host
-    ::ng-deep
-    .screening-carousel
-    .p-carousel-content
-    .p-carousel-container {
-    padding: 0 1.5rem;
-  }
-
   .screening-card {
-    margin: 0 0.5rem;
+    margin: 0 0.2rem;
   }
 
   .screening-image {
     height: 220px;
-  }
-
-  .film-title {
-    font-size: 1.1rem;
   }
 }
 
@@ -224,21 +187,6 @@
   }
 }
 
-/* Make carousel wrapper allow shadows to render outside */
 .screening-carousel .p-carousel-content {
-  padding: 1rem 0; /* breathing space for shadows */
-}
-
-/* Badges */
-.hall-badge,
-.time-badge {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
+  padding: 1rem 0;
 }

@@ -3,6 +3,30 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  @apply min-h-screen bg-slate-50 text-slate-800 antialiased;
+  background-image:
+    radial-gradient(
+      circle at top left,
+      rgba(99, 102, 241, 0.14),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(14, 165, 233, 0.14),
+      transparent 32%
+    );
+}
+
+::selection {
+  @apply bg-indigo-200 text-slate-900;
+}
+
 .p-dialog-mask {
   background-color: #00000059 !important;
 }
