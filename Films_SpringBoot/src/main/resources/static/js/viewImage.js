@@ -1,6 +1,6 @@
-let modal = document.getElementById("viewImageModal");
-let modalImg = document.getElementById("modalImage");
-let captionText = document.getElementById("caption");
+var modal = document.getElementById("viewImageModal");
+var modalImg = document.getElementById("modalImage");
+var captionText = document.getElementById("caption");
 document.querySelectorAll(".view-image-btn").forEach((button) => {
 	button.onclick = function () {
 		modalImg.classList.remove("fade-out");
