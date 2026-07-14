@@ -1,71 +1,107 @@
 <div
-      class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 p-3 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.3)] backdrop-blur sm:p-6">
-      <p-carousel class="block w-full max-w-full overflow-hidden p-2 sm:p-4" [value]="screeningsList" [numVisible]="3"
-            [numScroll]="1" [circular]="false" [autoplayInterval]="5000"
-            [styleClass]="'screening-carousel mx-auto w-full max-w-full overflow-hidden px-0 sm:px-2'"
-            [responsiveOptions]="responsiveOptions">
+      class="rounded-[2rem] border border-white/70 bg-white/80 p-4 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.3)] backdrop-blur sm:p-6">
 
+      <p-carousel [value]="screeningsList" [numVisible]="3" [numScroll]="1" [circular]="false" [autoplayInterval]="5000"
+            [responsiveOptions]="responsiveOptions" styleClass="screening-carousel w-full">
+
+            <!-- Previous -->
             <ng-template pTemplate="previousicon">
-                  <button
-                        class="rounded-full border border-slate-200 bg-white p-3 text-slate-700 shadow-sm transition hover:border-indigo-300 hover:text-indigo-700"
-                        aria-label="Previous screenings">
+                  <button type="button" aria-label="Previous screenings"
+                        class="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-md transition-all duration-200 hover:scale-105 hover:border-indigo-300 hover:text-indigo-600">
                         <fa-icon [icon]="previousIcon"></fa-icon>
                   </button>
             </ng-template>
 
+            <!-- Next -->
             <ng-template pTemplate="nexticon">
-                  <button
-                        class="rounded-full border border-slate-200 bg-white p-3 text-slate-700 shadow-sm transition hover:border-indigo-300 hover:text-indigo-700"
-                        aria-label="Next screenings">
+                  <button type="button" aria-label="Next screenings"
+                        class="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-md transition-all duration-200 hover:scale-105 hover:border-indigo-300 hover:text-indigo-600">
                         <fa-icon [icon]="nextIcon"></fa-icon>
                   </button>
             </ng-template>
 
-            <ng-template let-screening pTemplate="item">
-                  <div
-                        class="screening-card mx-2 overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                        <div class="card-image-container relative">
-                              <img [src]="serverUrl + screening.film.imageUrl" [alt]="screening.film.title + ' poster'"
-                                    class="screening-image h-56 w-full object-cover" />
+            <!-- Card -->
+            <ng-template pTemplate="item" let-screening>
+                  <div class="p-3">
+                        <article
+                              class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 
-                              <div
-                                    class="hall-badge absolute left-3 top-3 rounded-full bg-slate-900/80 px-3 py-1 text-sm font-semibold text-white">
-                                    <span class="mr-2">
+                              <!-- Poster -->
+                              <div class="relative">
+
+                                    <img [src]="serverUrl + screening.film.imageUrl" [alt]="screening.film.title"
+                                          class="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+
+                                    <!-- Gradient -->
+                                    <div
+                                          class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent">
+                                    </div>
+
+                                    <!-- Hall -->
+                                    <div
+                                          class="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-slate-900/80 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+
                                           <fa-icon [icon]="hallIcon"></fa-icon>
-                                    </span>
-                                    Hall {{ screening.hall.number }}
-                              </div>
+                                          <span>Hall {{ screening.hall.number }}</span>
 
-                              <div
-                                    class="time-badge absolute right-3 top-3 rounded-full bg-indigo-600 px-3 py-1 text-sm font-semibold text-white">
-                                    {{ screening.startTime | date: 'HH:mm' }}
-                              </div>
-                        </div>
-
-                        <div class="card-content space-y-3 p-4">
-                              <h3 class="film-title text-lg font-semibold text-slate-800">
-                                    {{ screening.film.title }}
-                              </h3>
-
-                              <div class="screening-details space-y-2 text-sm text-slate-600">
-                                    <div class="detail-item flex items-center gap-2">
-                                          <fa-icon [icon]="calendarIcon" class="detail-icon text-indigo-600"></fa-icon>
-                                          <span>{{ screening.startTime | date: 'MMM d, y' }}</span>
                                     </div>
 
-                                    <div class="detail-item flex items-center gap-2">
-                                          <fa-icon [icon]="clockIcon" class="detail-icon text-indigo-600"></fa-icon>
-                                          <span>{{ screening.startTime | date: 'HH:mm' }} - {{ screening.endTime | date:
-                                                'HH:mm' }}</span>
+                                    <!-- Time -->
+                                    <div
+                                          class="absolute right-4 top-4 rounded-full bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow">
+
+                                          {{ screening.startTime | date:'HH:mm' }}
+
                                     </div>
 
-                                    <div class="detail-item flex items-center gap-2">
-                                          <fa-icon [icon]="timeIcon" class="detail-icon text-indigo-600"></fa-icon>
-                                          <span>{{ screening.film.duration }} mins</span>
-                                    </div>
                               </div>
-                        </div>
+
+                              <!-- Content -->
+                              <div class="space-y-4 p-5">
+
+                                    <h3 class="line-clamp-2 text-xl font-bold text-slate-900">
+                                          {{ screening.film.title }}
+                                    </h3>
+
+                                    <div class="space-y-3 text-sm text-slate-600">
+
+                                          <div class="flex items-center gap-3">
+                                                <fa-icon [icon]="calendarIcon" class="text-indigo-600">
+                                                </fa-icon>
+
+                                                <span>
+                                                      {{ screening.startTime | date:'EEEE, MMM d, y' }}
+                                                </span>
+                                          </div>
+
+                                          <div class="flex items-center gap-3">
+                                                <fa-icon [icon]="clockIcon" class="text-indigo-600">
+                                                </fa-icon>
+
+                                                <span>
+                                                      {{ screening.startTime | date:'HH:mm' }}
+                                                      —
+                                                      {{ screening.endTime | date:'HH:mm' }}
+                                                </span>
+                                          </div>
+
+                                          <div class="flex items-center gap-3">
+                                                <fa-icon [icon]="timeIcon" class="text-indigo-600">
+                                                </fa-icon>
+
+                                                <span>
+                                                      {{ screening.film.duration }} min
+                                                </span>
+                                          </div>
+
+                                    </div>
+
+                              </div>
+
+                        </article>
                   </div>
             </ng-template>
+
       </p-carousel>
+
 </div>

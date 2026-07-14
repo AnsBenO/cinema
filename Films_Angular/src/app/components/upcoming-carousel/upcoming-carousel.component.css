@@ -1,5 +1,4 @@
-/* Carousel styles aligned with the rest of the app */
-:host {
+Carousel styles aligned with the rest of the app :host {
   display: block;
   width: 100%;
   max-width: 100%;
