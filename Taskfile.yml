@@ -11,26 +11,21 @@ tasks:
         cmds:
             - docker compose -f docker-compose.dev.yml down
 
-    backend:
+    backend:dev:
         desc: Start the Spring Boot backend
         deps: [infra:up]
         dir: Films_SpringBoot
         cmds:
             - '{{if eq .OS "windows"}}mvnw.cmd spring-boot:run{{else}}./mvnw spring-boot:run{{end}}'
 
-    frontend:
+    frontend:dev:
         desc: Start the Angular frontend
         dir: Films_Angular
         cmds:
             - ng serve
 
-    dev:backend:
-        desc: Start infra and run the backend
-        deps: [infra:up]
+    frontend:build:
+        desc: Build the Angular frontend
+        dir: Films_Angular
         cmds:
-            - task backend
-
-    dev:frontend:
-        desc: Start infra and run the frontend
-        cmds:
-            - task frontend
+            - ng build
