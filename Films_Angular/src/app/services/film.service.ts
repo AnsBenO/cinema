@@ -15,6 +15,11 @@ import { FilmsResponse } from '../models/film.model';
 import { environment } from '../../environment/environment';
 import { GenreResponse } from '../models/genre.model';
 import { FilmRatingPayload } from '../models/rating.model';
+
+export interface RatingResponse {
+  message: string;
+}
+
 @Injectable()
 export class FilmService {
   http = inject(HttpClient);
@@ -30,7 +35,7 @@ export class FilmService {
   // Fetch genres
   genres$ = this.http
     .get<GenreResponse>(
-      `${environment.API_URL}/genres/search/findAllNoPagination`
+      `${environment.API_URL}/genres/search/findAllNoPagination`,
     )
     .pipe(map((response) => response._embedded.genre));
 
@@ -51,21 +56,24 @@ export class FilmService {
               genreLabel: genre ?? '',
               page: page.toString(),
             },
-          }
+          },
         )
         .pipe(
           // set loading to false when data is retrieved
-          finalize(() => this.loadingSubject.next(false))
-        )
-    )
+          finalize(() => this.loadingSubject.next(false)),
+        ),
+    ),
   );
 
-  rateFilm(film: string, score: number): Observable<any> {
+  rateFilm(film: string, score: number): Observable<RatingResponse> {
     const payload: FilmRatingPayload = {
       film: film,
       score,
     };
-    return this.http.post(`${environment.API_URL}/film-ratings`, payload);
+    return this.http.post<RatingResponse>(
+      `${environment.API_URL}/film-ratings`,
+      payload,
+    );
   }
 
   // Methods to update filters

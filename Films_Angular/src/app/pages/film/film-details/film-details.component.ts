@@ -23,6 +23,8 @@ import {
   NotificationStore,
   NotificationType,
 } from '../../../store/notification.store';
+import { firstValueFrom, tap } from 'rxjs';
+import { ErrorResponse } from '../../../models/error-response.model';
 
 @Component({
   selector: 'app-film-details',
@@ -55,7 +57,7 @@ export class FilmDetailsComponent implements OnChanges {
     }
   }
 
-  async submitRating(): Promise<void> {
+  submitRating(): void {
     if (!this.film || !this.hasValidScore()) {
       this.notificationStore.notify(
         'Please select a rating',
@@ -66,23 +68,26 @@ export class FilmDetailsComponent implements OnChanges {
 
     this.isSubmitting.set(true);
 
-    try {
-      await this.filmService
-        .rateFilm(this.film.title, this.score())
-        .toPromise();
-      this.notificationStore.notify(
-        'Rating submitted successfully',
-        NotificationType.SUCCESS,
-      );
-      this.closeDialog();
-    } catch (error) {
-      this.notificationStore.notify(
-        'You need to signup first',
-        NotificationType.ERROR,
-      );
-    } finally {
-      this.isSubmitting.set(false);
-    }
+    this.filmService
+      .rateFilm(this.film.title, this.score())
+      .pipe(
+        tap((r) => {
+          console.log('{Response From Server}', r);
+          this.notificationStore.notify(r.message, NotificationType.SUCCESS);
+        }),
+      )
+      .subscribe({
+        error: (r: ErrorResponse) => {
+          if (r.status === 403) {
+            this.notificationStore.notify(
+              'Please log in first',
+              NotificationType.ERROR,
+            );
+          }
+          this.isSubmitting.set(false);
+        },
+      });
+    this.isSubmitting.set(false);
   }
 
   closeDialog(): void {
