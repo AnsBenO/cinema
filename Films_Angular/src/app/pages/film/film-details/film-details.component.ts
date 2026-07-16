@@ -23,8 +23,8 @@ import {
   NotificationStore,
   NotificationType,
 } from '../../../store/notification.store';
-import { firstValueFrom, tap } from 'rxjs';
 import { ErrorResponse } from '../../../models/error-response.model';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-film-details',
