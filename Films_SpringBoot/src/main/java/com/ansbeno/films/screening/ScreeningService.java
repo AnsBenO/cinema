@@ -3,6 +3,7 @@ package com.ansbeno.films.screening;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -120,6 +121,11 @@ public class ScreeningService implements CrudService<ScreeningDto, Long> {
 				.hasNext(screeningPage.hasNext())
 				.hasPrevious(screeningPage.hasPrevious())
 				.build();
+	}
+
+	public List<ScreeningDto> getUpcomingScreenings() {
+		List<Screening> screenings = screeningRepository.findUpcomingScreenings();
+		return screenings.stream().map(screeningMapper::toDto).toList();
 	}
 
 }

@@ -70,7 +70,7 @@ public class GenreService implements CrudService<GenreDto, Long> {
 	}
 
 	public List<GenreDto> getAllNoPagination() {
-		List<Genre> genres = genreRepository.findAll();
+		List<Genre> genres = genreRepository.findAllNoPagination();
 		return genres.stream().map(genreMapper::toDto).toList();
 	}
 

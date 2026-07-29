@@ -40,14 +40,13 @@ export class AuthService {
     return this.http.post<CurrentUser>(`${environment.API_URL}/user`, {}).pipe(
       tap((response) => {
         this.currentUser.set(response);
-        console.log(response);
       }),
       catchError((error) => {
         localStorage.removeItem('accessToken');
         console.error('Failed to load user:', error);
         this.currentUser.set(undefined);
         return throwError(() => error);
-      })
+      }),
     );
   }
 
@@ -55,9 +54,9 @@ export class AuthService {
     this.user$
       .pipe(
         filter(
-          (user): user is CurrentUser => user !== null && user !== undefined
+          (user): user is CurrentUser => user !== null && user !== undefined,
         ),
-        take(1)
+        take(1),
       )
       .subscribe();
   }
@@ -69,7 +68,7 @@ export class AuthService {
         tap((response) => {
           this.setAccessToken(response.jwt);
           this.currentUser.set(response.user);
-        })
+        }),
       );
   }
 
@@ -80,7 +79,7 @@ export class AuthService {
         tap((response) => {
           this.setAccessToken(response.jwt);
           this.currentUser.set(response.user);
-        })
+        }),
       );
   }
 

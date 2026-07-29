@@ -1,5 +1,7 @@
 package com.ansbeno.films.rating;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +14,7 @@ public interface FilmRatingRepository extends JpaRepository<FilmRating, Long> {
 			JOIN fr.film f WHERE f.title LIKE %:keyword%
 			""")
 	Page<FilmRating> findByFilmTitle(String keyword, Pageable pageable);
+
+	Optional<FilmRating> findFirstByFilm_TitleAndCustomer_EmailOrderByIdDesc(String title, String userEmail);
 
 }

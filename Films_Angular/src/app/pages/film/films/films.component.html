@@ -22,7 +22,8 @@
       </div>
 </div>
 
-@let filmResponse = (films$ | async)?._embedded?.films;
+@let filmsResponse = (films$ | async);
+@let filmResponse = filmsResponse?.data;
 @if (isFilmsLoading | async) {
 <div class="mt-24 grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-5 p-5 sm:p-6">
       @for (item of [].constructor(6); track $index) {
@@ -47,13 +48,6 @@
             <div class="space-y-3 p-4">
                   <h3 class="text-lg font-semibold text-slate-800">{{ film.title }} ({{ film.year }})</h3>
                   <p class="text-sm text-slate-500">Duration: {{ film.duration }} min</p>
-                  @let screenings = film._embedded?.screenings;
-                  @if (screenings) {
-                  @let nextScreening = screenings[0];
-                  <p class="text-xs font-medium text-indigo-700">
-                        Next Screening: {{ nextScreening.startTime | date: 'short' }}
-                  </p>
-                  }
                   <button (click)="viewFilmDetails(film)"
                         class="w-full rounded-full border border-indigo-200 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-50 focus:outline-none">
                         View details
@@ -66,21 +60,21 @@
 }
 
 <div class="mb-8 flex items-center justify-center gap-4 py-4">
-      @let filmPage = (films$ | async)?.page;
+      @let filmPage = (films$ | async);
       @if (filmPage) {
       <button (click)="onPageChange(-1)"
             class="rounded-full bg-slate-800 px-4 py-2 text-white shadow-sm transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-            [disabled]="filmPage.number === 0">
+            [disabled]="filmPage.isFirst">
             <fa-icon [icon]="previousIcon"></fa-icon>
       </button>
 
       <span class="text-sm font-medium text-slate-600">
-            Page {{ filmPage.number + 1 }} of {{ filmPage.totalPages }}
+            Page {{ filmPage.pageNumber }} of {{ filmPage.totalPages }}
       </span>
 
       <button (click)="onPageChange(1)"
             class="rounded-full bg-indigo-600 px-4 py-2 text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-300"
-            [disabled]="filmPage.number + 1 === filmPage.totalPages">
+            [disabled]="filmPage.isLast">
             <fa-icon [icon]="nextIcon"></fa-icon>
       </button>
       }

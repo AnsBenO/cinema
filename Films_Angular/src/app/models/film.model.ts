@@ -1,11 +1,12 @@
 export interface FilmsResponse {
-  _embedded: FilmsResponseEmbedded;
-  _links: FilmsResponseLinks;
-  page: Page;
-}
-
-export interface FilmsResponseEmbedded {
-  films: Film[];
+  data: Film[];
+  totalElements: number;
+  pageNumber: number;
+  totalPages: number;
+  isFirst: boolean;
+  isLast: boolean;
+  hasNext: boolean;
+  hasPrevious: boolean;
 }
 
 export interface Screening {
@@ -22,15 +23,18 @@ export interface FilmEmbedded {
 }
 
 export interface Film {
-  createdAt: Date;
-  updatedAt: Date;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
   title: string;
   duration: number;
   imageUrl: string;
   description: string;
   year: number;
-  _embedded?: FilmEmbedded;
-  _links?: FilmLinks;
+  genre?: {
+    id: number;
+    label: string;
+  };
 }
 
 export interface ScreeningLinks {
@@ -71,11 +75,4 @@ export interface FilmsResponseLinks {
   self: Profile;
   profile: Profile;
   search: Profile;
-}
-
-export interface Page {
-  size: number;
-  totalElements: number;
-  totalPages: number;
-  number: number;
 }

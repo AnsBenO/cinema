@@ -6,8 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.ansbeno.films.film.Film;
+import com.ansbeno.films.film.FilmRepository;
 import com.ansbeno.films.shared.exception.ResourceNotFoundException;
 import com.ansbeno.films.shared.service.PagedResultDto;
+import com.ansbeno.films.user.UserEntity;
+import com.ansbeno.films.user.UserRepository;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +21,34 @@ import lombok.RequiredArgsConstructor;
 public class FilmRatingService {
 
 	private final FilmRatingRepository filmRatingRepository;
+	private final FilmRepository filmRepository;
+	private final UserRepository userRepository;
 	private final RatingMapper ratingMapper;
+
+	public void submitRating(@NonNull String email, @NonNull RatingPayload rating) {
+		UserEntity customer = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+		Film film = filmRepository.findByTitle(rating.film())
+				.orElseThrow(() -> new ResourceNotFoundException("Film not found"));
+
+		FilmRating filmRating = filmRatingRepository
+				.findFirstByFilm_TitleAndCustomer_EmailOrderByIdDesc(rating.film(), email)
+				.orElseGet(() -> FilmRating.builder()
+						.customer(customer)
+						.film(film)
+						.build());
+
+		filmRating.setScore(rating.score());
+		filmRatingRepository.save(filmRating);
+	}
+
+	public Integer getRatingByFilmAndUser(@NonNull String title, @NonNull String userEmail) {
+		return filmRatingRepository
+				.findFirstByFilm_TitleAndCustomer_EmailOrderByIdDesc(title, userEmail)
+				.map(FilmRating::getScore)
+				.orElse(null);
+	}
 
 	public RatingDto getOne(@NonNull Long id) {
 		FilmRating rating = filmRatingRepository.findById(id)

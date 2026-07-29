@@ -8,6 +8,9 @@ import {
   computed,
   OnChanges,
   SimpleChanges,
+  OnInit,
+  ModelSignal,
+  model,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +27,8 @@ import {
   NotificationType,
 } from '../../../store/notification.store';
 import { ErrorResponse } from '../../../models/error-response.model';
-import { tap } from 'rxjs';
+import { take, tap } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-film-details',
@@ -33,28 +37,56 @@ import { tap } from 'rxjs';
   templateUrl: 'film-details.component.html',
   styleUrl: 'film-details.component.scss',
 })
-export class FilmDetailsComponent implements OnChanges {
+export class FilmDetailsComponent implements OnChanges, OnInit {
   private readonly filmService = inject(FilmService);
   private readonly notificationStore = inject(NotificationStore);
+  private readonly authService = inject(AuthService);
 
   @Input({ required: true }) visible!: boolean;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Input({ required: true }) film!: Film | null;
 
+  userEmail!: string;
+
+  ngOnInit(): void {
+    // retrieve email
+    this.authService.user$.pipe(take(1)).subscribe((user) => {
+      if (user) {
+        this.userEmail = user.email;
+        this.loadCurrentRating();
+      }
+    });
+  }
+
   readonly closeIcon = faXmark;
   readonly serverUrl = environment.SERVER_URL;
 
-  score = signal(0);
+  score: ModelSignal<number | null> = model<number | null>(null);
   isSubmitting = signal(false);
 
   hasFilm = computed(() => !!this.film);
-  hasValidScore = computed(() => this.score() > 0);
+  hasValidScore = computed(
+    () => typeof this.score() === 'number' && this.score(),
+  );
 
   ngOnChanges(changes: SimpleChanges) {
     // Reset score when film changes
     if (changes['film'] && this.film) {
-      this.score.set(0);
+      this.score.set(null);
+      this.loadCurrentRating();
     }
+  }
+
+  private loadCurrentRating(): void {
+    if (!this.film || !this.userEmail) {
+      return;
+    }
+
+    this.filmService
+      .getRating(this.film.title, this.userEmail)
+      .subscribe((r) => {
+        this.score.set(r.score);
+      });
   }
 
   submitRating(): void {
@@ -67,27 +99,29 @@ export class FilmDetailsComponent implements OnChanges {
     }
 
     this.isSubmitting.set(true);
-
-    this.filmService
-      .rateFilm(this.film.title, this.score())
-      .pipe(
-        tap((r) => {
-          console.log('{Response From Server}', r);
-          this.notificationStore.notify(r.message, NotificationType.SUCCESS);
-        }),
-      )
-      .subscribe({
-        error: (r: ErrorResponse) => {
-          if (r.status === 403) {
-            this.notificationStore.notify(
-              'Please log in first',
-              NotificationType.ERROR,
-            );
-          }
-          this.isSubmitting.set(false);
-        },
-      });
-    this.isSubmitting.set(false);
+    let score: number | null = this.score();
+    if (score) {
+      this.filmService
+        .rateFilm(this.film.title, score)
+        .pipe(
+          tap((r) => {
+            console.log('{Response From Server}', r);
+            this.notificationStore.notify(r.message, NotificationType.SUCCESS);
+          }),
+        )
+        .subscribe({
+          error: (r: ErrorResponse) => {
+            if (r.status === 403) {
+              this.notificationStore.notify(
+                'Please log in first',
+                NotificationType.ERROR,
+              );
+            }
+            this.isSubmitting.set(false);
+          },
+        });
+      this.isSubmitting.set(false);
+    }
   }
 
   closeDialog(): void {

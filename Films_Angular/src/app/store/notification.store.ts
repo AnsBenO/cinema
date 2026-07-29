@@ -22,8 +22,6 @@ export const NotificationStore = signalStore(
   withState<TNotificationState>(initialState),
   withMethods((store) => ({
     notify(message: string | string[], type: NotificationType) {
-      console.log('Logged In');
-
       if (typeof message === 'string') {
         const notification = { message, type };
         patchState(store, { notification });
@@ -35,5 +33,5 @@ export const NotificationStore = signalStore(
         });
       }
     },
-  }))
+  })),
 );

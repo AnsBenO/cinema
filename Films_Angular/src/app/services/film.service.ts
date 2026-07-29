@@ -20,11 +20,15 @@ export interface RatingResponse {
   message: string;
 }
 
+export interface RatingScore {
+  score: number;
+}
+
 @Injectable()
 export class FilmService {
   http = inject(HttpClient);
 
-  private readonly filmsPage = new BehaviorSubject<number>(0);
+  private readonly filmsPage = new BehaviorSubject<number>(1);
   private readonly selectedGenre = new BehaviorSubject<string | null>(null);
   private readonly keyword = new BehaviorSubject<string>('');
 
@@ -33,11 +37,9 @@ export class FilmService {
   isLoading$ = this.loadingSubject.asObservable();
 
   // Fetch genres
-  genres$ = this.http
-    .get<GenreResponse>(
-      `${environment.API_URL}/genres/search/findAllNoPagination`,
-    )
-    .pipe(map((response) => response._embedded.genre));
+  genres$ = this.http.get<GenreResponse>(
+    `${environment.API_URL}/genres/search/findAllNoPagination`,
+  );
 
   // Combine filters and trigger the films API request
   films$: Observable<FilmsResponse> = combineLatest([
@@ -76,6 +78,14 @@ export class FilmService {
     );
   }
 
+  getRating(title: string, userEmail: string): Observable<RatingScore> {
+    return this.http
+      .get<RatingScore>(
+        `${environment.API_URL}/film-ratings/${encodeURIComponent(title)}/${encodeURIComponent(userEmail)}`,
+      )
+      .pipe(map((response) => response));
+  }
+
   // Methods to update filters
   updateKeyword(keyword: string) {
     this.keyword.next(keyword);
@@ -86,6 +96,7 @@ export class FilmService {
   }
 
   updateFilmsPage(page: number) {
-    this.filmsPage.next(page);
+    const currentPage = this.filmsPage.value;
+    this.filmsPage.next(Math.max(1, currentPage + page));
   }
 }
