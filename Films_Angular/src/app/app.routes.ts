@@ -19,7 +19,15 @@ export const routes: Routes = [
     title: 'FilmSpot - Films',
     loadComponent: () =>
       import('./pages/film/films/films.component').then(
-        (m) => m.FilmsComponent
+        (m) => m.FilmsComponent,
+      ),
+  },
+  {
+    path: 'bookings',
+    title: 'FilmSpot - My Bookings',
+    loadComponent: () =>
+      import('./pages/booking/my-bookings/my-bookings.component').then(
+        (m) => m.MyBookingsComponent,
       ),
   },
 
@@ -27,7 +35,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./pages/auth/login/login.component').then(
-        (m) => m.LoginComponent
+        (m) => m.LoginComponent,
       ),
     title: 'FilmSpot - login',
     canActivate: [authGuard],
@@ -36,7 +44,7 @@ export const routes: Routes = [
     path: 'signup',
     loadComponent: () =>
       import('./pages/auth/signup/signup.component').then(
-        (m) => m.SignupComponent
+        (m) => m.SignupComponent,
       ),
     title: 'FilmSpot - signup',
     canActivate: [authGuard],
@@ -46,7 +54,7 @@ export const routes: Routes = [
     title: 'FilmSpot - 404',
     loadComponent: () =>
       import('./pages/error-page/error-page/error-page.component').then(
-        (m) => m.ErrorPageComponent
+        (m) => m.ErrorPageComponent,
       ),
   },
 ];

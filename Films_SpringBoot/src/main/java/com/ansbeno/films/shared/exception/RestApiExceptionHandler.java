@@ -41,4 +41,29 @@ public class RestApiExceptionHandler {
                         .body(Map.of("error", ex.getMessage()));
       }
 
+      @ExceptionHandler(ResourceNotFoundException.class)
+      public ResponseEntity<Map<String, String>> handleResourceNotFound(ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", ex.getMessage()));
+      }
+
+      @ExceptionHandler(BookingCapacityExceededException.class)
+      public ResponseEntity<Map<String, String>> handleBookingCapacityExceeded(BookingCapacityExceededException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", ex.getMessage()));
+      }
+
+      @ExceptionHandler(BookingOperationNotAllowedException.class)
+      public ResponseEntity<Map<String, String>> handleBookingOperationNotAllowed(
+                  BookingOperationNotAllowedException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", ex.getMessage()));
+      }
+
+      @ExceptionHandler(BookingAccessDeniedException.class)
+      public ResponseEntity<Map<String, String>> handleBookingAccessDenied(BookingAccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", ex.getMessage()));
+      }
+
 }

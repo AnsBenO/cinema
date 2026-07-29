@@ -82,7 +82,10 @@
                                                       {{ screening.startTime | date:'HH:mm' }}
                                                       —
                                                       {{ screening.endTime | date:'HH:mm' }}
+                                                      <button type="button" (click)="bookTickets(screening.id) ">Click
+                                                            MEE</button>
                                                 </span>
+
                                           </div>
 
                                           <div class="flex items-center gap-3">

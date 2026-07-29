@@ -49,6 +49,8 @@ class SecurityConfig {
                         .authorizeHttpRequests(authConfig -> {
                               authConfig.requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll();
                               authConfig.requestMatchers(HttpMethod.POST, "/api/register").permitAll();
+                              authConfig.requestMatchers(HttpMethod.GET, "/api/bookings/availability/**").permitAll();
+                              authConfig.requestMatchers(HttpMethod.GET, "/api/bookings/**").authenticated();
                               authConfig.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
                               authConfig.requestMatchers(HttpMethod.POST, "/api/**").authenticated();
                               authConfig.requestMatchers(HttpMethod.PUT, "/api/**").authenticated();

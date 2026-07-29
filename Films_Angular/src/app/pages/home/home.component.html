@@ -35,8 +35,12 @@
 
     @let screeningsList = (screeningService.screenings$ | async);
     <div class="mx-auto my-6 max-w-5xl">
-      @if (screeningsList) {
+      @if (screeningsList && screeningsList.length > 0) {
       <app-upcoming-carousel [screeningsList]="screeningsList" />
+      } @else {
+      <div class="rounded-[1.5rem] border border-slate-200 bg-white/80 p-8 text-center text-slate-600 shadow-sm">
+        No upcoming screenings available right now.
+      </div>
       }
     </div>
   </section>
