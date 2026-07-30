@@ -18,44 +18,38 @@ import {
   faFilm,
   faTimeline,
 } from '@fortawesome/free-solid-svg-icons';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
 import { environment } from '../../../environment/environment';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { BookingService } from '../../services/booking.service';
-import {
-  NotificationStore,
-  NotificationType,
-} from '../../store/notification.store';
 import { ScreeningAvailability } from '../../models/booking.model';
 import { catchError, forkJoin, of } from 'rxjs';
+import { BookTicketComponent } from '../book-ticket/book-ticket.component';
 
 @Component({
   selector: 'app-upcoming-carousel',
   standalone: true,
   imports: [
+    CommonModule,
     FontAwesomeModule,
     DatePipe,
     CarouselModule,
     TagModule,
     ButtonModule,
     FormsModule,
+    BookTicketComponent,
   ],
   templateUrl: './upcoming-carousel.component.html',
   styleUrl: './upcoming-carousel.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpcomingCarouselComponent implements OnChanges {
-  private readonly authService = inject(AuthService);
   private readonly bookingService = inject(BookingService);
-  private readonly notificationStore = inject(NotificationStore);
 
   @Input() screeningsList!: Screening[];
-
-  readonly user$ = this.authService.user$;
 
   serverUrl = environment.SERVER_URL;
 
@@ -75,9 +69,9 @@ export class UpcomingCarouselComponent implements OnChanges {
 
   availabilityByScreening = signal<Record<number, ScreeningAvailability>>({});
 
-  quantityByScreening = signal<Record<number, number>>({});
+  selectedScreening = signal<Screening | null>(null);
 
-  bookingInProgress = signal<Record<number, boolean>>({});
+  bookingDialogVisible = signal(false);
 
   responsiveOptions = [
     {
@@ -104,18 +98,8 @@ export class UpcomingCarouselComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['screeningsList'] && this.screeningsList?.length) {
-      this.initializeQuantity();
       this.loadAvailability();
     }
-  }
-
-  private initializeQuantity(): void {
-    const quantityState: Record<number, number> = {};
-    this.screeningsList.forEach((screening) => {
-      quantityState[screening.id] =
-        this.quantityByScreening()[screening.id] ?? 1;
-    });
-    this.quantityByScreening.set(quantityState);
   }
 
   private loadAvailability(): void {
@@ -141,10 +125,6 @@ export class UpcomingCarouselComponent implements OnChanges {
     });
   }
 
-  getQuantity(screeningId: number): number {
-    return this.quantityByScreening()[screeningId] ?? 1;
-  }
-
   getRemainingSeats(
     screening: Screening | null | undefined,
   ): number | undefined {
@@ -159,52 +139,19 @@ export class UpcomingCarouselComponent implements OnChanges {
     return remaining === 0;
   }
 
-  isBookingInProgress(screeningId: number | null | undefined): boolean {
-    if (!screeningId) {
-      return false;
+  openBookingDialog(screening: Screening): void {
+    this.selectedScreening.set(screening);
+    this.bookingDialogVisible.set(true);
+  }
+
+  onBookingDialogVisibleChange(visible: boolean): void {
+    this.bookingDialogVisible.set(visible);
+    if (!visible) {
+      this.selectedScreening.set(null);
     }
-    return !!this.bookingInProgress()[screeningId];
   }
 
-  updateQuantity(screeningId: number, quantity: number): void {
-    const parsed = Number.isFinite(quantity) ? Math.floor(quantity) : 1;
-    const sanitized = Math.max(1, parsed);
-    this.quantityByScreening.update((state) => ({
-      ...state,
-      [screeningId]: sanitized,
-    }));
-  }
-
-  bookTickets(screeningId: number): void {
-    const quantity = this.getQuantity(screeningId);
-    this.bookingInProgress.update((state) => ({
-      ...state,
-      [screeningId]: true,
-    }));
-
-    this.bookingService.createBooking({ screeningId, quantity }).subscribe({
-      next: () => {
-        this.notificationStore.notify(
-          'Booking created successfully',
-          NotificationType.SUCCESS,
-        );
-        this.bookingInProgress.update((state) => ({
-          ...state,
-          [screeningId]: false,
-        }));
-        this.loadAvailability();
-      },
-      error: (error) => {
-        const message =
-          error?.error?.error ||
-          error?.error?.message ||
-          'Could not create booking';
-        this.notificationStore.notify(message, NotificationType.ERROR);
-        this.bookingInProgress.update((state) => ({
-          ...state,
-          [screeningId]: false,
-        }));
-      },
-    });
+  onBookingCompleted(): void {
+    this.loadAvailability();
   }
 }

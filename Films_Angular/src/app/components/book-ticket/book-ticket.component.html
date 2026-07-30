@@ -1,0 +1,110 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: 'min(92vw, 720px)' }" [closable]="false"
+      [closeOnEscape]="!isSubmitting()" (onHide)="closeDialog()">
+      <div class="dialog-shell">
+            <button type="button" class="close-button" aria-label="Close booking dialog" (click)="closeDialog()"
+                  [disabled]="isSubmitting()">
+                  <fa-icon [icon]="closeIcon"></fa-icon>
+            </button>
+
+            @if (screening) {
+            <header class="dialog-header">
+                  <p class="step-label">
+                        @if (currentStep() === 'tickets') {
+                        Select tickets
+                        } @else {
+                        Payment details
+                        }
+                  </p>
+                  <h2 class="title">{{ screening.film.title }}</h2>
+                  <p class="meta">
+                        Hall {{ screening.hall.number }} · {{ screening.startTime | date: 'EEEE, MMM d · HH:mm' }}
+                  </p>
+            </header>
+
+            @if (currentStep() === 'tickets') {
+            <section class="panel">
+                  <div class="availability-row">
+                        @if (isLoadingAvailability()) {
+                        <p class="subtle">Checking seat availability...</p>
+                        } @else {
+                        <p class="subtle">
+                              Remaining seats:
+                              <span class="value">{{ remainingSeats }}</span>
+                        </p>
+                        }
+                        @if (isSoldOut) {
+                        <span class="sold-out">Sold out</span>
+                        }
+                  </div>
+
+                  <div class="quantity-row">
+                        <label for="ticketsQuantity" class="field-label">Tickets</label>
+                        <div class="quantity-control">
+                              <button type="button" (click)="decreaseQuantity()"
+                                    [disabled]="isSubmitting() || quantity() <= 1"
+                                    aria-label="Decrease ticket quantity">
+                                    <fa-icon [icon]="minusIcon"></fa-icon>
+                              </button>
+
+                              <input id="ticketsQuantity" name="ticketsQuantity" type="number" [ngModel]="quantity()"
+                                    (ngModelChange)="updateQuantity($event)" [min]="1" [max]="remainingSeats"
+                                    [disabled]="isSubmitting() || isSoldOut" />
+
+                              <button type="button" (click)="increaseQuantity()"
+                                    [disabled]="isSubmitting() || isSoldOut || quantity() >= remainingSeats"
+                                    aria-label="Increase ticket quantity">
+                                    <fa-icon [icon]="plusIcon"></fa-icon>
+                              </button>
+                        </div>
+                  </div>
+
+                  <p class="subtle">
+                        Total summary: {{ quantity() }} ticket(s) for {{ screening.film.title }}.
+                  </p>
+            </section>
+
+            <footer class="actions">
+                  <button type="button" class="ghost" (click)="closeDialog()" [disabled]="isSubmitting()">
+                        Cancel
+                  </button>
+                  <button type="button" class="primary" (click)="goToPaymentStep()"
+                        [disabled]="isSubmitting() || isSoldOut">
+                        Proceed to payment
+                  </button>
+            </footer>
+            } @else {
+            <section class="panel payment-panel">
+                  <p class="payment-title">Payment placeholder</p>
+                  <p class="subtle">
+                        This step is UI-only for now. Confirming will finalize booking with the selected quantity.
+                  </p>
+
+                  <div class="summary-grid">
+                        <span>Film</span>
+                        <strong>{{ screening.film.title }}</strong>
+
+                        <span>Hall</span>
+                        <strong>{{ screening.hall.number }}</strong>
+
+                        <span>Tickets</span>
+                        <strong>{{ quantity() }}</strong>
+                  </div>
+            </section>
+
+            <footer class="actions">
+                  <button type="button" class="ghost" (click)="goBackToTickets()" [disabled]="isSubmitting()">
+                        Back
+                  </button>
+                  <button type="button" class="primary" (click)="confirmBooking()"
+                        [disabled]="isSubmitting() || isSoldOut">
+                        @if (isSubmitting()) {
+                        Confirming...
+                        } @else {
+                        Confirm booking
+                        }
+                  </button>
+            </footer>
+            }
+            }
+      </div>
+</p-dialog>

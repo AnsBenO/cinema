@@ -281,13 +281,14 @@ class DataInitializer {
             };
 
             List<Screening> screenings = new ArrayList<>();
+            LocalDateTime baseShowTime = LocalDateTime.now().plusDays(1);
             for (int i = 0; i < films.length; i++) {
-                  LocalDateTime showTime = LocalDateTime.now();
+                  LocalDateTime showTime = baseShowTime.plusHours(i * 3L);
                   Screening s = new Screening();
                   s.setFilm(films[i]);
                   s.setHall(halls[i % halls.length]);
                   s.setStartTime(showTime);
-                  s.setEndTime(showTime.plusMinutes(films[i].getDuration()));
+                  s.setEndTime(showTime.plusDays(films[i].getDuration()));
                   screenings.add(s);
             }
             screeningRepository.saveAll(screenings);

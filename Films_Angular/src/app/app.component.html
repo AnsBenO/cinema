@@ -1,4 +1,4 @@
-@let isAuthPage = router.url === '/login' || router.url === '/signup';
+@let isAuthPage = router.url.includes('/login') || router.url.includes('/signup');
 <div class="min-h-screen bg-transparent">
       <div class="mx-auto flex min-h-screen flex-col">
             <app-loader />
