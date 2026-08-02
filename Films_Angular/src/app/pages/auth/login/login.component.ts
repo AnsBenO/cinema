@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +13,7 @@ import {
 
 @Component({
     selector: 'app-login',
-    imports: [CommonModule, RouterModule, FontAwesomeModule, ReactiveFormsModule],
+    imports: [RouterModule, FontAwesomeModule, ReactiveFormsModule],
     templateUrl: './login.component.html',
     styleUrl: '../auth.css'
 })

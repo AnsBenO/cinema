@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   Input,
   OnChanges,
   SimpleChanges,
@@ -30,20 +31,20 @@ import { catchError, forkJoin, of } from 'rxjs';
 import { BookTicketComponent } from '../book-ticket/book-ticket.component';
 
 @Component({
-    selector: 'app-upcoming-carousel',
-    imports: [
-        CommonModule,
-        FontAwesomeModule,
-        DatePipe,
-        CarouselModule,
-        TagModule,
-        ButtonModule,
-        FormsModule,
-        BookTicketComponent,
-    ],
-    templateUrl: './upcoming-carousel.component.html',
-    styleUrl: './upcoming-carousel.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-upcoming-carousel',
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    DatePipe,
+    CarouselModule,
+    TagModule,
+    ButtonModule,
+    FormsModule,
+    BookTicketComponent,
+  ],
+  templateUrl: './upcoming-carousel.component.html',
+  styleUrl: './upcoming-carousel.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpcomingCarouselComponent implements OnChanges {
   private readonly bookingService = inject(BookingService);
@@ -65,6 +66,23 @@ export class UpcomingCarouselComponent implements OnChanges {
   nextIcon = faChevronRight;
 
   previousIcon = faChevronLeft;
+
+  slidesPerPage = signal(this.computeSlidesPerPage());
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.slidesPerPage.set(this.computeSlidesPerPage());
+  }
+
+  private computeSlidesPerPage(): number {
+    if (typeof window === 'undefined') {
+      return 1;
+    }
+    const width = window.innerWidth;
+    if (width >= 1400) return 3;
+    if (width >= 1024) return 2;
+    return 1;
+  }
 
   availabilityByScreening = signal<Record<number, ScreeningAvailability>>({});
 

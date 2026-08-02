@@ -8,12 +8,12 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 export class TrimInputDirective {
   constructor(
     private readonly ngControl: NgControl,
-    private readonly el: ElementRef
+    private readonly el: ElementRef,
   ) {
     trimValueAccessor(ngControl.valueAccessor as ControlValueAccessor);
   }
 
-  @HostListener('blur', ['$event.target.value'])
+  @HostListener('blur')
   onBlur() {
     const trimmedValue = this.el.nativeElement.value.trim();
     this.el.nativeElement.value = trimmedValue;

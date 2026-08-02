@@ -1,117 +1,131 @@
 <div class="flex min-h-screen flex-col items-center justify-center overflow-auto bg-transparent px-4 py-10">
-      <div
-            class="mb-6 flex items-center gap-3 rounded-full border border-white/70 bg-white/80 px-4 py-2 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.35)] backdrop-blur">
-            <img src="/logo.png" alt="Logo" class="h-12 w-12 rounded-full object-cover" />
-            <span class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-600">FilmSpot</span>
+  <div
+    class="mb-6 flex items-center gap-3 rounded-full border border-white/70 bg-white/80 px-4 py-2 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.35)] backdrop-blur">
+    <img src="/logo.png" alt="Logo" class="h-12 w-12 rounded-full object-cover" />
+    <span class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-600">FilmSpot</span>
+  </div>
+
+  <form [formGroup]="signupForm" (submit)="onSubmit()"
+    class="animate-form w-full max-w-5xl rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-[0_30px_90px_-35px_rgba(15,23,42,0.35)] backdrop-blur sm:p-8">
+    <h2 class="mb-6 text-center text-2xl font-bold text-slate-800">Create Your Account</h2>
+
+    <div class="flex flex-col gap-6 md:flex-row">
+      <div class="flex-1 space-y-5">
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700"
+          for="username">Username</label>
+          <div class="relative">
+            <fa-icon [icon]="userIcon"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
+            <input type="text" trimInput id="username" formControlName="username"
+              class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+              placeholder="Enter your username" />
+          </div>
+          <div class="mt-2 h-4 text-xs text-red-500">
+            @if (isInvalidInput('username')) {
+              @if (signupForm.get('username')?.hasError('required')) {
+                <span class="block"
+                  >Username is
+                required.</span>
+              }
+              @if (signupForm.get('username')?.hasError('minlength')) {
+                <span class="block"
+                  >Username must be at
+                least {{ minLengths.username }} characters long.</span>
+              }
+              @if (signupForm.get('username')?.hasError('maxlength')) {
+                <span class="block"
+                  >Username cannot be
+                more than {{ maxLengths.username }} characters long.</span>
+              }
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700" for="email">Email</label>
+          <div class="relative">
+            <fa-icon [icon]="emailIcon"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
+            <input type="text" trimInput id="email" formControlName="email"
+              class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+              placeholder="Enter your email" />
+          </div>
+          <div class="mt-2 h-4 text-xs text-red-500">
+            @if (isInvalidInput('email')) {
+              @if (signupForm.get('email')?.hasError('required')) {
+                <span class="block">Email is
+                required.</span>
+              }
+              @if (signupForm.get('email')?.hasError('email')) {
+                <span class="block">Invalid email
+                format.</span>
+              }
+            }
+          </div>
+        </div>
       </div>
 
-      <form [formGroup]="signupForm" (submit)="onSubmit()"
-            class="animate-form w-full max-w-5xl rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-[0_30px_90px_-35px_rgba(15,23,42,0.35)] backdrop-blur sm:p-8">
-            <h2 class="mb-6 text-center text-2xl font-bold text-slate-800">Create Your Account</h2>
+      <div class="flex-1 space-y-5">
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700"
+          for="password">Password</label>
+          <div class="relative">
+            <fa-icon [icon]="pswIcon"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
+            <input type="password" id="password" formControlName="password"
+              class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+              placeholder="Enter your password" />
+          </div>
+          <div class="mt-2 h-4 text-xs text-red-500">
+            @if (isInvalidInput('password')) {
+              @if (signupForm.get('password')?.hasError('required')) {
+                <span class="block"
+                  >Password is
+                required.</span>
+              }
+              @if (signupForm.get('password')?.hasError('minlength')) {
+                <span class="block"
+                  >Password must be at
+                least {{ minLengths.password }} characters long.</span>
+              }
+            }
+          </div>
+        </div>
 
-            <div class="flex flex-col gap-6 md:flex-row">
-                  <div class="flex-1 space-y-5">
-                        <div>
-                              <label class="mb-2 block text-sm font-semibold text-slate-700"
-                                    for="username">Username</label>
-                              <div class="relative">
-                                    <fa-icon [icon]="userIcon"
-                                          class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
-                                    <input type="text" trimInput id="username" formControlName="username"
-                                          class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
-                                          placeholder="Enter your username" />
-                              </div>
-                              <div class="mt-2 h-4 text-xs text-red-500">
-                                    @if (isInvalidInput('username')) {
-                                    <span class="block"
-                                          *ngIf="signupForm.get('username')?.hasError('required')">Username is
-                                          required.</span>
-                                    <span class="block"
-                                          *ngIf="signupForm.get('username')?.hasError('minlength')">Username must be at
-                                          least {{ minLengths.username }} characters long.</span>
-                                    <span class="block"
-                                          *ngIf="signupForm.get('username')?.hasError('maxlength')">Username cannot be
-                                          more than {{ maxLengths.username }} characters long.</span>
-                                    }
-                              </div>
-                        </div>
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700"
+          for="confirmPassword">Confirm password</label>
+          <div class="relative">
+            <fa-icon [icon]="pswIcon"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
+            <input type="password" id="confirmPassword" formControlName="confirmPassword"
+              class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+              placeholder="Confirm your password" />
+          </div>
+          <div class="mt-2 h-4 text-xs text-red-500">
+            @if (isInvalidInput('confirmPassword')) {
+              @if (signupForm.get('confirmPassword')?.hasError('required')) {
+                <span class="block">Please confirm your password.</span>
+              }
+            } @else if (isDirtyAndTouched('confirmPassword') &&
+              signupForm.hasError('passwordmatcherror')) {
+              <span class="block">Passwords don’t match.</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
 
-                        <div>
-                              <label class="mb-2 block text-sm font-semibold text-slate-700" for="email">Email</label>
-                              <div class="relative">
-                                    <fa-icon [icon]="emailIcon"
-                                          class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
-                                    <input type="text" trimInput id="email" formControlName="email"
-                                          class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
-                                          placeholder="Enter your email" />
-                              </div>
-                              <div class="mt-2 h-4 text-xs text-red-500">
-                                    @if (isInvalidInput('email')) {
-                                    <span class="block" *ngIf="signupForm.get('email')?.hasError('required')">Email is
-                                          required.</span>
-                                    <span class="block" *ngIf="signupForm.get('email')?.hasError('email')">Invalid email
-                                          format.</span>
-                                    }
-                              </div>
-                        </div>
-                  </div>
+    <button type="submit"
+      class="mx-auto mt-6 block w-full rounded-2xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70 sm:w-4/5"
+      [disabled]="signupForm.invalid">
+      Sign Up
+    </button>
 
-                  <div class="flex-1 space-y-5">
-                        <div>
-                              <label class="mb-2 block text-sm font-semibold text-slate-700"
-                                    for="password">Password</label>
-                              <div class="relative">
-                                    <fa-icon [icon]="pswIcon"
-                                          class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
-                                    <input type="password" id="password" formControlName="password"
-                                          class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
-                                          placeholder="Enter your password" />
-                              </div>
-                              <div class="mt-2 h-4 text-xs text-red-500">
-                                    @if (isInvalidInput('password')) {
-                                    <span class="block"
-                                          *ngIf="signupForm.get('password')?.hasError('required')">Password is
-                                          required.</span>
-                                    <span class="block"
-                                          *ngIf="signupForm.get('password')?.hasError('minlength')">Password must be at
-                                          least {{ minLengths.password }} characters long.</span>
-                                    }
-                              </div>
-                        </div>
-
-                        <div>
-                              <label class="mb-2 block text-sm font-semibold text-slate-700"
-                                    for="confirmPassword">Confirm password</label>
-                              <div class="relative">
-                                    <fa-icon [icon]="pswIcon"
-                                          class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
-                                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
-                                          class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
-                                          placeholder="Confirm your password" />
-                              </div>
-                              <div class="mt-2 h-4 text-xs text-red-500">
-                                    @if (isInvalidInput('confirmPassword')) {
-                                    @if (signupForm.get('confirmPassword')?.hasError('required')) {
-                                    <span class="block">Please confirm your password.</span>
-                                    }
-                                    } @else if (isDirtyAndTouched('confirmPassword') &&
-                                    signupForm.hasError('passwordmatcherror')) {
-                                    <span class="block">Passwords don’t match.</span>
-                                    }
-                              </div>
-                        </div>
-                  </div>
-            </div>
-
-            <button type="submit"
-                  class="mx-auto mt-6 block w-full rounded-2xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70 sm:w-4/5"
-                  [disabled]="signupForm.invalid">
-                  Sign Up
-            </button>
-
-            <div class="mt-5 text-center text-sm text-slate-600">
-                  <span>Already have an account?</span>
-                  <a routerLink="/login" class="ml-1 font-semibold text-indigo-600 hover:underline">Login</a>
-            </div>
-      </form>
+    <div class="mt-5 text-center text-sm text-slate-600">
+      <span>Already have an account?</span>
+      <a routerLink="/login" class="ml-1 font-semibold text-indigo-600 hover:underline">Login</a>
+    </div>
+  </form>
 </div>

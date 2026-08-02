@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
@@ -24,12 +24,11 @@ import { RegisterPayload } from '../../../models/user.model';
 @Component({
     selector: 'app-signup',
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        TrimInputDirective,
-        FontAwesomeModule,
-        RouterModule,
-    ],
+    ReactiveFormsModule,
+    TrimInputDirective,
+    FontAwesomeModule,
+    RouterModule
+],
     templateUrl: './signup.component.html',
     styleUrl: '../auth.css'
 })

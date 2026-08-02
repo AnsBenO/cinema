@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   DestroyRef,
@@ -19,7 +19,7 @@ import {
 
 @Component({
     selector: 'app-loader',
-    imports: [CommonModule, RouterModule],
+    imports: [RouterModule],
     templateUrl: './loader.component.html',
     styleUrl: './loader.component.scss'
 })

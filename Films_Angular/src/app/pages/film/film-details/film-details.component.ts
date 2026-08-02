@@ -12,7 +12,7 @@ import {
   ModelSignal,
   model,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { Rating } from 'primeng/rating';
@@ -32,7 +32,7 @@ import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-film-details',
-    imports: [CommonModule, FormsModule, Dialog, Rating, FontAwesomeModule],
+    imports: [FormsModule, Dialog, Rating, FontAwesomeModule],
     templateUrl: 'film-details.component.html',
     styleUrl: 'film-details.component.scss'
 })

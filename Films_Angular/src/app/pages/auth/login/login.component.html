@@ -1,57 +1,61 @@
 <div class="flex min-h-screen flex-col items-center justify-center bg-transparent px-4 py-12">
-      <div
-            class="mb-6 flex items-center gap-3 rounded-full border border-white/70 bg-white/80 px-4 py-2 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.35)] backdrop-blur">
-            <img src="/logo.png" alt="Logo" class="h-12 w-12 rounded-full object-cover" />
-            <span class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-600">FilmSpot</span>
+  <div
+    class="mb-6 flex items-center gap-3 rounded-full border border-white/70 bg-white/80 px-4 py-2 shadow-[0_20px_60px_-24px_rgba(15,23,42,0.35)] backdrop-blur">
+    <img src="/logo.png" alt="Logo" class="h-12 w-12 rounded-full object-cover" />
+    <span class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-600">FilmSpot</span>
+  </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+    class="animate-form w-full max-w-md rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-[0_30px_90px_-35px_rgba(15,23,42,0.35)] backdrop-blur sm:p-8">
+    <h2 class="mb-6 text-center text-2xl font-bold text-slate-800">Login to Your Account</h2>
+
+    <div class="mb-5">
+      <label class="mb-2 block text-sm font-semibold text-slate-700" for="email">Email</label>
+      <div class="relative">
+        <fa-icon [icon]="userIcon"
+        class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
+        <input type="text" id="email" formControlName="email"
+          class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+          placeholder="Enter your email" />
       </div>
+      <div class="mt-2 h-4 text-xs text-red-500">
+        @if (isInvalidInput('email')) {
+          @if (loginForm.get('email')?.hasError('required')) {
+            <span class="block">Email is
+            required.</span>
+          }
+        }
+      </div>
+    </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
-            class="animate-form w-full max-w-md rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-[0_30px_90px_-35px_rgba(15,23,42,0.35)] backdrop-blur sm:p-8">
-            <h2 class="mb-6 text-center text-2xl font-bold text-slate-800">Login to Your Account</h2>
+    <div class="mb-6">
+      <label class="mb-2 block text-sm font-semibold text-slate-700" for="password">Password</label>
+      <div class="relative">
+        <fa-icon [icon]="pswIcon"
+        class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
+        <input type="password" id="password" formControlName="password"
+          class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+          placeholder="Enter your password" />
+      </div>
+      <div class="mt-2 h-4 text-xs text-red-500">
+        @if (isInvalidInput('password')) {
+          @if (loginForm.get('password')?.hasError('required')) {
+            <span class="block">Password is
+            required.</span>
+          }
+        }
+      </div>
+    </div>
 
-            <div class="mb-5">
-                  <label class="mb-2 block text-sm font-semibold text-slate-700" for="email">Email</label>
-                  <div class="relative">
-                        <fa-icon [icon]="userIcon"
-                              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
-                        <input type="text" id="email" formControlName="email"
-                              class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
-                              placeholder="Enter your email" />
-                  </div>
-                  <div class="mt-2 h-4 text-xs text-red-500">
-                        @if (isInvalidInput('email')) {
-                        <span class="block" *ngIf="loginForm.get('email')?.hasError('required')">Email is
-                              required.</span>
-                        }
-                  </div>
-            </div>
+    <button type="submit"
+      class="w-full rounded-2xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+      [disabled]="loginForm.invalid">
+      Login
+    </button>
 
-            <div class="mb-6">
-                  <label class="mb-2 block text-sm font-semibold text-slate-700" for="password">Password</label>
-                  <div class="relative">
-                        <fa-icon [icon]="pswIcon"
-                              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></fa-icon>
-                        <input type="password" id="password" formControlName="password"
-                              class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
-                              placeholder="Enter your password" />
-                  </div>
-                  <div class="mt-2 h-4 text-xs text-red-500">
-                        @if (isInvalidInput('password')) {
-                        <span class="block" *ngIf="loginForm.get('password')?.hasError('required')">Password is
-                              required.</span>
-                        }
-                  </div>
-            </div>
-
-            <button type="submit"
-                  class="w-full rounded-2xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
-                  [disabled]="loginForm.invalid">
-                  Login
-            </button>
-
-            <div class="mt-5 text-center text-sm text-slate-600">
-                  <span>Don’t have an account?</span>
-                  <a routerLink="/signup" class="ml-1 font-semibold text-indigo-600 hover:underline">Sign up</a>
-            </div>
-      </form>
+    <div class="mt-5 text-center text-sm text-slate-600">
+      <span>Don’t have an account?</span>
+      <a routerLink="/signup" class="ml-1 font-semibold text-indigo-600 hover:underline">Sign up</a>
+    </div>
+  </form>
 </div>
