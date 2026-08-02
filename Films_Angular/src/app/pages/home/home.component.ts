@@ -10,19 +10,17 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UpcomingCarouselComponent } from '../../components/upcoming-carousel/upcoming-carousel.component';
 
 @Component({
-  standalone: true,
-  selector: 'app-home',
-  imports: [
-    CommonModule,
-    AsyncPipe,
-    RouterModule,
-    FontAwesomeModule,
-    UpcomingCarouselComponent,
-  ],
-  providers: [ScreeningService],
-
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+    selector: 'app-home',
+    imports: [
+        CommonModule,
+        AsyncPipe,
+        RouterModule,
+        FontAwesomeModule,
+        UpcomingCarouselComponent,
+    ],
+    providers: [ScreeningService],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent {
   screeningService = inject(ScreeningService);

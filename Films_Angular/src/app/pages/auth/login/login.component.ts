@@ -12,11 +12,10 @@ import {
 } from '../../../store/notification.store';
 
 @Component({
-  standalone: true,
-  selector: 'app-login',
-  imports: [CommonModule, RouterModule, FontAwesomeModule, ReactiveFormsModule],
-  templateUrl: './login.component.html',
-  styleUrl: '../auth.css',
+    selector: 'app-login',
+    imports: [CommonModule, RouterModule, FontAwesomeModule, ReactiveFormsModule],
+    templateUrl: './login.component.html',
+    styleUrl: '../auth.css'
 })
 export class LoginComponent {
   pswIcon = faLock;

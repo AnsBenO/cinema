@@ -20,18 +20,17 @@ import { Film } from '../../../models/film.model';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-films',
-  imports: [
-    CommonModule,
-    FormsModule,
-    AsyncPipe,
-    FontAwesomeModule,
-    FilmDetailsComponent,
-  ],
-  providers: [FilmService],
-  templateUrl: './films.component.html',
-  styleUrl: './films.component.css',
+    selector: 'app-films',
+    imports: [
+        CommonModule,
+        FormsModule,
+        AsyncPipe,
+        FontAwesomeModule,
+        FilmDetailsComponent,
+    ],
+    providers: [FilmService],
+    templateUrl: './films.component.html',
+    styleUrl: './films.component.css'
 })
 export class FilmsComponent {
   filmService = inject(FilmService);

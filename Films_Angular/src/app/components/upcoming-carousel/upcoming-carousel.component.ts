@@ -30,21 +30,20 @@ import { catchError, forkJoin, of } from 'rxjs';
 import { BookTicketComponent } from '../book-ticket/book-ticket.component';
 
 @Component({
-  selector: 'app-upcoming-carousel',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    DatePipe,
-    CarouselModule,
-    TagModule,
-    ButtonModule,
-    FormsModule,
-    BookTicketComponent,
-  ],
-  templateUrl: './upcoming-carousel.component.html',
-  styleUrl: './upcoming-carousel.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-upcoming-carousel',
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        DatePipe,
+        CarouselModule,
+        TagModule,
+        ButtonModule,
+        FormsModule,
+        BookTicketComponent,
+    ],
+    templateUrl: './upcoming-carousel.component.html',
+    styleUrl: './upcoming-carousel.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UpcomingCarouselComponent implements OnChanges {
   private readonly bookingService = inject(BookingService);

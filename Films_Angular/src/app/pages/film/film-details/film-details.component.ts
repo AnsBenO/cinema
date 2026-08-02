@@ -31,11 +31,10 @@ import { take, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-film-details',
-  standalone: true,
-  imports: [CommonModule, FormsModule, Dialog, Rating, FontAwesomeModule],
-  templateUrl: 'film-details.component.html',
-  styleUrl: 'film-details.component.scss',
+    selector: 'app-film-details',
+    imports: [CommonModule, FormsModule, Dialog, Rating, FontAwesomeModule],
+    templateUrl: 'film-details.component.html',
+    styleUrl: 'film-details.component.scss'
 })
 export class FilmDetailsComponent implements OnChanges, OnInit {
   private readonly filmService = inject(FilmService);

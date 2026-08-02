@@ -22,17 +22,16 @@ import {
 import { RegisterPayload } from '../../../models/user.model';
 
 @Component({
-  standalone: true,
-  selector: 'app-signup',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    TrimInputDirective,
-    FontAwesomeModule,
-    RouterModule,
-  ],
-  templateUrl: './signup.component.html',
-  styleUrl: '../auth.css',
+    selector: 'app-signup',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        TrimInputDirective,
+        FontAwesomeModule,
+        RouterModule,
+    ],
+    templateUrl: './signup.component.html',
+    styleUrl: '../auth.css'
 })
 export class SignupComponent {
   fb = inject(FormBuilder);

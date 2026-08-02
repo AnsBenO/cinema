@@ -4,10 +4,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFaceSadTear } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  standalone: true,
-  selector: 'app-error-page',
-  imports: [RouterModule, FontAwesomeModule],
-  template: `
+    selector: 'app-error-page',
+    imports: [RouterModule, FontAwesomeModule],
+    template: `
     <div
       class="flex flex-col items-center justify-start min-h-screen bg-gray-100"
     >
@@ -24,7 +23,7 @@ import { faFaceSadTear } from '@fortawesome/free-solid-svg-icons';
       >
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ErrorPageComponent {
   sadIcon = faFaceSadTear;

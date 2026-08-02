@@ -32,11 +32,10 @@ export interface BookingCompletedEvent {
 }
 
 @Component({
-  selector: 'app-book-ticket',
-  standalone: true,
-  imports: [CommonModule, FormsModule, Dialog, FontAwesomeModule],
-  templateUrl: './book-ticket.component.html',
-  styleUrl: './book-ticket.component.css',
+    selector: 'app-book-ticket',
+    imports: [CommonModule, FormsModule, Dialog, FontAwesomeModule],
+    templateUrl: './book-ticket.component.html',
+    styleUrl: './book-ticket.component.css'
 })
 export class BookTicketComponent implements OnChanges {
   private readonly bookingService = inject(BookingService);

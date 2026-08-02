@@ -11,11 +11,10 @@ import {
 } from '../../../store/notification.store';
 
 @Component({
-  selector: 'app-my-bookings',
-  standalone: true,
-  imports: [DatePipe, RouterLink],
-  templateUrl: './my-bookings.component.html',
-  styleUrl: './my-bookings.component.css',
+    selector: 'app-my-bookings',
+    imports: [DatePipe, RouterLink],
+    templateUrl: './my-bookings.component.html',
+    styleUrl: './my-bookings.component.css'
 })
 export class MyBookingsComponent implements OnInit {
   private readonly authService = inject(AuthService);

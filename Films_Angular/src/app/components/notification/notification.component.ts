@@ -26,11 +26,10 @@ import { Router } from '@angular/router';
 import { filter, tap } from 'rxjs';
 
 @Component({
-  standalone: true,
-  selector: 'app-notification',
-  imports: [CommonModule, FontAwesomeModule],
-  templateUrl: './notification.component.html',
-  styleUrl: './notification.component.scss',
+    selector: 'app-notification',
+    imports: [CommonModule, FontAwesomeModule],
+    templateUrl: './notification.component.html',
+    styleUrl: './notification.component.scss'
 })
 export class NotificationComponent implements OnInit {
   notificationStore = inject(NotificationStore);

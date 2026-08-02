@@ -18,11 +18,10 @@ import {
 } from '@angular/router';
 
 @Component({
-  selector: 'app-loader',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './loader.component.html',
-  styleUrl: './loader.component.scss',
+    selector: 'app-loader',
+    imports: [CommonModule, RouterModule],
+    templateUrl: './loader.component.html',
+    styleUrl: './loader.component.scss'
 })
 export class LoaderComponent implements OnInit {
   router = inject(Router);
