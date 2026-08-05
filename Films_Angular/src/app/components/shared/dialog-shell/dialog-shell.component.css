@@ -1,0 +1,54 @@
+:host ::ng-deep .dialog-shell-modal .p-dialog-content {
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+:host ::ng-deep .dialog-shell-modal .p-dialog-header {
+  display: none;
+}
+
+.dialog-shell {
+  position: relative;
+  max-height: min(84vh, 760px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 30px 90px -35px rgba(15, 23, 42, 0.35);
+}
+
+@media (min-width: 640px) {
+  .dialog-shell {
+    padding: 1.5rem;
+  }
+}
+
+.close-button {
+  position: absolute;
+  z-index: 1;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #475569;
+}
+
+.close-button:hover:not(:disabled) {
+  border-color: #a5b4fc;
+  color: #4338ca;
+}
+
+.close-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

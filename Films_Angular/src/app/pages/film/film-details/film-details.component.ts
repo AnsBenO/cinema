@@ -1,9 +1,7 @@
 import {
   Component,
-  EventEmitter,
   inject,
   Input,
-  Output,
   signal,
   computed,
   OnChanges,
@@ -14,10 +12,7 @@ import {
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { Dialog } from 'primeng/dialog';
 import { Rating } from 'primeng/rating';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { FilmService } from '../../../services/film.service';
 import { Film } from '../../../models/film.model';
@@ -29,20 +24,20 @@ import {
 import { ErrorResponse } from '../../../models/error-response.model';
 import { take, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
+import { DialogShellComponent } from '../../../components/shared/dialog-shell/dialog-shell.component';
 
 @Component({
-    selector: 'app-film-details',
-    imports: [FormsModule, Dialog, Rating, FontAwesomeModule],
-    templateUrl: 'film-details.component.html',
-    styleUrl: 'film-details.component.scss'
+  selector: 'app-film-details',
+  imports: [FormsModule, Rating, DialogShellComponent],
+  templateUrl: 'film-details.component.html',
+  styleUrl: 'film-details.component.scss',
 })
 export class FilmDetailsComponent implements OnChanges, OnInit {
   private readonly filmService = inject(FilmService);
   private readonly notificationStore = inject(NotificationStore);
   private readonly authService = inject(AuthService);
 
-  @Input({ required: true }) visible!: boolean;
-  @Output() visibleChange = new EventEmitter<boolean>();
+  readonly visible = model.required<boolean>();
   @Input({ required: true }) film!: Film | null;
 
   userEmail!: string;
@@ -57,7 +52,6 @@ export class FilmDetailsComponent implements OnChanges, OnInit {
     });
   }
 
-  readonly closeIcon = faXmark;
   readonly serverUrl = environment.SERVER_URL;
 
   score: ModelSignal<number | null> = model<number | null>(null);
@@ -123,14 +117,7 @@ export class FilmDetailsComponent implements OnChanges, OnInit {
     }
   }
 
-  closeDialog(): void {
-    this.visible = false;
-    this.visibleChange.emit(this.visible);
+  onDialogClosed(): void {
     this.score.set(0);
-  }
-
-  // Helper method to prevent dialog from closing when clicking inside
-  onContentClick(event: Event): void {
-    event.stopPropagation();
   }
 }

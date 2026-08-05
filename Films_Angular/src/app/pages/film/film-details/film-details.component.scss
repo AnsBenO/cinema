@@ -1,25 +1,3 @@
-:host ::ng-deep .film-dialog .p-dialog-content {
-  padding: 0;
-  overflow: hidden;
-  border-radius: 2rem;
-  background: transparent;
-}
-
-:host ::ng-deep .film-dialog .p-dialog {
-  max-width: min(92vw, 860px);
-}
-
-:host ::ng-deep .film-dialog .p-dialog-content .p-dialog-header {
-  display: none;
-}
-
-.dialog-shell {
-  position: relative;
-  max-height: min(84vh, 760px);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 :host ::ng-deep .p-rating {
   --p-rating-icon-size: 1.25rem;
 }

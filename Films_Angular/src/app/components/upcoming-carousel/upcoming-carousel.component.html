@@ -90,5 +90,5 @@
       </p-carousel>
 </div>
 
-<app-book-ticket [visible]="bookingDialogVisible()" (visibleChange)="onBookingDialogVisibleChange($event)"
-      [screening]="selectedScreening()" (bookingCompleted)="onBookingCompleted()"></app-book-ticket>
+<app-book-ticket [(visible)]="bookingDialogVisible" [screening]="selectedScreening()"
+      (bookingCompleted)="onBookingCompleted()" (dialogClosed)="onBookingDialogClosed()"></app-book-ticket>

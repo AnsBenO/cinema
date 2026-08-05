@@ -11,7 +11,7 @@ import {
   NotificationStore,
   NotificationType,
   TNotification,
-} from '../../store/notification.store';
+} from '../../../store/notification.store';
 
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -26,10 +26,10 @@ import { Router } from '@angular/router';
 import { filter, tap } from 'rxjs';
 
 @Component({
-    selector: 'app-notification',
-    imports: [CommonModule, FontAwesomeModule],
-    templateUrl: './notification.component.html',
-    styleUrl: './notification.component.scss'
+  selector: 'app-notification',
+  imports: [CommonModule, FontAwesomeModule],
+  templateUrl: './notification.component.html',
+  styleUrl: './notification.component.scss',
 })
 export class NotificationComponent implements OnInit {
   notificationStore = inject(NotificationStore);
@@ -57,7 +57,7 @@ export class NotificationComponent implements OnInit {
    * @returns The CSS class to be applied.
    */
   getNotificationClass(type: NotificationType | null): string {
-    return type ? this.notificationClassMap.get(type) ?? '' : '';
+    return type ? (this.notificationClassMap.get(type) ?? '') : '';
   }
 
   /**
@@ -106,10 +106,10 @@ export class NotificationComponent implements OnInit {
           // Set a timer to remove the notification after 5 seconds
           setTimeout(() => {
             this.notifications.set(
-              this.notifications().filter((n) => n.id !== id)
+              this.notifications().filter((n) => n.id !== id),
             );
           }, 5000);
-        })
+        }),
       )
       .subscribe();
   }

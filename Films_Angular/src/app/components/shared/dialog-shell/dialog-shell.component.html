@@ -1,0 +1,11 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: width() }" [closable]="false"
+      [closeOnEscape]="closeOnEscape()" (onHide)="onDialogHide()" styleClass="dialog-shell-modal">
+      <div class="dialog-shell">
+            <button type="button" class="close-button" aria-label="Close dialog" (click)="requestClose()"
+                  [disabled]="closeDisabled()">
+                  <fa-icon [icon]="closeIcon"></fa-icon>
+            </button>
+
+            <ng-content></ng-content>
+      </div>
+</p-dialog>

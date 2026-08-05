@@ -1,10 +1,6 @@
-<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: 'min(92vw, 720px)' }" [closable]="false"
-      [closeOnEscape]="!isSubmitting()" (onHide)="closeDialog()">
-      <div class="dialog-shell">
-            <button type="button" class="close-button" aria-label="Close booking dialog" (click)="closeDialog()"
-                  [disabled]="isSubmitting()">
-                  <fa-icon [icon]="closeIcon"></fa-icon>
-            </button>
+<app-dialog-shell [(visible)]="visible" width="min(92vw, 720px)" [closeOnEscape]="!isSubmitting()"
+      [closeDisabled]="isSubmitting()" (closed)="onDialogClosed()">
+      <div class="dialog-content">
 
             @if (screening) {
             <header class="dialog-header">
@@ -107,4 +103,4 @@
             }
             }
       </div>
-</p-dialog>
+</app-dialog-shell>

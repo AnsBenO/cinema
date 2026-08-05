@@ -28,7 +28,7 @@ import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../services/booking.service';
 import { ScreeningAvailability } from '../../models/booking.model';
 import { catchError, forkJoin, of } from 'rxjs';
-import { BookTicketComponent } from '../book-ticket/book-ticket.component';
+import { BookTicketComponent } from '../shared/book-ticket/book-ticket.component';
 
 @Component({
   selector: 'app-upcoming-carousel',
@@ -161,11 +161,8 @@ export class UpcomingCarouselComponent implements OnChanges {
     this.bookingDialogVisible.set(true);
   }
 
-  onBookingDialogVisibleChange(visible: boolean): void {
-    this.bookingDialogVisible.set(visible);
-    if (!visible) {
-      this.selectedScreening.set(null);
-    }
+  onBookingDialogClosed(): void {
+    this.selectedScreening.set(null);
   }
 
   onBookingCompleted(): void {

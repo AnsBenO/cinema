@@ -1,34 +1,7 @@
-.dialog-shell {
-  position: relative;
+.dialog-content {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 1.5rem;
-  padding: 1.25rem;
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(243, 244, 246, 0.9)
-  );
-  box-shadow: 0 30px 90px -35px rgba(15, 23, 42, 0.35);
-}
-
-.close-button {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
-  color: #475569;
-}
-
-.close-button:hover {
-  border-color: #a5b4fc;
-  color: #4338ca;
 }
 
 .dialog-header {
@@ -202,10 +175,6 @@
 }
 
 @media (max-width: 640px) {
-  .dialog-shell {
-    padding: 1rem;
-  }
-
   .title {
     font-size: 1.25rem;
   }

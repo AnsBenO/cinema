@@ -7,22 +7,23 @@ import {
   Output,
   SimpleChanges,
   inject,
+  model,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Dialog } from 'primeng/dialog';
-import { BookingService } from '../../services/booking.service';
-import { AuthService } from '../../services/auth.service';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { BookingService } from '../../../services/booking.service';
+import { AuthService } from '../../../services/auth.service';
 import {
   NotificationStore,
   NotificationType,
-} from '../../store/notification.store';
-import { Screening } from '../../models/screening.model';
+} from '../../../store/notification.store';
+import { Screening } from '../../../models/screening.model';
 import { Router } from '@angular/router';
-import { ScreeningAvailability } from '../../models/booking.model';
+import { ScreeningAvailability } from '../../../models/booking.model';
 import { take } from 'rxjs';
+import { DialogShellComponent } from '../dialog-shell/dialog-shell.component';
 
 type BookingStep = 'tickets' | 'payment';
 
@@ -32,10 +33,10 @@ export interface BookingCompletedEvent {
 }
 
 @Component({
-    selector: 'app-book-ticket',
-    imports: [CommonModule, FormsModule, Dialog, FontAwesomeModule],
-    templateUrl: './book-ticket.component.html',
-    styleUrl: './book-ticket.component.css'
+  selector: 'app-book-ticket',
+  imports: [CommonModule, FormsModule, FontAwesomeModule, DialogShellComponent],
+  templateUrl: './book-ticket.component.html',
+  styleUrl: './book-ticket.component.css',
 })
 export class BookTicketComponent implements OnChanges {
   private readonly bookingService = inject(BookingService);
@@ -43,14 +44,13 @@ export class BookTicketComponent implements OnChanges {
   private readonly notificationStore = inject(NotificationStore);
   private readonly router = inject(Router);
 
-  @Input({ required: true }) visible!: boolean;
-  @Output() visibleChange = new EventEmitter<boolean>();
+  readonly visible = model.required<boolean>();
 
   @Input({ required: true }) screening: Screening | null = null;
 
   @Output() bookingCompleted = new EventEmitter<BookingCompletedEvent>();
+  @Output() dialogClosed = new EventEmitter<void>();
 
-  readonly closeIcon = faXmark;
   readonly plusIcon = faPlus;
   readonly minusIcon = faMinus;
 
@@ -63,12 +63,12 @@ export class BookTicketComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['screening']) {
       this.resetState();
-      if (this.visible && this.screening) {
+      if (this.visible() && this.screening) {
         this.loadAvailability();
       }
     }
 
-    if (changes['visible'] && this.visible && this.screening) {
+    if (changes['visible'] && this.visible() && this.screening) {
       this.loadAvailability();
     }
   }
@@ -180,9 +180,12 @@ export class BookTicketComponent implements OnChanges {
   }
 
   closeDialog(): void {
-    this.visible = false;
-    this.visibleChange.emit(this.visible);
+    this.visible.set(false);
+  }
+
+  onDialogClosed(): void {
     this.resetState();
+    this.dialogClosed.emit();
   }
 
   private loadAvailability(): void {
