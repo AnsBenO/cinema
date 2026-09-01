@@ -1,0 +1,30 @@
+<!-- View Header -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!-- Simple title fragment (title + icon only) -->
+<div th:fragment="pageTitle(icon, title)">
+    <h1 class="text-2xl font-bold text-gray-800">
+        <i th:class="${icon} + ' text-blue-500'"></i>
+        <span th:text="${title}"></span>
+    </h1>
+</div>
+
+<!-- Full page header fragment (title + optional refresh button) -->
+<div th:fragment="pageHeader(icon, title, refreshEndpoint, refreshTarget, refreshSwap)">
+    <div class="flex justify-between items-center mb-5">
+        <h1 class="text-2xl font-bold text-gray-800">
+            <!-- icon -->
+            <i th:class="${icon} + ' text-blue-500'"></i>
+            <!-- title -->
+            <span th:text="${title}"></span>
+        </h1>
+        <button th:if="${not #strings.isEmpty(refreshEndpoint)}" 
+                th:attr="hx-get=${refreshEndpoint}, hx-target=${refreshTarget}, hx-swap=${refreshSwap}"
+                class="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600">
+            <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
+        </button>
+    </div>
+</div>
+
+</html>

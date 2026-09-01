@@ -13,6 +13,8 @@
 
         <!-- Films Table -->
         <div id="filmsTable" th:fragment="films-table" class="w-full">
+            <!-- Page Header -->
+            <div th:replace="~{/fragments/view-header :: pageHeader(icon='fa-solid fa-film', title='Films', refreshEndpoint='', refreshTarget='', refreshSwap='')}"></div>
             <header class="flex flex-row justify-between">
                 <!-- Search Form -->
                 <form hx-get="/films" hx-replace="outerHtml" hx-target="#filmsTable"

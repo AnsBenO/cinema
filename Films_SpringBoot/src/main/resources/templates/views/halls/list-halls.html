@@ -13,6 +13,8 @@
 
 		<!-- Halls Table -->
 		<div id="hallsTable" th:fragment="halls-table" class="w-full">
+			<!-- Page Header -->
+			<div th:replace="~{/fragments/view-header :: pageHeader(icon='fa-solid fa-door-open', title='Halls', refreshEndpoint='', refreshTarget='', refreshSwap='')}"></div>
 			<header class="flex flex-row justify-between">
 				<!-- Search Form -->
 				<form hx-get="/halls" hx-replace="outerHtml" hx-target="#hallsTable"

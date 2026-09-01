@@ -16,15 +16,7 @@
             <div th:fragment="dashboardContent" id="dashboardContent">
 
                   <!-- Dashboard Header -->
-                  <div class="flex justify-between items-center mb-5">
-                        <h1 class="text-2xl font-bold text-gray-800">
-                              <i class="fa-solid fa-gauge-high text-blue-500"></i> Admin Dashboard
-                        </h1>
-                        <button hx-get="/dashboard" hx-target="#dashboardContent" hx-swap="outerHTML"
-                              class="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600">
-                              <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
-                        </button>
-                  </div>
+                  <div th:replace="~{/fragments/view-header :: pageHeader(icon='fa-solid fa-gauge-high', title='Admin Dashboard', refreshEndpoint='/dashboard', refreshTarget='#dashboardContent', refreshSwap='outerHTML')}"></div>
 
                   <!-- Metrics Cards -->
                   <div class="flex flex-wrap justify-center gap-6 mx-auto">

@@ -13,6 +13,8 @@
 
 		<!-- Screenings Table -->
 		<div id="screeningsTable" th:fragment="screenings-table" class="w-full">
+			<!-- Page Header -->
+			<div th:replace="~{/fragments/view-header :: pageHeader(icon='fa-solid fa-calendar', title='Screenings', refreshEndpoint='', refreshTarget='', refreshSwap='')}"></div>
 			<header class="flex flex-row justify-between">
 				<form hx-get="/screenings" hx-replace="outerHtml" hx-target="#screeningsTable"
 					class="flex items-center space-x-2 mb-4">

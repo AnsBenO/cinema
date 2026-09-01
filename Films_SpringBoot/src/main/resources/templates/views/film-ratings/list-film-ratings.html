@@ -13,6 +13,8 @@
 
         <!-- Film Ratings Table -->
         <div id="filmRatingsTable" th:fragment="film-ratings-table" class="w-full">
+            <!-- Page Header -->
+            <div th:replace="~{/fragments/view-header :: pageHeader(icon='fa-solid fa-star', title='Film Ratings', refreshEndpoint='', refreshTarget='', refreshSwap='')}"></div>
             <header class="flex flex-row justify-between">
                 <!-- Search Form -->
                 <form hx-get="/film-ratings" hx-replace="outerHtml" hx-target="#filmRatingsTable"
