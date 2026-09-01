@@ -15,19 +15,22 @@
 
                   <!-- Dashboard -->
                   <a th:href="@{/dashboard}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/dashboard">
                         <i class="fa-solid fa-chart-line"></i>
                         <span class="sidebar-label">Dashboard</span>
                   </a>
 
                   <!-- Users -->
                   <a th:href="@{/users}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/users">
                         <i class="fa-solid fa-user"></i>
                         <span class="sidebar-label">Users</span>
                   </a>
                   <a th:href="@{/persons}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/persons">
 
                         <i class="fa-solid fa-users"></i>
                         <span class="sidebar-label">Persons</span>
@@ -35,42 +38,48 @@
 
                   <!-- Films -->
                   <a th:href="@{/films}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/films">
                         <i class="fa-solid fa-film"></i>
                         <span class="sidebar-label">Films</span>
                   </a>
 
                   <!-- Screenings -->
                   <a th:href="@{/screenings}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/screenings">
                         <i class="fa-solid fa-calendar"></i>
                         <span class="sidebar-label">Screenings</span>
                   </a>
 
                   <!-- Genres -->
                   <a th:href="@{/genres}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/genres">
                         <i class="fa-solid fa-tags"></i>
                         <span class="sidebar-label">Genres</span>
                   </a>
 
                   <!-- Nationalities -->
                   <a th:href="@{/nationalities}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/nationalities">
                         <i class="fa-solid fa-flag"></i>
                         <span class="sidebar-label">Nationalities</span>
                   </a>
 
                   <!-- Halls -->
                   <a th:href="@{/halls}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/halls">
                         <i class="fa-solid fa-building"></i>
                         <span class="sidebar-label">Halls</span>
                   </a>
 
                   <!-- Film Ratings -->
                   <a th:href="@{/film-ratings}"
-                        class="flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm">
+                        class="nav-link flex items-center gap-3 py-3 px-4 rounded hover:bg-slate-200 hover:text-oceanBlue text-gray-800 text-sm"
+                        data-path="/film-ratings">
                         <i class="fa-solid fa-star"></i>
                         <span class="sidebar-label">Film Ratings</span>
                   </a>
@@ -81,3 +90,21 @@
 
       </nav>
 </aside>
+
+<script>
+// Highlight active navigation link based on current URL
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const currentPath = window.location.pathname;
+    
+    navLinks.forEach(link => {
+        const dataPath = link.getAttribute('data-path');
+        // Check if current path matches or starts with the link's data-path
+        if (currentPath === dataPath || currentPath.startsWith(dataPath + '/')) {
+            // Apply inline styles to ensure they work
+            link.style.backgroundColor = '#e2e8f0';  // slate-200
+            link.style.color = 'rgb(30, 58, 138)';            // oceanBlue
+        }
+    });
+});
+</script>

@@ -42,6 +42,8 @@ spring:
     data:
         rest:
             base-path: api
+    thymeleaf:
+        build-expression-objects: true
 
 security:
     jwt:
